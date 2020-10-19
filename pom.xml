@@ -247,6 +247,24 @@
         </plugins>
     </build>
 
+    <developers>
+		<developer>
+			<id>joszamama</id>
+			<name>José Antonio Zamudio Amaya</name>
+			<email>joseantoniozamudio11@gmail.com</email>
+			<url>https://www.google.com/</url>
+			<roles>
+				<role>leader</role>
+			</roles>
+			<properties>
+				<picUrl>
+					https://aws.traveler.es/prod/designs/v1/assets/940x633/109723.jpg
+				</picUrl>
+			</properties>
+		</developer>
+		<!-- More developers ... -->
+	</developers>
+    
     <!-- Apache 2 license -->
     <licenses>
         <license>
