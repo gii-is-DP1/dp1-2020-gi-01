@@ -262,6 +262,20 @@
 				</picUrl>
 			</properties>
 		</developer>
+        <developer>
+			<id>estsvq</id>
+			<name>Esteban Cabezas Díaz</name>
+			<email>ezasdi@gmail.com</email>
+			<url>https://www.google.es/</url>
+			<roles>
+				<role>developer</role>
+			</roles>
+			<properties>
+				<picUrl>
+					https://www.imerir.com/wp-content/uploads/2019/10/adult-app-developer-coding-1181244-1024x684.jpg
+				</picUrl>
+			</properties>
+		</developer>
 		<!-- More developers ... -->
 	</developers>
     
