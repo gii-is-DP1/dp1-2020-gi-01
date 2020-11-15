@@ -6,7 +6,7 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<link href="favicon.ico" rel="icon" type="image/x-icon" />	
-	<link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">	
+	<link href="/css/tailwind.min.css" rel="stylesheet">	
 	<link href="/css/main.css" rel="stylesheet">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Inicio - Tabernas Sevilla</title>
@@ -15,7 +15,7 @@
 <header id="top" class="w-full flex flex-col fixed sm:relative bg-white pin-t pin-r pin-l">
 <nav id="site-menu" class="flex flex-col sm:flex-row w-full justify-between items-center px-4 sm:px-6 py-1 bg-white shadow sm:shadow-none border-t-4 border-blue-900">
     <div class="w-full sm:w-auto self-start sm:self-center flex flex-row sm:flex-none flex-no-wrap justify-between items-center">
-        <a href="#" class="no-underline py-1">
+        <a href="/" class="no-underline py-1">
             <h1 class="font-bold text-lg tracking-widest">Tabernas Sevilla</h1>
         </a>
         <button id="menuBtn" class="hamburger block sm:hidden focus:outline-none" type="button" onclick="navToggle();">

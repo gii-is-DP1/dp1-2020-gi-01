@@ -1,4 +1,4 @@
-package com.project.TabernasSevilla.model;
+package com.project.TabernasSevilla.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
