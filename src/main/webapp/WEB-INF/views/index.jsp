@@ -7,64 +7,9 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<link href="favicon.ico" rel="icon" type="image/x-icon" />	
 	<link href="/css/tailwind.min.css" rel="stylesheet">	
-	<link href="/css/main.css" rel="stylesheet">
+	<link href="/css/index.css" rel="stylesheet">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-body {
-  font-family: "Lato", sans-serif;
-  text-align: right;
-}
-
-h1{
-color: #FFFFFF;
-}
-
-.sidenav {
-  height: 100%;
-  width: 0;
-  position: fixed;
-  z-index: 1;
-  top: 0;
-  right: 0;
-  background-color: #111;
-  overflow-x: hidden;
-  transition: 0.5s;
-  padding-top: 60px;
-}
-
-.sidenav a {
-  padding: 8px 32px 8px 8px; /* top right bottom left */
-  text-decoration: none;
-  font-size: 25px;
-  color: #818181;
-  display: block;
-  transition: 0.3s;
-}
-
-.sidenav a:hover {
-  color: #f1f1f1;
-}
-
-.sidenav .closebtn {
-  position: absolute;
-  top: 0;
-  left: 25px;
-  font-size: 36px;
-  margin-right: 1em;
-}
-
-.derecha {
-	margin-right: 1em;
-}
-
-@media screen and (max-height: 450px) {
-  .sidenav {padding-top: 15px;}
-  .sidenav a {font-size: 18px;}
-}
-</style>
-	
-<title>Inicio - Tabernas Sevilla</title>
+	<title>Inicio - Tabernas Sevilla</title>
 </head>
 
 <header id="top" class="w-full flex flex-col fixed sm:relative bg-black pin-t pin-r pin-l">
