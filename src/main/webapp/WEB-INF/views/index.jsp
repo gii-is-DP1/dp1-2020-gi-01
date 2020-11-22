@@ -20,6 +20,7 @@
 
 <div class="flex-container">
 	<div><i class="fas fa-sign-in-alt" style="font-size:30px; padding-left:10px"></i></div>
+	<div> <a href="admin">${phrase}</a></div>
 	<div> <a href="login">Login | Register</a></div>
 	<div> <a href="#"> Tabernas Sevilla</a></div>
         	
