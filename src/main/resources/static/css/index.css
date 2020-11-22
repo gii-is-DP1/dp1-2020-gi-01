@@ -3,6 +3,40 @@
 body {
   font-family: "Lato", sans-serif;
   text-align: right;
+  margin: 0px;
+  background: #ffffff;
+  background-image: url('img/interior-arenal.jpeg');
+  /* Full height */
+  height: 100%;
+
+  /* Center and scale the image nicely */
+  
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+a{
+	text-decoration: none;	
+	color: white;
+}
+
+a:hover{
+	color: #a0b6fe;
+	
+}
+.flex-container {
+  display: flex;
+  padding: 0px;
+  margin:0px;
+  background-color: black; 
+  color: white;
+}
+
+.flex-container > div {
+
+  margin: 10px;
+  padding: 20px 10px 20px 10px;
+  font-size: 20px;
 }
 
 h1{

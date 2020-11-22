@@ -1,0 +1,23 @@
+@charset "UTF-8";
+
+@media (max-width: 576px) {
+    .content {
+        padding-top: 51px;
+    }
+}
+
+@media (min-width: 577px) {
+    .pt-scroll {
+        padding-top: 51px;
+    }
+
+    .nav-sticky {
+        position: fixed!important;
+        min-width: 100%;
+        top: 0;
+        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .1);
+        transition: all .25s ease-in;
+        z-index: 1;
+    }
+}
+
