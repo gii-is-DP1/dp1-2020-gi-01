@@ -1,15 +1,26 @@
 package com.project.TabernasSevilla.model;
 
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
+import lombok.Data;
+
+@Data
 @Entity
-public class User {
+@Table(name = "users")
+public class User{
 	@Id
-	@GeneratedValue
-	private Long id;
-	private String username;
-	private String password;
-
+	String username;
+	
+	String password;
+	
+	boolean enabled;
+	
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+	private Set<Authorities> authorities;
 }

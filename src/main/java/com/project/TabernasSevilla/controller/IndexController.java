@@ -16,10 +16,18 @@ public class IndexController {
         return "index";
     }
 	
-	@RequestMapping({"/login"})
-    public String login(Model model) {
-        return "login";
-    }
+//	@RequestMapping({"/login"})
+//    public String login(String username, String password, String _csrf, Model model) {
+//		model.addAttribute("username", username);
+//		model.addAttribute("password", password);
+//		model.addAttribute("_csrf", _csrf);
+//        return "login";
+//    }
+	
+//	@RequestMapping({"/login"})
+//	public String login(String username, String password, Model model) {
+//      return "login";
+//  }
 	@PostMapping({"/logcheck"})
 		public String logCheck(String username, String password, Model model)
 		{
