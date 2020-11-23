@@ -28,6 +28,13 @@ public class IndexController {
 //	public String login(String username, String password, Model model) {
 //      return "login";
 //  }
+	
+	@RequestMapping({"/admin"})
+	public String admin(String username, Model model) {
+		model.addAttribute("username", username);
+      return "admin";
+  }
+	
 	@PostMapping({"/logcheck"})
 		public String logCheck(String username, String password, Model model)
 		{

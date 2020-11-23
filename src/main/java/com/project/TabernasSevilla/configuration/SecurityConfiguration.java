@@ -16,6 +16,8 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.project.TabernasSevilla.model.User;
+
 import lombok.extern.slf4j.Slf4j;
 @Configuration
 @EnableWebSecurity
@@ -36,8 +38,29 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     }
     */
-	
 
+	@Override
+	public void configure(AuthenticationManagerBuilder auth) throws Exception {
+
+
+		auth.jdbcAuthentication()
+	      .dataSource(dataSource)
+	      .passwordEncoder(passwordEncoder())
+	      .usersByUsernameQuery(
+	       "SELECT username,password,enabled FROM users where username = ?")
+	      .authoritiesByUsernameQuery(
+	       "SELECT username, authority FROM authorities WHERE username = ?");
+	}
+	
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		PasswordEncoder encoder =  NoOpPasswordEncoder.getInstance();
+	    return encoder;
+//		PasswordEncoder encoder = new BCryptPasswordEncoder();
+//		return encoder;
+		//return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+	}
+	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
@@ -61,29 +84,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 // se sirve desde esta misma página.
                 http.csrf().ignoringAntMatchers("/h2-console/**");
                 http.headers().frameOptions().sameOrigin();
-	}
-
-	
-	@Bean
-	public PasswordEncoder passwordEncoder() {
-		PasswordEncoder encoder = new BCryptPasswordEncoder();
-		//return encoder;
-		return PasswordEncoderFactories.createDelegatingPasswordEncoder();
-	}
-
-	@Override
-	public void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.jdbcAuthentication()
-	      .dataSource(dataSource)
-	      .usersByUsernameQuery(
-	       "select username,password,enabled "
-	        + "from users "
-	        + "where username = ?")
-	      .authoritiesByUsernameQuery(
-	       "select username, authority "
-	        + "from authorities "
-	        + "where username = ?").passwordEncoder(passwordEncoder());
-		log.info("ol"+ passwordEncoder());
 	}
 
 
