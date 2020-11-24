@@ -1,4 +1,4 @@
-package com.project.TabernasSevilla.model;
+package com.project.TabernasSevilla.security;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -6,12 +6,14 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
+import com.project.TabernasSevilla.domain.BaseEntity;
+
 import lombok.Data;
 
 @Data
 @Entity
 @Table(name = "authorities")
-public class Authorities extends BaseEntity{
+public class Authority extends BaseEntity{
 	
 	@ManyToOne
 	@JoinColumn(name = "username")

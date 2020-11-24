@@ -23,8 +23,8 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.project.TabernasSevilla.model.User;
 import com.project.TabernasSevilla.repository.UserRepository;
+import com.project.TabernasSevilla.security.User;
 
 @Service
 public class UserService {
@@ -36,11 +36,13 @@ public class UserService {
 		this.userRepository = userRepository;
 	}
 
+	/*
 	@Transactional
 	public void saveUser(User user) throws DataAccessException {
 		user.setEnabled(true);
 		userRepository.save(user);
 	}
+	*/
 	
 	public Optional<User> findUser(String username) {
 		return userRepository.findById(username);

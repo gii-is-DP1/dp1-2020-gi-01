@@ -1,4 +1,4 @@
-package com.project.TabernasSevilla.model;
+package com.project.TabernasSevilla.security;
 
 import java.util.Set;
 
@@ -21,7 +21,8 @@ public class User{
 	
 	boolean enabled;
 	
+	/*
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-	private Set<Authorities> authorities;
-	
+	private Set<Authority> authorities;
+	*/
 }

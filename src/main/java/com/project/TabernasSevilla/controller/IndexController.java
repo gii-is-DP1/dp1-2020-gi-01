@@ -5,15 +5,15 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.thymeleaf.spring5.view.ThymeleafView;
 
 @Controller
 public class IndexController {
 
 	@RequestMapping({"/","/index","/inicio"})
-    public String hello(@RequestParam(value = "name", defaultValue = "Carlos, Adrian H., Esteban, Adil, Juan y José",
-        required = true) String name, Model model) {
-        model.addAttribute("name", name);
-        return "index";
+    public String mainView(Model model) {
+		model.addAttribute("message", "Test");
+		return "index";
     }
 	
 //	@RequestMapping({"/login"})
@@ -29,6 +29,7 @@ public class IndexController {
 //      return "login";
 //  }
 	
+	/*
 	@RequestMapping({"/admin"})
 	public String admin(String username, Model model) {
 		model.addAttribute("username", username);
@@ -58,5 +59,6 @@ public class IndexController {
 		model.addAttribute("name", name);
         return "index";
     }
+    */
 }
 
