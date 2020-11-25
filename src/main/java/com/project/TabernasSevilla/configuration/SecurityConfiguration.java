@@ -24,23 +24,22 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		.and()
 	 		.formLogin()
 	 		.loginPage("/login")
-	 		.failureUrl("/login-error")
+	 		.defaultSuccessUrl("/index",true)
+	 		.failureUrl("/thisgonnafailonpurpose")
 	 		.permitAll()
 	 	.and()
 	 		.logout()
 	 		.logoutSuccessUrl("/")
-	 		.permitAll(); 
-		// Configuración para que funcione la consola de administración
+	 		.permitAll()
+	 	.and()
+	 		.antMatcher("/register/**")
+	 		.anonymous();
+	 	// Configuración para que funcione la consola de administración
 		// de la BD H2 (deshabilitar las cabeceras de protección contra
 		// ataques de tipo csrf y habilitar los framesets si su contenido
 		// se sirve desde esta misma página.
 		http.csrf().ignoringAntMatchers("/h2-console/**");
 		http.headers().frameOptions().sameOrigin();
-	}
-	
-	@Override
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception{
-		auth.inMemoryAuthentication().withUser("admin").password(encoder().encode("admin1")).roles("ADMIN");
 	}
 
 	// USER LOGIN
@@ -56,6 +55,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		return new BCryptPasswordEncoder();
 	}
 
+	
 	@Bean
 	public DaoAuthenticationProvider authProvider() {
 		DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();

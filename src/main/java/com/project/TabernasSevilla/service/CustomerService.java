@@ -1,54 +1,63 @@
 package com.project.TabernasSevilla.service;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.project.TabernasSevilla.domain.Costumer;
+import com.project.TabernasSevilla.domain.Customer;
 import com.project.TabernasSevilla.forms.RegisterForm;
-import com.project.TabernasSevilla.repository.CostumerRepository;
+import com.project.TabernasSevilla.repository.CustomerRepository;
 import com.project.TabernasSevilla.security.User;
 import com.project.TabernasSevilla.security.UserService;
 
 @Service
+@Transactional
 public class CustomerService {
 
 	@Autowired
-	private CostumerRepository costumerRepo;
+	private CustomerRepository costumerRepo;
 	
 	@Autowired
 	private UserService userService;
 	
-	public Costumer findById(final int id) {
+	public Customer findById(final int id) {
 		return costumerRepo.findById(id);
 	}
 	
-	public Costumer create() {
-		Costumer costumer = new Costumer();
-		return costumer;
+	public Customer create() {
+		Customer customer = new Customer();
+		return customer;
 	}
 	
-	public Costumer register(final RegisterForm form) {
-		Costumer costumer = create();
-		costumer.setEmail(form.getForm().getEmail());
-		costumer.setPhoneNumber(form.getForm().getPhoneNumber());
+	public Customer save(Customer customer) {
+		return this.costumerRepo.save(customer);
+	}
+	
+	public Customer register(final RegisterForm form) {
+		Customer customer = create();
+		customer.setId(0);
+		customer.setEmail(form.getForm().getEmail());
+		customer.setPhoneNumber(form.getForm().getPhoneNumber());
 		if (form.getForm().getAvatar() != "") {
-			costumer.setAvatar(form.getForm().getAvatar());
+			customer.setAvatar(form.getForm().getAvatar());
 		}else {
-			costumer.setAvatar("https://www.qualiscare.com/wp-content/uploads/2017/08/default-user-300x300.png");
+			customer.setAvatar("https://www.qualiscare.com/wp-content/uploads/2017/08/default-user-300x300.png");
 		}
-		costumer.getUser().setUsername(form.getForm().getUsername());
-		costumer.setName(form.getForm().getName());
-		costumer.setSurname(form.getForm().getSurname());
-		costumer.setPhoneNumber(form.getForm().getPhoneNumber());
+		customer.setName(form.getForm().getName());
+		customer.setSurname(form.getForm().getSurname());
+		customer.setPhoneNumber(form.getForm().getPhoneNumber());
 
-		User user = this.userService.createUser("COSTUMER");
+		User user = this.userService.createUser("CUSTOMER");
 		final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		user.setPassword(encoder.encode(form.getPassword()));
 		user.setUsername(form.getUsername());
-		costumer.setUser(user);
+		user.setId(0);
+		User savedUser = this.userService.saveAndFlush(user);
+		customer.setUser(savedUser);
 		
-		Costumer saved = this.costumerRepo.save(costumer);
+		Customer saved = save(customer);
 		return saved;
 	}
 }

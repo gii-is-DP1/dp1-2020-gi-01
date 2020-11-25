@@ -1,9 +1,11 @@
 package com.project.TabernasSevilla.security;
 
-import java.util.Collection;
-import java.util.HashSet;
+import java.util.Set;
+
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 @Service
+@Transactional
 public class UserService implements UserDetailsService{
 
 	@Autowired
@@ -34,11 +37,18 @@ public class UserService implements UserDetailsService{
     }
 	
 	
+	public User save(User user) {
+		return this.userRepo.save(user);
+	}
+	
+	public User saveAndFlush(User user) {
+		return this.userRepo.saveAndFlush(user);
+	}
 	
 	public User createUser(final String authority) {
 		final User user = new User();
 
-		final Collection<Authority> auths = new HashSet<>();
+		final Set<Authority> auths = user.getAuthorities();
 		final Authority auth = new Authority();
 		auth.setAuthority(authority);
 		auths.add(auth);

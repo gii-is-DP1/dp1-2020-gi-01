@@ -1,35 +1,92 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-    <title>Spring Boot User Authentication</title>
+<title>Spring Boot User Authentication</title>
 </head>
 <body>
-<form role="form" th:action="@{/register}" th:method="post" th:object="${actorForm}">
-    
-    <input type="hidden" id="id" name="id" th:field="*{id}">
-    
-    <label>User name</label>
-    <input type="text" id="userName" name="userName" th:field="*{userName}">
-    
-    <label>Name</label>
-    <input type="text" id="name" name="name" th:field="*{name}">
+	<div>
+		<form role="form" th:action="@{/register/save}" th:method="post"
+			th:object="${registerForm}">
 
-    <label>Surname</label>
-    <input type="text" id="surname" name="surname" th:field="*{surname}">
+			<input type="hidden" id="role" name="role" th:field="*{role}">
+			<div>
+				<p>
+					<label>User name</label> <input type="text" id="username"
+						name="username" th:field="*{username}">
+				</p>
+				<ul>
+					<li th:each="err : ${#fields.errors('username')}" th:text="${err}" />
+				</ul>
+			</div>
+			<div>
+				<p>
+					<label>Password</label> <input type="password" id="password"
+						name="password" th:field="*{password}">
+				</p>
+				<ul>
+					<li th:each="err : ${#fields.errors('password')}"
+						th:text="${err}" />
+				</ul>
+			</div>
 
-    <label>Email</label>
-    <input type="text" id="email" name="email" th:field="*{email}">
-    
-    <label>Avatar</label>
-    <input type="text" id="avatar" name="avatar" th:field="*{avatar}">
-    
-    <label>Phone number</label>
-    <input type="text" id="phoneNumber" name="phoneNumber" th:field="*{phoneNumber}">
+			<input type="hidden" id="id" name="id" th:field="*{form.id}">
+			<div>
+				<p>
+					<label>Name</label> <input type="text" id="name" name="name"
+						th:field="*{form.name}">
+				</p>
+				<ul>
+					<li th:each="err : ${#fields.errors('form.name')}" th:text="${err}" />
+				</ul>
+			</div>
+			<div>
+				<p>
+					<label>Surname</label> <input type="text" id="surname"
+						name="surname" th:field="*{form.surname}">
+				</p>
+				<ul>
+					<li th:each="err : ${#fields.errors('form.surname')}" th:text="${err}" />
+				</ul>
+			</div>
+			<div>
+				<p>
+					<label>Email</label> <input type="text" id="email" name="email"
+						th:field="*{form.email}">
+				</p>
+				<ul>
+					<li th:each="err : ${#fields.errors('form.email')}" th:text="${err}" />
+				</ul>
+			</div>
+			<div>
+				<p>
+					<label>Avatar</label> <input type="text" id="avatar" name="avatar"
+						th:field="*{form.avatar}">
+				</p>
+				<ul>
+					<li th:each="err : ${#fields.errors('form.avatar')}" th:text="${err}" />
+				</ul>
+			</div>
+			<div>
+				<p>
+					<label>Phone number</label> <input type="text" id="phoneNumber"
+						name="phoneNumber" th:field="*{form.phoneNumber}">
+				</p>
+				<ul>
+					<li th:each="err : ${#fields.errors('form.phoneNumber')}"
+						th:text="${err}" />
+				</ul>
+			</div>
 
-    <label>Password</label>
-    <input type="password" id="password" name="password" th:field="*{password}">
+			<div>
+				<label>Terms</label> <input type="checkbox"
+					th:field="*{acceptTerms}" />
+			</div>
 
-    <input type="submit">
-</form>
+			<input name="save" type="submit">
+		</form>
+	</div>
+	<div>
+		<p th:text="${message}"></p>
+	</div>
 </body>
 </html>

@@ -22,8 +22,8 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.Version;
 
 /**
- * Simple JavaBean domain object with an id property. Used as a base class for objects
- * needing this property.
+ * Simple JavaBean domain object with an id property. Used as a base class for
+ * objects needing this property.
  *
  * @author Ken Krebs
  * @author Juergen Hoeller
@@ -31,12 +31,13 @@ import javax.persistence.Version;
 @MappedSuperclass
 public class BaseEntity {
 
-	
+	@Id
+	@GeneratedValue(strategy = GenerationType.TABLE)
 	private int id;
+	
+	@Version
 	private int version;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Integer getId() {
 		return id;
 	}
@@ -45,7 +46,7 @@ public class BaseEntity {
 		this.id = id;
 	}
 
-	@Version
+	
 	public int getVersion() {
 		return this.version;
 	}
@@ -56,42 +57,42 @@ public class BaseEntity {
 
 	// Object interface -------------------------------------------------------
 
-		@Override
-		public int hashCode() {
-			return this.getId();
-		}
+	@Override
+	public int hashCode() {
+		return this.getId();
+	}
 
-		@Override
-		public boolean equals(final Object other) {
-			boolean result;
+	@Override
+	public boolean equals(final Object other) {
+		boolean result;
 
-			if (this == other)
-				result = true;
-			else if (other == null)
-				result = false;
-			else if (other instanceof Integer)
-				result = (this.getId() == (Integer) other);
-			else if (!this.getClass().isInstance(other))
-				result = false;
-			else
-				result = (this.getId() == ((BaseEntity) other).getId());
+		if (this == other)
+			result = true;
+		else if (other == null)
+			result = false;
+		else if (other instanceof Integer)
+			result = (this.getId() == (Integer) other);
+		else if (!this.getClass().isInstance(other))
+			result = false;
+		else
+			result = (this.getId() == ((BaseEntity) other).getId());
 
-			return result;
-		}
+		return result;
+	}
 
-		@Override
-		public String toString() {
-			StringBuilder result;
+	@Override
+	public String toString() {
+		StringBuilder result;
 
-			result = new StringBuilder();
-			result.append(this.getClass().getName());
-			result.append("{");
-			result.append("id=");
-			result.append(this.getId());
-			result.append(", version=");
-			result.append(this.getVersion());
-			result.append("}");
+		result = new StringBuilder();
+		result.append(this.getClass().getName());
+		result.append("{");
+		result.append("id=");
+		result.append(this.getId());
+		result.append(", version=");
+		result.append(this.getVersion());
+		result.append("}");
 
-			return result.toString();
-		}
+		return result.toString();
+	}
 }

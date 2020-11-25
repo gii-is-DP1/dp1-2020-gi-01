@@ -1,13 +1,13 @@
 package com.project.TabernasSevilla.security;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Transient;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,25 +23,28 @@ public class User extends BaseEntity implements UserDetails{
 	
 	public User() {
 		super();
-		this.authorities = new ArrayList<Authority>();
+		this.authorities = new HashSet<Authority>();
 	}
 	
+	@Size(min = 5, max = 32)
+	@Column(unique = true)
 	private String username;
+	
 	private String password;
-	private Collection<Authority> authorities;
-
-	@Override
-	@NotEmpty
+	
 	@ElementCollection
-	public Collection<Authority> getAuthorities() {
+	@CollectionTable(name="USER_AUTHORITIES")
+	private Set<Authority> authorities;
+
+	
+	public Set<Authority> getAuthorities() {
 		return this.authorities;
 	}
 	
-	public void setAuthorities(final Collection<Authority> authorities) {
+	public void setAuthorities(final Set<Authority> authorities) {
 		this.authorities = authorities;
 	}
 
-	@Size(min = 5, max = 32)
 	@Override
 	public String getPassword() {
 		return this.password;
@@ -51,8 +54,7 @@ public class User extends BaseEntity implements UserDetails{
 		this.password = password;
 	}
 
-	@Size(min = 5, max = 32)
-	@Column(unique = true)
+	
 	@Override
 	public String getUsername() {
 		return this.username;

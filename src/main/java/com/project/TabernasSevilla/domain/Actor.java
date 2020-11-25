@@ -1,9 +1,10 @@
 package com.project.TabernasSevilla.domain;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -22,20 +23,22 @@ import lombok.Setter;
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
 public abstract class Actor extends BaseEntity{
 	
+	@OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name = "userid", referencedColumnName="id")
+	@MapsId
+	private User user;
 	
-	private
-	@OneToOne(cascade = CascadeType.ALL, optional=false)
-	@JoinColumn(name = "userid", referencedColumnName = "id")
-	User user;
+	@NotBlank
+	private  String name;
 	
+	@NotBlank
+	private String surname;
 	
-	private @NotBlank @Column(name="name") String name;
+	@URL
+	private String avatar;
 	
-	private @NotBlank  @Column(name="surname") String surname;
+	@Email
+	private String email;
 	
-	private @URL  @Column(name="avatar") String avatar;
-	
-	private @Email  @Column(name="email") String email;
-	
-	private  @Column(name="phone_number") String phoneNumber;
+	private  String phoneNumber;
 }

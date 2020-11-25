@@ -16,6 +16,10 @@ public class ActorForm {
 	private String phoneNumber;
 	private String email;
 	private String avatar;
+	
+	public ActorForm() {
+		super();
+	}
 
 	@Size(min = 4, max = 32, message = "Username must have 4 to 32 characters")
 	@Pattern(regexp = "^[a-zA-Z0-9_]*$", message = "Characters must be alphanumeric")

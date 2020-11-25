@@ -13,7 +13,11 @@ public class RegisterForm {
 	private String		username;
 	private String		role;
 	private Boolean		acceptTerms;
-
+	
+	public RegisterForm() {
+		super();
+		this.form = new ActorForm();
+	}
 
 	@AssertTrue(message = "terms.error")
 	public Boolean getAcceptTerms() {

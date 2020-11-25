@@ -3,17 +3,20 @@ package com.project.TabernasSevilla.security;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.persistence.Embeddable;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
 import org.springframework.security.core.GrantedAuthority;
 
+@Embeddable
 public class Authority implements GrantedAuthority{
 
 	// Constructors -----------------------------------------------------------
 
 		private static final long	serialVersionUID	= 1L;
-
+		
+		
 
 		public Authority() {
 			super();
@@ -23,16 +26,16 @@ public class Authority implements GrantedAuthority{
 		// Values -----------------------------------------------------------------
 
 		public static final String	ADMIN		= "ADMIN";
-		public static final String	COSTUMER		= "COSTUMER";
+		public static final String	CUSTOMER		= "CUSTOMER";
 
 
 		// Attributes -------------------------------------------------------------
 
+		@NotBlank
+		@Pattern(regexp = "^" + Authority.ADMIN + "|" + Authority.CUSTOMER + "$")
 		private String				authority;
 
-
-		@NotBlank
-		@Pattern(regexp = "^" + Authority.ADMIN + "|" + Authority.COSTUMER + "$")
+		
 		@Override
 		public String getAuthority() {
 			return this.authority;
@@ -53,7 +56,7 @@ public class Authority implements GrantedAuthority{
 			result.add(authority);
 
 			authority = new Authority();
-			authority.setAuthority(Authority.COSTUMER);
+			authority.setAuthority(Authority.CUSTOMER);
 			result.add(authority);
 
 			return result;
