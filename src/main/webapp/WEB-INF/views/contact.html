@@ -8,10 +8,74 @@
 </head>
 <body >
 	<header th:include="header :: head"></header>
-	<h1> Diablo que safaeraaaaa </h1>
-	<h1> Tu tiene un culo cabrón <br> cualquier cosa que te ponga rompe la carreteraaaaa </h1>
+	<div class="square">
+	 <h1 class = "square"> Work with us!</h1>
+	 
+	 
+	 	<div class="forma">
+	 	
+	 	
+	 		<form enctype="multipart/form-data"
+       	 role="form" th:action="@{/contact/save}" th:method="post"
+			th:object="${contactForm}">
+			
+			
+			<label for="name">Name and Surname</label>
+   		<input id="name" name="name" type="text" placeholder="Input your Name and Surname"/>
+   				<ul>
+					
+				</ul>
+   		 <br>
+   		<br>
+   		<label for="email">E-mail</label>
+   		
+   		<input id= "email" name="email" type="text" placeholder="Input your email" /> 
+   				<ul>
+					
+				</ul>
+   		
+   		<br>
+   		<br>
+   		
+   		<span class="mi-archivo">
+   			<input type="FILE" name="mi-archivo" id="up-arch" style="display:none"> 
+   		</span>
+   		
+   		<label for="mi-archivo">
+   			<span id ="up-boton">Upload your CV</span>
+		
+   		</label>
+   				<ul>
+					
+				</ul>
+				
+   			<br>
+  		 <br>
+  		 <input type="submit" name="save" value="Upload" /> <br>
+		  </form>
+		 
+	 	</div>
+		
+	</div>
 	
+<script type="application/javascript">
+var button = document.getElementById('up-boton');
+var input  = document.getElementById('up-arch');
 
+// Making input invisible, but leaving shown fo graceful degradation
+input.style.display = 'none';
+button.style.display = 'initial';
+
+button.addEventListener('click', function (e) {
+    e.preventDefault();
+    
+    input.click();
+});
+
+input.addEventListener('change', function () {
+   button.innerText = this.value; 
+});
+</script>
 
 </body>
 </html>
