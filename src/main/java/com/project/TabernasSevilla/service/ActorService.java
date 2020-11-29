@@ -11,7 +11,7 @@ import org.springframework.util.Assert;
 
 import com.project.TabernasSevilla.domain.Actor;
 import com.project.TabernasSevilla.forms.ActorForm;
-import com.project.TabernasSevilla.repository.ActorRepository;
+import com.project.TabernasSevilla.repository.AbstractActorRepository;
 import com.project.TabernasSevilla.security.Authority;
 import com.project.TabernasSevilla.security.UserService;
 
@@ -20,7 +20,7 @@ import com.project.TabernasSevilla.security.UserService;
 public class ActorService {
 
 	@Autowired
-	private ActorRepository actorRepo;
+	private AbstractActorRepository<Actor> actorRepo;
 	
 	@Autowired
 	private UserService userService;

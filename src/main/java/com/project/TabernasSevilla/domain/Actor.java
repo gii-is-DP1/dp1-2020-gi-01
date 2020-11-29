@@ -1,9 +1,11 @@
 package com.project.TabernasSevilla.domain;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
-import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -18,7 +20,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 
-@MappedSuperclass
+@Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
 public abstract class Actor extends BaseEntity{
 	

@@ -5,7 +5,8 @@
 <head>
 <th:block th:fragment="head">
 	<link th:href="@{/css/index.css}" rel="stylesheet" />
-<link th:rel="stylesheet" th:href="@{/css/bootstrap/bootstrap.min.css} " />
+	<link th:rel="stylesheet"
+		th:href="@{/css/bootstrap/bootstrap.min.css} " />
 	<link
 		href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css"
 		rel="stylesheet" type="text/css" />
@@ -32,17 +33,30 @@
 						<a class="nav-link" th:href="@{/}">
 							<i class="fa fa-home"></i>
 							Home
-							<span class="sr-only">(current)</span>
 						</a>
+					</li>
+					<li class="nav-item active dropdown">
+						<a class="nav-link dropdown-toggle" th:href="@{/}" role="button" data-toggle="dropdown" aria-haspopup="true"
+							aria-expanded="false"> Locations
+						</a>
+						<div class="dropdown-menu ">
+							<a class="dropdown-item" href="#">Test</a>
+							<a class="dropdown-item" href="#">Test</a>
+						</div>
+					</li>
+					<li class="nav-item ">
+						<a class="nav-link" th:href="@{/}"> Work with us </a>
+
 					</li>
 				</ul>
 				<ul class="navbar-nav ">
 					<!-- only show if authenticated -->
+
 					<li class="nav-item dropdown" sec:authorize="isAuthenticated()">
 						<!-- display username -->
 						<a sec:authentication="name" class="nav-link dropdown-toggle"
-							id="navbarDropdown" role="button" data-toggle="dropdown"
-							aria-haspopup="true" aria-expanded="false"> </a>
+							role="button" data-toggle="dropdown" aria-haspopup="true"
+							aria-expanded="false"> </a>
 						<div class="dropdown-menu dropdown-menu-right">
 							<!-- link to profile -->
 							<a class="dropdown-item" href="#">Profile</a>
