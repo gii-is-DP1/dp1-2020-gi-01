@@ -8,27 +8,7 @@
 <link th:href="@{/css/index.css}" rel="stylesheet" />
 </head>
 <body>
-	<div class="flex-container">
-		<div>
-			<i class="fas fa-sign-in-alt"
-				style="font-size: 30px; padding-left: 10px"></i>
-		</div>
-		<div sec:authorize="isAnonymous()">
-			<span>not logged in</span>
-		</div>
-		<div sec:authorize="isAuthenticated()">
-			<span sec:authentication="name"></span>
-		</div>
-
-		<div sec:authorize="isAnonymous()">
-			<a th:href="@{/login}">Login</a>
-		</div>
-		<div sec:authorize="isAnonymous()">
-			<a th:href="@{/register/init}">Register</a>
-		</div>
-		<div>
-			<a href="#"> Tabernas Sevilla</a>
-		</div>
+	<header th:include="header :: head"></header>
 		
 
 </body>
