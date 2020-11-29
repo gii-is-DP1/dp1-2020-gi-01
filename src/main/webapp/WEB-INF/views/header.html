@@ -1,70 +1,109 @@
 <!DOCTYPE html>
 
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
-
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+<th:block th:fragment="head">
+	<link th:href="@{/css/index.css}" rel="stylesheet" />
+<link th:rel="stylesheet" th:href="@{/css/bootstrap/bootstrap.min.css} " />
+	<link
+		href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css"
+		rel="stylesheet" type="text/css" />
+	<script
+		src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script th:src="@{/js/bootstrap/bootstrap.min.js}"></script>
+</th:block>
+</head>
 <body>
-	<header th:fragment="head"> 
-	<div class="flex-container">
-		<div>
-			<i class="fas fa-sign-in-alt"
-				style="font-size: 30px; padding-left: 10px"></i>
-		</div>
-		<div sec:authorize="isAnonymous()">
-			<span>not logged in</span>
-		</div>
-		<div sec:authorize="isAuthenticated()">
-			<span sec:authentication="name"></span>
-		</div>
+	<header th:fragment="navbar">
+		<nav
+			class="navbar navbar-icon-top navbar-expand-lg navbar-dark bg-dark"
+			style="padding-left: 80px; padding-right: 80px;">
+			<a class="navbar-brand" th:href="@{/}">Tabernas Sevilla</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse"
+				data-target="#navbarSupportedContent"
+				aria-controls="navbarSupportedContent" aria-expanded="false"
+				aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item active">
+						<a class="nav-link" th:href="@{/}">
+							<i class="fa fa-home"></i>
+							Home
+							<span class="sr-only">(current)</span>
+						</a>
+					</li>
+				</ul>
+				<ul class="navbar-nav ">
+					<!-- only show if authenticated -->
+					<li class="nav-item dropdown" sec:authorize="isAuthenticated()">
+						<!-- display username -->
+						<a sec:authentication="name" class="nav-link dropdown-toggle"
+							id="navbarDropdown" role="button" data-toggle="dropdown"
+							aria-haspopup="true" aria-expanded="false"> </a>
+						<div class="dropdown-menu dropdown-menu-right">
+							<!-- link to profile -->
+							<a class="dropdown-item" href="#">Profile</a>
+							<a class="dropdown-item" href="#">Another action</a>
+							<div class="dropdown-divider"></div>
+							<!-- logout action -->
+							<a class="dropdown-item" th:href="@{/logout}">Logout</a>
+						</div>
+					</li>
+					<!-- only show if anonymous -->
+					<li class="nav-item" sec:authorize="isAnonymous()">
+						<!-- link to login -->
+						<a class="nav-link" th:href="@{/login}"> Login </a>
+					</li>
+				</ul>
+				<!-- only show if anonymous -->
+				<!-- form link to regiter/init using GET -->
+				<form class="form-inline my-2 my-lg-0" sec:authorize="isAnonymous()"
+					th:action="@{/register/init}" method="get">
+					<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Register</button>
+				</form>
 
-		<div sec:authorize="isAnonymous()">
-			<a th:href="@{/login}">Login</a>
-		</div>
-		<div sec:authorize="isAnonymous()">
-			<a th:href="@{/register/init}">Register</a>
-		</div>
-		<div>
-			<a href="/index"> Tabernas Sevilla</a>
-		</div>
-
-	</div>
-
-	<!--   
+			</div>
+		</nav>
+		<!--   
         <button id="menuBtn" class="hamburger block sm:hidden focus:outline-none" type="button" onclick="navToggle();">
             <span class="hamburger__top-bun"></span>
             <span class="hamburger__bottom-bun"></span>
         </button>
 			-->
 
-	<div id="mySidenav" class="sidenav" th:fragment="side">
-		<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-		<a href="/index">Home</a> 
-		<a href="#">Taverns</a>
-		<!-- 
+		<div id="mySidenav" class="sidenav" th:fragment="side">
+			<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+			<a href="/index">Home</a>
+			<a href="#">Taverns</a>
+			<!-- 
    	<a href="#">    Porvenir</a>
     <a href="#">    Torneo</a>
     <a href="#">    Nervión</a>
     <a href="#">    Arenal</a>  -->
-		<a href="#">Menu</a> 
-		<a href="#">Booking</a> 
-		<a th:href="@{/contact}">Contact</a>
-		
-		
-		
-	</div>
-	
-	<span class="derecha" style="font-size: 30px; cursor: pointer"
-		onclick="openNav()">&#9776; </span>
+			<a href="#">Menu</a>
+			<a href="#">Booking</a>
+			<a th:href="@{/contact}">Contact</a>
 
-	<script>
-		function openNav() {
-			document.getElementById("mySidenav").style.width = "250px";
-		}
-		function closeNav() {
-			document.getElementById("mySidenav").style.width = "0";
-		}
-	</script>
+
+
+		</div>
+
+		<span class="derecha" style="font-size: 30px; cursor: pointer"
+			onclick="openNav()">&#9776; </span>
+
+		<script>
+			function openNav() {
+				document.getElementById("mySidenav").style.width = "250px";
+			}
+			function closeNav() {
+				document.getElementById("mySidenav").style.width = "0";
+			}
+		</script>
 	</header>
-	
+
 </body>
-  
+
 </html>

@@ -1,17 +1,49 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-  <head>
-    <title>Login page</title>
-  </head>
-  <body>
-    <h1>Login page</h1>
-    <p th:if="${loginError}" class="error">Wrong user or password</p>
-    <form th:action="@{/login}" method="POST">
-      <label for="username">Username</label>:
-      <input type="text" id="username" name="username" autofocus="autofocus" /> <br />
-      <label for="password">Password</label>:
-      <input type="password" id="password" name="password" /> <br />
-      <input type="submit" value="Log in" />
-    </form>
-  </body>
+<head>
+<title>Login page</title>
+<th:block th:include="header :: head"></th:block>
+</head>
+<body>
+	<header th:include="header :: navbar"></header>
+
+	<div class="container">
+		<div class="d-flex justify-content-center h-100">
+			<div class="card">
+				<div class="card-header">
+					<h3>Customer login</h3>
+				</div>
+
+				<p th:if="${loginError}" class="error">Wrong user or password</p>
+				<div class="card-body">
+					<form th:action="@{/login}" method="POST">
+						<div class="input-group form-group">
+							<div class="input-group-prepend">
+								<span class="input-group-text">
+									<i class="fas fa-user"></i>
+								</span>
+							</div>
+							<input type="text" class="form-control" placeholder="username"
+								name="username">
+
+						</div>
+						<div class="input-group form-group">
+							<div class="input-group-prepend">
+								<span class="input-group-text">
+									<i class="fas fa-key"></i>
+								</span>
+							</div>
+							<input type="password" class="form-control"
+								placeholder="password" name="password">
+						</div>
+						<div class="form-group">
+							<input type="submit" value="Login"
+								class="btn float-right login_btn">
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
 </html>

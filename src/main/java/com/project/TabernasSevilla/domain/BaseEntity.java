@@ -32,7 +32,7 @@ import javax.persistence.Version;
 public class BaseEntity {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.TABLE)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
 	@Version
