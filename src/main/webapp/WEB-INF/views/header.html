@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+	<header th:fragment="head"> 
+	<div class="flex-container">
+		<div>
+			<i class="fas fa-sign-in-alt"
+				style="font-size: 30px; padding-left: 10px"></i>
+		</div>
+		<div>
+			<a th:href="@{/login}">Login</a>
+		</div>
+		<div>
+			<a th:href="@{/register/init}">Register</a>
+		</div>
+		<div>
+			<a href="/index"> Tabernas Sevilla</a>
+		</div>
+
+	</div>
+
+	<!--   
+        <button id="menuBtn" class="hamburger block sm:hidden focus:outline-none" type="button" onclick="navToggle();">
+            <span class="hamburger__top-bun"></span>
+            <span class="hamburger__bottom-bun"></span>
+        </button>
+			-->
+
+	<div id="mySidenav" class="sidenav" th:fragment="side">
+		<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+		<a href="/index">Home</a> 
+		<a href="#">Taverns</a>
+		<!-- 
+   	<a href="#">    Porvenir</a>
+    <a href="#">    Torneo</a>
+    <a href="#">    Nervión</a>
+    <a href="#">    Arenal</a>  -->
+		<a href="#">Menu</a> 
+		<a href="#">Booking</a> 
+		<a th:href="@{/contact}">Contact</a>
+		
+		
+		
+	</div>
+	
+	<span class="derecha" style="font-size: 30px; cursor: pointer"
+		onclick="openNav()">&#9776; </span>
+
+	<script>
+		function openNav() {
+			document.getElementById("mySidenav").style.width = "250px";
+		}
+		function closeNav() {
+			document.getElementById("mySidenav").style.width = "0";
+		}
+	</script>
+	</header>
+	
+</body>
+  
+</html>
