@@ -1,5 +1,6 @@
 package com.project.TabernasSevilla.domain;
 
+
 import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
@@ -16,17 +17,13 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Booking extends BaseEntity {
+public class Message extends BaseEntity {
 
+	private String title;
 	@NotBlank
-	private LocalDateTime placementDate;
-	@NotBlank
-	private LocalDateTime reservationDate;
+	private LocalDateTime deliveryDate;
 
-	@NotBlank
-	private Integer seating;
-
-	private String contactPhone;
+	private LocalDateTime readDate;
 	
-	private String notes;
+	private String body;
 }

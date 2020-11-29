@@ -4,11 +4,7 @@ package com.project.TabernasSevilla.domain;
 import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
-
-import org.hibernate.validator.constraints.URL;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
