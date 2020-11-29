@@ -1,38 +1,20 @@
 package com.project.TabernasSevilla.domain;
 
-
 import javax.persistence.Entity;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
 
-import org.hibernate.validator.constraints.URL;
+import lombok.Data;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
+@Data
 @Entity
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-public class Dish extends BaseEntity {
-
-	@NotBlank
-	private String title;
-
-	private String description;
-
-	@URL
-	private String picture;
+public class Dish extends NamedEntity{
 	
-	@NotBlank
-	private Float price;
-	
-	@Min(1) @Max(5) @NotBlank
-	private Integer score;
 
-	private String allergen;
-}
+		private String name;
+		private String description;
+		private String picture;
+		private Double price;
+		private Double score;
+		private String allergens;
+
+	}
+
