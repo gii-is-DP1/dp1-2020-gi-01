@@ -11,6 +11,7 @@ public class WebConfig implements WebMvcConfigurer {
 	@Autowired
 	GenericIdToEntityConverter idToEntityConverter;
 	
+
 	
     /* ******************************************************************* */
     /*  GENERAL CONFIGURATION ARTIFACTS                                    */
@@ -23,16 +24,6 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addConverter(idToEntityConverter);
     }
 
-    
-    /* ******************************************************************* */
-    /*  VIEW RESOLVER                                                      */
-    /* ******************************************************************* */
-    /*
-    @Override
-    public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/").setViewName("home");
-        registry.addViewController("/login").setViewName("login");
-    }
-    */
+
 }
     

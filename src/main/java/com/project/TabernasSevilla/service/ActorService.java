@@ -64,22 +64,6 @@ public class ActorService {
 	}
 	
 
-	public void assertPrincipalAuthority(final String auth) {
-		Assert.isTrue(this.getPrincipalAuthority().contains(auth), "The user logged does not have authority to do this action.");
-
-	}
-
-	public Actor findPrincipal() {
-		return this.actorRepo.findByUser(UserService.getPrincipal().getId());
-	}
-
-	public Collection<String> getPrincipalAuthority() {
-		final Collection<Authority> auth = this.findPrincipal().getUser().getAuthorities();
-		final Collection<String> res = new HashSet<>();
-		for (final Authority a : auth)
-			res.add(a.getAuthority());
-		return res;
-	}
 
 	public Collection<String> getAuthority(final Actor actor) {
 		final Collection<Authority> auth = actor.getUser().getAuthorities();

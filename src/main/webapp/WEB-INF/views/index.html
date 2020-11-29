@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
-	<title>Home page</title>
-	<meta charset="UTF-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<link th:href="@{/css/index.css}" rel="stylesheet" />
+<title>Home page</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link th:href="@{/css/index.css}" rel="stylesheet" />
 </head>
 <body>
 	<div class="flex-container">
@@ -12,15 +13,23 @@
 			<i class="fas fa-sign-in-alt"
 				style="font-size: 30px; padding-left: 10px"></i>
 		</div>
-		<div>
+		<div sec:authorize="isAnonymous()">
+			<span>not logged in</span>
+		</div>
+		<div sec:authorize="isAuthenticated()">
+			<span sec:authentication="name"></span>
+		</div>
+
+		<div sec:authorize="isAnonymous()">
 			<a th:href="@{/login}">Login</a>
 		</div>
-		<div>
+		<div sec:authorize="isAnonymous()">
 			<a th:href="@{/register/init}">Register</a>
 		</div>
 		<div>
 			<a href="#"> Tabernas Sevilla</a>
 		</div>
+		
 
 	</div>
 
