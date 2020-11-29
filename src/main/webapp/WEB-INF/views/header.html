@@ -35,13 +35,14 @@
 							Home
 						</a>
 					</li>
+					<!-- LOCATIONS -->
 					<li class="nav-item active dropdown">
 						<a class="nav-link dropdown-toggle" th:href="@{/}" role="button" data-toggle="dropdown" aria-haspopup="true"
 							aria-expanded="false"> Locations
 						</a>
-						<div class="dropdown-menu ">
-							<a class="dropdown-item" href="#">Test</a>
-							<a class="dropdown-item" href="#">Test</a>
+						<!-- Location list -->
+						<div class="dropdown-menu" th:each="loc: ${@establishmentService.findAll()}">
+							<a class="dropdown-item" th:href="@{/location/view?id={id}(id=${loc.id})}" th:text="${loc.title}"></a>
 						</div>
 					</li>
 					<li class="nav-item ">
