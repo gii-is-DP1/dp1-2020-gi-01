@@ -14,13 +14,13 @@ import com.project.TabernasSevilla.forms.ContactForm;
 import com.project.TabernasSevilla.service.ContactService;
 
 @Controller
-
+@RequestMapping("/contact")
 public class ContactController {
 	
 	@Autowired
 	private ContactService conSer;
 	
-	@RequestMapping(value="/contact", method=RequestMethod.GET)
+	@RequestMapping(value="/init", method=RequestMethod.GET)
 	 public String createJoba(Model model) {
 		final ContactForm confor = new ContactForm();
 		model.addAttribute("contactForm", confor);
