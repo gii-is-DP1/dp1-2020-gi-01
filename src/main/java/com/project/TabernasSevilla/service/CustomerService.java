@@ -53,7 +53,6 @@ public class CustomerService {
 		final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		user.setPassword(encoder.encode(form.getPassword()));
 		user.setUsername(form.getUsername());
-		user.setId(0);
 		User savedUser = this.userService.saveAndFlush(user);
 		customer.setUser(savedUser);
 		

@@ -1,87 +1,35 @@
 package com.project.TabernasSevilla.security;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
-import javax.persistence.Embeddable;
+import javax.persistence.Entity;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
 
 import org.springframework.security.core.GrantedAuthority;
 
-@Embeddable
-public class Authority implements GrantedAuthority{
+import com.project.TabernasSevilla.domain.BaseEntity;
+
+import lombok.Getter;
+import lombok.Setter;
+
+@Entity
+@Getter @Setter
+public class Authority extends BaseEntity implements GrantedAuthority{
 
 	// Constructors -----------------------------------------------------------
 
 		private static final long	serialVersionUID	= 1L;
-		
-		
+				
 
 		public Authority() {
 			super();
 		}
 
 
-		// Values -----------------------------------------------------------------
-
-		public static final String	ADMIN		= "ADMIN";
-		public static final String	CUSTOMER		= "CUSTOMER";
-
-
 		// Attributes -------------------------------------------------------------
 
 		@NotBlank
-		@Pattern(regexp = "^" + Authority.ADMIN + "|" + Authority.CUSTOMER + "$")
 		private String				authority;
 
-		
-		@Override
-		public String getAuthority() {
-			return this.authority;
-		}
 
-		public void setAuthority(final String authority) {
-			this.authority = authority;
-		}
 
-		public static Collection<Authority> listAuthorities() {
-			Collection<Authority> result;
-			Authority authority;
 
-			result = new ArrayList<Authority>();
-
-			authority = new Authority();
-			authority.setAuthority(Authority.ADMIN);
-			result.add(authority);
-
-			authority = new Authority();
-			authority.setAuthority(Authority.CUSTOMER);
-			result.add(authority);
-
-			return result;
-		}
-
-		// Equality ---------------------------------------------------------------
-
-		@Override
-		public int hashCode() {
-			return this.getAuthority().hashCode();
-		}
-
-		@Override
-		public boolean equals(final Object other) {
-			boolean result;
-
-			if (this == other)
-				result = true;
-			else if (other == null)
-				result = false;
-			else if (!this.getClass().isInstance(other))
-				result = false;
-			else
-				result = (this.getAuthority().equals(((Authority) other).getAuthority()));
-
-			return result;
-		}
 }
