@@ -19,29 +19,29 @@ import com.project.TabernasSevilla.domain.Dish;
 import com.project.TabernasSevilla.service.DishService;
 
 @Controller
-@RequestMapping("/dishes")
+
 public class DishController {
 
 	@Autowired
 	private DishService dishService;
 
-	@GetMapping()
+	@RequestMapping("/dishes")
 	public String dishList(ModelMap modelMap) {
-		String view = "dishes/dishList";
+		String view = "dishList.jsp";
 		Iterable<Dish> dishes = dishService.dishList();
 		modelMap.addAttribute("dishes", dishes);
 		return view;
 
 	}
 
-	@GetMapping(path = "/new")
+	@GetMapping(path = "/newDish")
 	public String createDish(ModelMap modelMap) {
 		String view = "dishes/createOrUpdateDishForm";
 		modelMap.addAttribute("dish", new Dish());
 		return view;
 	}
 
-	@PostMapping(path = "/save")
+	@PostMapping(path = "/saveDish") //saveDish en vez de /save porque me decia que contact controller ya lo tenia
 	public String saveDish(@Valid Dish dish, BindingResult result, ModelMap modelMap) {
 		String view = "dishes/dishList";
 		if (result.hasErrors()) {

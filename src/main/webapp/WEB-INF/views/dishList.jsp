@@ -1,3 +1,4 @@
+
 <%@ page session="false" trimDirectiveWhitespaces="true"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
@@ -5,7 +6,9 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags"%>
 
-<petclinic:layout pageName="dishes">
+
+
+<body>
 	<h2>Dishes</h2>
 
 	<table id="dishesTable" class="table table-striped">
@@ -51,4 +54,4 @@
 	<form action="/dishes/new" method="get">
 		<input type="submit" value="Add Dish" name="Submit" id="frm1_submit" />
 	</form>
-</petclinic:layout>
+</body>

@@ -6,7 +6,8 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags"%>
 
-<petclinic:layout pageName="dishes">
+<!DOCTYPE html>
+<body>
 	<h2>
 		<c:if test="${dish['new']}">New </c:if>
 		Dish
@@ -34,4 +35,5 @@
 			</div>
 		</div>
 	</form:form>
-</petclinic:layout>
+</body>
+</html>
