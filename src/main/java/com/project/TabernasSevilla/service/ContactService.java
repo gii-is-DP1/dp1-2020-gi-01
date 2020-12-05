@@ -18,7 +18,7 @@ public class ContactService {
 	@Autowired
 	private ContactRepository contactRepo;
 	
-	public JobApplication findById(final int id) { //hmmm no hay id en jobapplication
+	public JobApplication findById(final int id) { //hmmm no hay id en jobapplication o si...
 		return contactRepo.findById(id);
 	}
 	
