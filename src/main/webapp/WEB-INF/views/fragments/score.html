@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+
+</head>
+<body>
+
+<div th:fragment="stars(score)">
+    <i th:each="index: ${#numbers.sequence(1, 5)}" class ="fa-star" th:classappend="|${score>=index ? 'fas' : 'far'} ${score<index ? 'far' : 'fas'}|"></i>
+</div>
+
+</body>
+</html>

@@ -3,7 +3,8 @@
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
-<th:block th:fragment="head">
+<th:block th:fragment="head(title)">
+	<title th:text="${title}"></title>
 	<link th:href="@{/css/index.css}" rel="stylesheet" />
 	<link th:rel="stylesheet"
 		th:href="@{/css/bootstrap/bootstrap.min.css} " />
@@ -29,39 +30,35 @@
 			</button>
 			<div class="collapse navbar-collapse" id="navbarSupportedContent">
 				<ul class="navbar-nav mr-auto">
-					<li class="nav-item active">
-						<a class="nav-link" th:href="@{/}">
-							<i class="fa fa-home"></i>
-							Home
-						</a>
-					</li>
+					<li class="nav-item active"><a class="nav-link" th:href="@{/}">
+							<i class="fa fa-home"></i> Home
+					</a></li>
 					<!-- LOCATIONS -->
-					<li class="nav-item active dropdown">
-						<a class="nav-link dropdown-toggle" th:href="@{/}" role="button" data-toggle="dropdown" aria-haspopup="true"
-							aria-expanded="false"> Locations
-						</a>
-						<!-- Location list -->
-						<div class="dropdown-menu" th:each="loc: ${@establishmentService.findAll()}">
-							<a class="dropdown-item" th:href="@{/location/view?id={id}(id=${loc.id})}" th:text="${loc.title}"></a>
-						</div>
-					</li>
-					<li class="nav-item ">
-						<a class="nav-link" th:href="@{/contact/init}"> Work with us </a>
-
-					</li>
+					<li class="nav-item active dropdown"><a
+						class="nav-link dropdown-toggle" th:href="@{/}" role="button"
+						data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							Locations </a> <!-- Location list -->
+						<div class="dropdown-menu"
+							th:each="loc: ${@establishmentService.findAll()}">
+							<a class="dropdown-item"
+								th:href="@{/location/view?id={id}(id=${loc.id})}"
+								th:text="${loc.title}"></a>
+						</div></li>
+					<li class="nav-item "><a class="nav-link"
+						th:href="@{/contact/init}"> Work with us </a></li>
 				</ul>
 				<ul class="navbar-nav ">
 					<!-- only show if authenticated -->
 
 					<li class="nav-item dropdown" sec:authorize="isAuthenticated()">
-						<!-- display username -->
-						<a sec:authentication="name" class="nav-link dropdown-toggle"
-							role="button" data-toggle="dropdown" aria-haspopup="true"
-							aria-expanded="false"> </a>
+						<!-- display username --> <a sec:authentication="name"
+						class="nav-link dropdown-toggle" role="button"
+						data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					</a>
 						<div class="dropdown-menu dropdown-menu-right">
 							<!-- link to profile -->
-							<a class="dropdown-item" href="#">Profile</a>
-							<a class="dropdown-item" href="#">Another action</a>
+							<a class="dropdown-item" href="#">Profile</a> <a
+								class="dropdown-item" href="#">Another action</a>
 							<div class="dropdown-divider"></div>
 							<!-- logout action -->
 							<a class="dropdown-item" th:href="@{/logout}">Logout</a>
@@ -69,8 +66,8 @@
 					</li>
 					<!-- only show if anonymous -->
 					<li class="nav-item" sec:authorize="isAnonymous()">
-						<!-- link to login -->
-						<a class="nav-link" th:href="@{/login}"> Login </a>
+						<!-- link to login --> <a class="nav-link" th:href="@{/login}">
+							Login </a>
 					</li>
 				</ul>
 				<!-- only show if anonymous -->
@@ -91,16 +88,13 @@
 
 		<div id="mySidenav" class="sidenav" th:fragment="side">
 			<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-			<a href="/index">Home</a>
-			<a href="#">Taverns</a>
+			<a href="/index">Home</a> <a href="#">Taverns</a>
 			<!-- 
    	<a href="#">    Porvenir</a>
     <a href="#">    Torneo</a>
     <a href="#">    Nervi�n</a>
     <a href="#">    Arenal</a>  -->
-			<a href="#">Menu</a>
-			<a href="#">Booking</a>
-			<a th:href="@{/contact}">Contact</a>
+			<a href="#">Menu</a> <a href="#">Booking</a> <a th:href="@{/contact}">Contact</a>
 
 
 
