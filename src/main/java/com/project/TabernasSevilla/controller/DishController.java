@@ -1,9 +1,7 @@
 package com.project.TabernasSevilla.controller;
 
 import java.util.Optional;
-
 import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,40 +11,47 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.project.TabernasSevilla.domain.Dish;
 import com.project.TabernasSevilla.service.DishService;
 
 @Controller
-
+@RequestMapping("/dishes")
 public class DishController {
 
 	@Autowired
 	private DishService dishService;
 
-	@RequestMapping("/dishes")
+	@GetMapping(path = "/{dishId}")
+	public String showDishInfo(@PathVariable("dishId") int dishId, ModelMap modelMap) {
+		String view = "dishes/dishInfo"; // vista a la que pasamos la informacion
+		Optional<Dish> dish = dishService.dishById(dishId); // plato en concreto, con toda su información
+		modelMap.addAttribute("dish", dish.get());
+		return view;
+	}
+
+	@GetMapping()
 	public String dishList(ModelMap modelMap) {
-		String view = "dishList.jsp";
+		String view = "dishes/dishList";
 		Iterable<Dish> dishes = dishService.dishList();
 		modelMap.addAttribute("dishes", dishes);
 		return view;
 
 	}
 
-	@GetMapping(path = "/newDish")
+	@GetMapping(path = "/new")
 	public String createDish(ModelMap modelMap) {
-		String view = "dishes/createOrUpdateDishForm";
+		String view = "dishes/createDishForm";
 		modelMap.addAttribute("dish", new Dish());
 		return view;
 	}
 
-	@PostMapping(path = "/saveDish") //saveDish en vez de /save porque me decia que contact controller ya lo tenia
+	@PostMapping(path = "/save")
 	public String saveDish(@Valid Dish dish, BindingResult result, ModelMap modelMap) {
 		String view = "dishes/dishList";
 		if (result.hasErrors()) {
 			modelMap.addAttribute("dish", dish);
-			return "dishes/createOrUpdateDishForm";
+			return "dishes/createDishForm";
 		} else {
 			dishService.saveDish(dish);
 			modelMap.addAttribute("message", "Dish successfully saved");
@@ -69,4 +74,26 @@ public class DishController {
 		}
 		return view;
 	}
+
+	@GetMapping(value = "{dishId}/edit")
+	public String updateDishForm(@PathVariable("dishId") int dishId, ModelMap modelMap) {
+		String view = "dishes/updateDishForm";
+		Optional<Dish> dish = this.dishService.dishById(dishId);
+		modelMap.addAttribute(dish.get());
+		return view;
+	}
+
+	@PostMapping(value = "{dishId}/edit")
+	public String processUpdateDishForm(@Valid Dish dish, BindingResult result,
+			@PathVariable("dishId") int dishId) {
+		String view = "dishes/updateDishForm";
+		if (result.hasErrors()) {
+			return view;
+		} else {
+			dish.setId(dishId);
+			this.dishService.saveDish(dish);
+			return "redirect:/dishes/{dishId}";
+		}
+	}
+
 }
