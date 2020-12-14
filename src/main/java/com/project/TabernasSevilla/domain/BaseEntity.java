@@ -21,6 +21,9 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Version;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * Simple JavaBean domain object with an id property. Used as a base class for
  * objects needing this property.
@@ -29,31 +32,16 @@ import javax.persistence.Version;
  * @author Juergen Hoeller
  */
 @MappedSuperclass
+@Getter
+@Setter
 public class BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.TABLE)
-	private int id;
-	
+	private int id;	
 	@Version
 	private int version;
 
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	
-	public int getVersion() {
-		return this.version;
-	}
-
-	public void setVersion(final int version) {
-		this.version = version;
-	}
 
 	// Object interface -------------------------------------------------------
 

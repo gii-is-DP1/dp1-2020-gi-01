@@ -70,7 +70,7 @@ public class UserService implements UserDetailsService {
 		return user;
 	}
 
-	public static User getPrincipal() {
+	public User getPrincipal() {
 		User result;
 		SecurityContext context;
 		Authentication authentication;
@@ -81,8 +81,9 @@ public class UserService implements UserDetailsService {
 		authentication = context.getAuthentication();
 		Assert.notNull(authentication, "Error on getPrincipal: authentication not found");
 		principal = authentication.getPrincipal();
-		Assert.isTrue(principal instanceof User, "Error on getPrincipal: not an instance of User");
-		result = (User) principal;
+		org.springframework.security.core.userdetails.User secUser = (org.springframework.security.core.userdetails.User) principal;
+		result = this.userRepo.findByUsername(secUser.getUsername());
+		
 		Assert.notNull(result, "Error on getPrincipal: error on casting");
 
 		return result;

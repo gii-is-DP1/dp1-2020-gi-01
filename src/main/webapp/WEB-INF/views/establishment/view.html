@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
 <meta charset="ISO-8859-1">
 <head>
@@ -22,7 +23,8 @@
 						<h3 class="product-title" th:text="${establishment.title}"></h3>
 						<!-- SCORE FRAGMENT -->
 						<div class="rating">
-							<div th:replace="fragments/score :: stars(score=${establishment.score})" ></div>
+							<div
+								th:replace="fragments/score :: stars(score=${establishment.score})"></div>
 							<span class="review-no">41 reviews</span>
 						</div>
 						<p class="product-description"
@@ -54,6 +56,12 @@
 								<span class="fa fa-heart"></span>
 							</button>
 							-->
+						</div>
+						<div sec:authorize="hasAuthority('CUSTOMER')">
+							<a
+								th:href="@{/customer/setPreferred?id={id}(id=${establishment.id})}">
+
+								Set as preferred establishment </a>
 						</div>
 					</div>
 				</div>
