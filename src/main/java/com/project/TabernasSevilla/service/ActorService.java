@@ -7,13 +7,12 @@ import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
 
 import com.project.TabernasSevilla.domain.Actor;
 import com.project.TabernasSevilla.forms.ActorForm;
+import com.project.TabernasSevilla.forms.RegisterForm;
 import com.project.TabernasSevilla.repository.AbstractActorRepository;
 import com.project.TabernasSevilla.security.Authority;
-import com.project.TabernasSevilla.security.UserService;
 
 @Service
 @Transactional
@@ -21,9 +20,18 @@ public class ActorService {
 
 	@Autowired
 	private AbstractActorRepository<Actor> actorRepo;
-	
 	@Autowired
-	private UserService userService;
+	private RegKeyService regKeyService;
+	@Autowired
+	private CustomerService customerService;
+	@Autowired
+	private ManagerService managerService;
+	@Autowired
+	private AdminService adminService;
+	@Autowired
+	private CookService cookService;
+	@Autowired
+	private WaiterService waiterService;
 	
 	public ActorService() {
 		super();
@@ -56,11 +64,23 @@ public class ActorService {
 		return res;
 	}
 	
-	public Actor initialize(final Actor actor, final String authority) {
-		actor.setAvatar("https://www.qualiscare.com/wp-content/uploads/2017/08/default-user-300x300.png");
-		actor.setUser(userService.createUser(authority));
-
-		return actor;
+	public void register(final RegisterForm form) {
+		if(this.regKeyService.checkKey(form.getKey())) {
+			Authority auth = this.regKeyService.findById(form.getKey()).getAuthority();
+			switch(auth.getAuthority()) {
+			case "MANAGER":
+				this.managerService.register(form);
+			case "ADMIN":
+				this.adminService.register(form);
+			case "WAITER":
+				this.waiterService.register(form);
+			case "COOK":
+				this.cookService.register(form);
+			}
+				
+		}else {
+			this.customerService.register(form);
+		}
 	}
 	
 

@@ -3,6 +3,7 @@ package com.project.TabernasSevilla.security;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.transaction.Transactional;
@@ -25,6 +26,10 @@ public class AuthorityService {
 
 	public Authority saveAuthority(Authority authority) {
 		return this.authRepo.save(authority);
+	}
+	
+	public List<Authority> findAll() {
+		return this.authRepo.findAll();
 	}
 
 	public Authority findByName(String authority) {

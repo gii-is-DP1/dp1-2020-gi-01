@@ -11,7 +11,7 @@ public class RegisterForm {
 	private ActorForm	form;
 	private String		password;
 	private String		username;
-	private String		role;
+	private String		key;
 	private Boolean		acceptTerms;
 	
 	public RegisterForm() {
@@ -28,12 +28,12 @@ public class RegisterForm {
 		this.acceptTerms = acceptTerms;
 	}
 
-	public String getRole() {
-		return this.role;
+	public String getKey() {
+		return this.key;
 	}
 
-	public void setRole(final String role) {
-		this.role = role;
+	public void setKey(final String role) {
+		this.key = role;
 	}
 
 	@Valid
