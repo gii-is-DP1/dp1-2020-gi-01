@@ -1,7 +1,11 @@
 package com.project.TabernasSevilla.domain;
 
 
+import java.util.List;
+
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToMany;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -36,6 +40,19 @@ public class Establishment extends BaseEntity {
 	private String phone;
 	@NotBlank
 	private String openingHours;
-	@Min(1) @Max(5)@NotBlank
+	
+	@Min(0) @Max(5)@NotBlank
 	private Integer score;
+	
+	@ManyToMany(fetch=FetchType.LAZY)
+	private List<Manager> manager;
+	
+	@ManyToMany(fetch=FetchType.LAZY)
+	private List<Waiter> waiter;
+	
+	@ManyToMany(fetch=FetchType.LAZY)
+	private List<Cook> cook;
+	
+	@ManyToMany(fetch=FetchType.LAZY)
+	private List<Dish> dish;
 }

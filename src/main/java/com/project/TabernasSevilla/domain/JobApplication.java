@@ -11,9 +11,9 @@ import lombok.Setter;
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Entity
 public class JobApplication extends BaseEntity {
 	
-	@NotBlank
-	private String fullName;
 	
+	@NotBlank
+	private String fullName;	
 	@NotBlank
 	private String email;
 	

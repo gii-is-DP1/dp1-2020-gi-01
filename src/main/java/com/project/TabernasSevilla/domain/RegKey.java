@@ -4,7 +4,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.validation.constraints.NotNull;
 
 import com.project.TabernasSevilla.security.Authority;
 
@@ -18,7 +17,6 @@ public class RegKey {
 	@Id
 	@Column(unique = true)
 	private String key;
-	@NotNull
-	@ManyToOne
+	@ManyToOne(optional=false)
 	private Authority authority;
 }

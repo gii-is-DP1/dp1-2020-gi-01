@@ -4,7 +4,10 @@ package com.project.TabernasSevilla.domain;
 import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,7 +21,9 @@ import lombok.Setter;
 @AllArgsConstructor
 public class OrderCancelation extends BaseEntity {
 
-	@NotBlank
+	@OneToOne(fetch = FetchType.LAZY)
+	private Order order;
+	@NotNull
 	private LocalDateTime placementDate;
 	@NotBlank
 	private String reason;
