@@ -19,34 +19,34 @@ import com.project.TabernasSevilla.service.RegKeyService;
 @Controller
 @RequestMapping("/register")
 public class RegisterController {
-	
-	
+
 	@Autowired
 	private ActorService actorService;
 	@Autowired
 	private RegKeyService regKeyService;
-	
-	
-	@RequestMapping(value="/init",method=RequestMethod.GET)
-	public String createCustomer(@RequestParam(required=false) final String key, Model model) {
+
+	@RequestMapping(value = "/init", method = RequestMethod.GET)
+	public String createCustomer(@RequestParam(required = false) String key, Model model) {
 		final RegisterForm regForm = new RegisterForm();
-		
-		if(this.regKeyService.checkKey(key)) {
-			regForm.setKey(key);
-		}else {
-			regForm.setKey("");
+		if (key != null) {
+			if (this.regKeyService.checkKey(key)) {
+				regForm.setKey(key);
+			} else {
+				regForm.setKey("");
+			}
 		}
-		model.addAttribute("registerForm",regForm);
+		model.addAttribute("registerForm", regForm);
 		return "register";
 	}
-	
-	//TODO: validation in view
-	@RequestMapping(value="/save",method = RequestMethod.POST)
-	public String saveUser(@ModelAttribute @Valid final RegisterForm regForm, final BindingResult binding, Model model) {
-		if(binding.hasErrors()) {
-			model.addAttribute("registerForm",regForm);
+
+	// TODO: validation in view
+	@RequestMapping(value = "/save", method = RequestMethod.POST)
+	public String saveUser(@ModelAttribute @Valid final RegisterForm regForm, final BindingResult binding,
+			Model model) {
+		if (binding.hasErrors()) {
+			model.addAttribute("registerForm", regForm);
 			return this.createRegisterEditModel(regForm, model);
-		}else {
+		} else {
 			try {
 				this.actorService.register(regForm);
 				return "redirect:/login";
@@ -55,23 +55,22 @@ public class RegisterController {
 			}
 		}
 	}
-	
-	//go to employee enter regkey view
-	//TODO: enter regkey view
+
+	// go to employee enter regkey view
+	// TODO: enter regkey view
 	@GetMapping("/employees")
 	public String employeeRegister() {
 		return "employee/key";
 	}
-	
-	
-	//AUX
+
+	// AUX
 	protected String createRegisterEditModel(final RegisterForm regForm, Model model) {
-		return this.createRegisterEditModel(regForm,model,null);
+		return this.createRegisterEditModel(regForm, model, null);
 	}
-	
+
 	protected String createRegisterEditModel(final RegisterForm regForm, Model model, String message) {
 		model.addAttribute(regForm);
-		model.addAttribute("message",message);
+		model.addAttribute("message", message);
 		return "register";
 	}
 }
