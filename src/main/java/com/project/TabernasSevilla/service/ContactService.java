@@ -6,37 +6,37 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
-import com.project.TabernasSevilla.domain.JobApplication;
+import com.project.TabernasSevilla.domain.Curriculum;
 import com.project.TabernasSevilla.forms.ContactForm;
-import com.project.TabernasSevilla.repository.ContactRepository;
+import com.project.TabernasSevilla.repository.CurriculumRepository;
 
 
 @Service
 @Transactional
-public class ContactService {
+public class CurriculumService {
 	
 	@Autowired
-	private ContactRepository contactRepo;
+	private CurriculumRepository cvRepo;
 	
-	public JobApplication findById(final int id) { //hmmm no hay id en jobapplication o si...
-		return contactRepo.findById(id);
+	public Curriculum findById(final int id) { //hmmm no hay id en jobapplication o si...
+		return cvRepo.findById(id);
 	}
 	
-	public JobApplication create() {
-		JobApplication joba = new JobApplication();
+	public Curriculum create() {
+		Curriculum joba = new Curriculum();
 		return joba;	
 	}
 	
-	public JobApplication save(JobApplication joba) {
-		return this.contactRepo.save(joba);
+	public Curriculum save(Curriculum joba) {
+		return this.cvRepo.save(joba);
 	}
 	
-	public JobApplication register(final ContactForm form) {
-		JobApplication joba = create();
+	public Curriculum register(final ContactForm form) {
+		Curriculum joba = create();
 		joba.setFullName(form.getFullName());
 		joba.setEmail(form.getEmail());
 		joba.setCv(form.getCv());
-		JobApplication jobaded = save(joba);
+		Curriculum jobaded = save(joba);
 		return jobaded;
 	}
 }

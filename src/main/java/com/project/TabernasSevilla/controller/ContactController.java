@@ -11,14 +11,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.project.TabernasSevilla.forms.ContactForm;
-import com.project.TabernasSevilla.service.ContactService;
+import com.project.TabernasSevilla.service.CurriculumService;
 
 @Controller
 @RequestMapping("/contact")
 public class ContactController {
 	
 	@Autowired
-	private ContactService conSer;
+	private CurriculumService conSer;
 	
 	@RequestMapping(value="/init", method=RequestMethod.GET)
 	 public String createJoba(Model model) {

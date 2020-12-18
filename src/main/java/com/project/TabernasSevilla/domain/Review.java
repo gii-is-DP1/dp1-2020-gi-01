@@ -21,7 +21,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Review extends BaseEntity {
-	
+	@ManyToOne
+	private Booking booking;
 	@ManyToOne
 	private Dish dish;
 	

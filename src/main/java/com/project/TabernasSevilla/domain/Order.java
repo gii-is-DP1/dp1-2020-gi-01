@@ -1,12 +1,15 @@
 package com.project.TabernasSevilla.domain;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 
 import lombok.AllArgsConstructor;
@@ -29,25 +32,24 @@ public class Order extends BaseEntity {
 	private Table table;
 	
 	@NotNull
+	@Past
 	private LocalDateTime placementDate;
+	
 	@NotBlank
-	@Pattern(regexp = "^" + Order.TYPE_DELIVERY + "|" + Order.TYPE_TAKEAWAY + "|" + Order.TYPE_PICKUP + "|"
-			+ Order.TYPE_EAT_IN + "$")
+	@Pattern(regexp = "^" + Order.DELIVERY + "|" + Order.TAKEAWAY + "|" + Order.PICKUP + "|"
+			+ Order.EAT_IN + "$")
 	private String type;
-	//TODO: pattern validation
-	@NotBlank
-	private String status;
+
+	@ManyToMany
+	private List<Dish> dish;
 
 	private String address;
 	@NotBlank
 	private Boolean active;
 
-	public static final String TYPE_TAKEAWAY = "TAKEAWAY";
-	public static final String TYPE_PICKUP = "PICKUP";
-	public static final String TYPE_DELIVERY = "DELIVERY";
-	public static final String TYPE_EAT_IN = "EAT-IN";
+	public static final String TAKEAWAY = "TAKEAWAY";
+	public static final String PICKUP = "PICKUP";
+	public static final String DELIVERY = "DELIVERY";
+	public static final String EAT_IN = "EAT-IN";
 
-	public static final String STATUS_OPEN = "OPEN";
-	public static final String STATUS_CLOSED = "CLOSED";
-	public static final String STATUS_CANCELLED = "CANCELLED";
 }

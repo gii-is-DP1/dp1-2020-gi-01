@@ -27,6 +27,7 @@ public class RegKeyService {
 	@Autowired
 	private AuthorityService authService;
 
+	//CRUD
 	public List<RegKey> findAll() {
 		return this.regKeyRepo.findAll();
 	}
@@ -35,22 +36,10 @@ public class RegKeyService {
 		return this.regKeyRepo.findById(key).get();
 	}
 	
-	//returns true is key exists
-	public Boolean checkKey(String key) {
-		return this.regKeyRepo.findById(key).isEmpty() ? false : true;
-	}
-
 	public RegKey save(RegKey regKey) {
 		Assert.isTrue(userService.getPrincipal().getAuthorities().contains(authService.findByName("ADMIN")),
 				"Error creating regkey: insufficient authority");
 		return this.regKeyRepo.save(regKey);
-	}
-	
-	public void delete(String key) {
-		Assert.isTrue(userService.getPrincipal().getAuthorities().contains(authService.findByName("ADMIN")),
-				"Error deleting regkey: insufficient authority");
-		RegKey regKey = this.regKeyRepo.findById(key).get();
-		this.regKeyRepo.delete(regKey);
 	}
 	
 	public RegKey create() {
@@ -60,6 +49,21 @@ public class RegKeyService {
 		return regKey;
 	}
 	
+	public void delete(String key) {
+		Assert.isTrue(userService.getPrincipal().getAuthorities().contains(authService.findByName("ADMIN")),
+				"Error deleting regkey: insufficient authority");
+		RegKey regKey = this.regKeyRepo.findById(key).get();
+		this.regKeyRepo.delete(regKey);
+	}
+	
+	//OTHER METHODS
+	
+	//returns true is key exists
+	public Boolean checkKey(String key) {
+		return this.regKeyRepo.findById(key).isEmpty() ? false : true;
+	}
+	
+	//generate random string key of length 10
 	public String generateId() {
 		int leftLimit = 48; // numeral '0'
 	    int rightLimit = 122; // letter 'z'

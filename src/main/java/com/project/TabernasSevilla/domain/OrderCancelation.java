@@ -19,7 +19,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderCancelation extends BaseEntity {
+public class OrderCancellation extends BaseEntity {
 
 	@OneToOne(fetch = FetchType.LAZY)
 	private Order order;

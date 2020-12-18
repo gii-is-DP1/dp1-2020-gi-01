@@ -28,6 +28,10 @@ public class CookService {
 		return res;
 	}
 	
+	public Cook findById(int id) {
+		return this.cookRepo.findById(id);
+	}
+	
 	public List<Cook> findAll(){
 		return this.cookRepo.findAll();
 	}

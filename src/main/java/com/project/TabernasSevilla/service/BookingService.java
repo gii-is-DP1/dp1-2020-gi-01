@@ -1,5 +1,8 @@
 package com.project.TabernasSevilla.service;
 
+import java.util.List;
+import java.util.Optional;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +17,20 @@ import com.project.TabernasSevilla.repository.BookingRepository;
 public class BookingService {
 	
 	@Autowired
-	private BookingRepository repo;
+	private BookingRepository bookingRepo;
 	
-	public Booking findById(final int id) {
-		return repo.findById(id);
+	//CRUD
+	
+	public Optional<Booking> findById(final int id) {
+		return this.bookingRepo.findById(id);
+	}
+	
+	public List<Booking> findAll() {
+		return this.bookingRepo.findAll();
+	}
+	
+	public void delete(Booking booking) {
+		this.bookingRepo.delete(booking);
 	}
 
 	public Booking create() {
@@ -26,8 +39,14 @@ public class BookingService {
 	}
 	
 	public Booking save(Booking boka) {
-		return repo.save(boka);
+		return bookingRepo.save(boka);
 	}
+	
+	//OTHER METHODS
+	
+	//TODO: return all for establishment
+	
+	//TODO: return all for establishment where reservation date > today's date
 	
 	public Booking register(final BookingForm forma) {
 		Booking boka = create();

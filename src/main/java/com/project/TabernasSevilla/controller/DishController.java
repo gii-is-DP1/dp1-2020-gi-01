@@ -1,5 +1,6 @@
 package com.project.TabernasSevilla.controller;
 
+import java.util.List;
 import java.util.Optional;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,15 +26,15 @@ public class DishController {
 	@GetMapping(path = "/{dishId}")
 	public String showDishInfo(@PathVariable("dishId") int dishId, ModelMap modelMap) {
 		String view = "dishes/dishInfo"; // vista a la que pasamos la informacion
-		Optional<Dish> dish = dishService.dishById(dishId); // plato en concreto, con toda su información
-		modelMap.addAttribute("dish", dish.get());
+		Dish dish = dishService.findById(dishId).get(); // plato en concreto, con toda su información
+		modelMap.addAttribute("dish", dish);
 		return view;
 	}
 
 	@GetMapping()
 	public String dishList(ModelMap modelMap) {
 		String view = "dishes/dishList";
-		Iterable<Dish> dishes = dishService.dishList();
+		List<Dish> dishes = dishService.findAll();
 		modelMap.addAttribute("dishes", dishes);
 		return view;
 
@@ -53,7 +54,7 @@ public class DishController {
 			modelMap.addAttribute("dish", dish);
 			return "dishes/createDishForm";
 		} else {
-			dishService.saveDish(dish);
+			dishService.save(dish);
 			modelMap.addAttribute("message", "Dish successfully saved");
 			view = dishList(modelMap);
 		}
@@ -63,9 +64,9 @@ public class DishController {
 	@GetMapping(path = "/delete/{dishId}")
 	public String deleteDish(@PathVariable("dishId") int dishId, ModelMap modelMap) {
 		String view = "dishes/dishList";
-		Optional<Dish> dish = dishService.dishById(dishId);
+		Optional<Dish> dish = dishService.findById(dishId);
 		if (dish.isPresent()) {
-			dishService.deleteDish(dish.get());
+			dishService.delete(dish.get());
 			modelMap.addAttribute("message", "Dish succesfully deleted");
 			view = dishList(modelMap);
 		} else {
@@ -78,7 +79,7 @@ public class DishController {
 	@GetMapping(value = "{dishId}/edit")
 	public String updateDishForm(@PathVariable("dishId") int dishId, ModelMap modelMap) {
 		String view = "dishes/updateDishForm";
-		Optional<Dish> dish = this.dishService.dishById(dishId);
+		Optional<Dish> dish = this.dishService.findById(dishId);
 		modelMap.addAttribute(dish.get());
 		return view;
 	}
@@ -91,7 +92,7 @@ public class DishController {
 			return view;
 		} else {
 			dish.setId(dishId);
-			this.dishService.saveDish(dish);
+			this.dishService.save(dish);
 			return "redirect:/dishes/{dishId}";
 		}
 	}

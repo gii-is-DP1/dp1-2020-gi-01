@@ -9,6 +9,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.project.TabernasSevilla.domain.Manager;
+import com.project.TabernasSevilla.domain.Waiter;
 import com.project.TabernasSevilla.forms.RegisterForm;
 import com.project.TabernasSevilla.repository.ManagerRepository;
 import com.project.TabernasSevilla.security.User;
@@ -26,6 +27,10 @@ public class ManagerService {
 	public Manager create() {
 		Manager res = new Manager();
 		return res;
+	}
+	
+	public Manager findById(int id) {
+		return this.managerRepo.findById(id);
 	}
 	
 	public List<Manager> findAll(){

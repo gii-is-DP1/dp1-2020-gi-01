@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Entity
-public class JobApplication extends BaseEntity {
+public class Curriculum extends BaseEntity {
 	
 	
 	@NotBlank

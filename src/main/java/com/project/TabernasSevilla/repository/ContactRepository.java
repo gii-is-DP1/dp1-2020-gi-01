@@ -3,10 +3,10 @@ package com.project.TabernasSevilla.repository;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.project.TabernasSevilla.domain.JobApplication;
+import com.project.TabernasSevilla.domain.Curriculum;
 
-public interface ContactRepository extends JpaRepository<JobApplication,Integer>{
+public interface CurriculumRepository extends JpaRepository<Curriculum,Integer>{
 	
-	JobApplication findById(int id) throws DataAccessException;
+	Curriculum findById(int id) throws DataAccessException;
 
 }
