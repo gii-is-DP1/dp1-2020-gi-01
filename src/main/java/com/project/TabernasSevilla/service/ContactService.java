@@ -13,7 +13,9 @@ import com.project.TabernasSevilla.repository.CurriculumRepository;
 
 @Service
 @Transactional
-public class CurriculumService {
+
+//job application / curriculum service
+public class ContactService {
 	
 	@Autowired
 	private CurriculumRepository cvRepo;
