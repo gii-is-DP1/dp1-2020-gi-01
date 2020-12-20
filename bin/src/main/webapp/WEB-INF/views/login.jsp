@@ -25,10 +25,16 @@
     </div>
 
     <!-- Login Form -->
-    <form>
-      <input type="text" id="login" class="fadeIn second" name="login" placeholder="Login">
-      <input type="text" id="password" class="fadeIn third" name="login" placeholder="Password">
-      <input type="submit" class="fadeIn fourth" value="Log In">
+    <form name="login" action="/login" method="POST">
+    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>    
+    <div class="form-group">
+      <input type="text" id="username" class="fadeIn second form-control" name="username" placeholder="Login">
+      </div>
+      <div class="form-group">
+      <input type="password" id="password" class="fadeIn third form-control" name="password" placeholder="Password">  
+         </div>
+    <p class="text-danger">${loginErr}</p>
+      <input type="submit" class="fadeIn fourth" value="submit">
     </form>
 
     <!-- Remind Passowrd -->
