@@ -56,6 +56,7 @@ public class BookingService {
 		//TODO: fix to accomodate for multiple notes or change to have just one note 
 		//boka.setNotes(forma.getNotes());
 		boka.setSeating(forma.getSeating());
+		boka.setHourDate(forma.getHourDate());
 		Booking bokaed = save(boka);
 		return bokaed;
 	}

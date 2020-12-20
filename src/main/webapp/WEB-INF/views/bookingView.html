@@ -18,7 +18,7 @@
 	 	
 	 		<form enctype="multipart/form-data"
        	 role="form" th:action="@{/booking/save}" th:method="post"
-			th:object="${bookingForm}">
+			th:object="${bookingForm}" id="form">
 			
 		<input id="date" type="hidden" th:field="*{placementDate}" value="">
 		<script>
@@ -65,10 +65,21 @@
    		<br>
    		<label for="seating">Diners</label>
    		
-   		<input id= "seating" name="seating" type="text" placeholder="Indicate the number of diners" th:field="*{seating}"/> 
+   		<input id= "seating" name="seating" type="number" min="2" max="12"  th:field="*{seating}"/> 
    				<ul>
 					<li th:each="err : ${#fields.errors('seating')}" th:text="${err}" />
 				</ul>
+   		
+   		<br>
+   		<br>
+   		
+   		<label for="hourDate">Hour</label>
+   		
+   		<input id= "hourDate" name="hourDate" type="time" min="09:00" max="22:00"  th:field="*{hourDate}"/> 
+   				<ul>
+					<li th:each="err : ${#fields.errors('hourDate')}" th:text="${err}" />
+				</ul>
+   		
    		
    		<br>
    		<br>
@@ -96,7 +107,10 @@
   		 
   		 <label for="location">Establishment</label>
    		
-   		<input id= "location" name="location" type="text" placeholder="Select the establishment" th:field="*{location}"/> 
+   		<select form="form" id="location" name="location" type="text"  th:field="*{location}"/>
+   		<option value="Arenal"> Arenal </option> 
+   		<option value="Arenal"> Otro </option> 
+   		</select>
    				<ul>
 					<li th:each="err : ${#fields.errors('location')}" th:text="${err}" />
 				</ul>

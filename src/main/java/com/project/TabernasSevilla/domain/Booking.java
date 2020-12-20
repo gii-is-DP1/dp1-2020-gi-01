@@ -32,6 +32,8 @@ public class Booking extends BaseEntity {
 	private LocalDateTime reservationDate;
 	@NotNull
 	private Integer seating;
+	@NotNull
+	private String hourDate;
 
 	private String contactPhone;
 	@ElementCollection

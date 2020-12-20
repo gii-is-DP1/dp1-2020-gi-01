@@ -13,6 +13,7 @@ public class BookingForm {
 	private LocalDateTime placementDate;
 	private LocalDateTime reservationDate;
 	private Integer seating;
+	private String hourDate;
 	private String contactPhone;
 	private String notes;
 	private Establishment location;
