@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.project.TabernasSevilla.forms.ContactForm;
 import com.project.TabernasSevilla.service.ContactService;
 
-
+//Job Application controller 
 @Controller
 @RequestMapping("/contact")
 public class ContactController {
@@ -42,6 +42,7 @@ public class ContactController {
 			}
 		}
 	}
+	
 
 	private String createJobaEditModel(final ContactForm confor, Model model) {
 		return this.createJobaEditModel(confor, model, null);
