@@ -10,19 +10,33 @@ import org.hibernate.validator.constraints.URL;
 public class ActorForm {
 
 	private Integer id;
+	@Pattern(regexp ="[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]" 
+	, message = "Please enter your first name correctly.")
 	private String name;
+	@Pattern(regexp ="[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]" 
+	, message = "Please enter your last name correctly.")
 	private String surname;
+	@Size(min = 4, max = 32, message = "username must be between 4 and 32 characters.")
+	@Pattern(regexp = "^[a-zA-Z0-9_]*$", message = "Characters must be alphanumeric")
 	private String username;
+	
+	//@Pattern(regexp="^[9|8|7|6]\d{8}$", message="Phone number must start from 9, 8, 7 or 6.")
+//	Pattern pattern = Pattern.compile("^(\+34|0034|34)?[6789]\d{8}$");
+//	fijos = Pattern pattern = Pattern.compile("^(\+34|0034|34)?[89]\d{8}$");
+//	moviles = Pattern pattern = Pattern.compile("^(\+34|0034|34)?[67]\d{8}$");
+	@Size(min = 9, max = 9, message = "Not a valid number.")
 	private String phoneNumber;
+	@Email
 	private String email;
+	
 	private String avatar;
 	
 	public ActorForm() {
 		super();
 	}
 
-	@Size(min = 4, max = 32, message = "Username must have 4 to 32 characters")
-	@Pattern(regexp = "^[a-zA-Z0-9_]*$", message = "Characters must be alphanumeric")
+//	@Size(min = 4, max = 32, message = "Username must have 4 to 32 characters")
+//	@Pattern(regexp = "^[a-zA-Z0-9_]*$", message = "Characters must be alphanumeric")
 	public String getUsername() {
 		return this.username;
 	}

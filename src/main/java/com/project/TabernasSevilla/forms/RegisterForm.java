@@ -9,9 +9,17 @@ import javax.validation.constraints.Size;
 public class RegisterForm {
 
 	private ActorForm	form;
+	
+	@Size(min = 4, max = 32, message = "Password must have 4 to 32 characters")
+//	@Pattern(regexp = "^[a-zA-Z0-9_]*$", message = "Characters must be alphanumeric")
 	private String		password;
+	
+	@Size(min = 4, max = 32, message = "username must be between 4 and 32 characters.")
 	private String		username;
+	
 	private String		key;
+	
+	@AssertTrue(message = "terms.error")
 	private Boolean		acceptTerms;
 	
 	public RegisterForm() {
@@ -19,7 +27,7 @@ public class RegisterForm {
 		this.form = new ActorForm();
 	}
 
-	@AssertTrue(message = "terms.error")
+	
 	public Boolean getAcceptTerms() {
 		return this.acceptTerms;
 	}
@@ -46,8 +54,7 @@ public class RegisterForm {
 		this.form = form;
 	}
 
-	@Size(min = 4, max = 32, message = "Password must have 4 to 32 characters")
-	@Pattern(regexp = "^[a-zA-Z0-9_]*$", message = "Characters must be alphanumeric")
+
 	public String getPassword() {
 		return this.password;
 	}
@@ -56,7 +63,7 @@ public class RegisterForm {
 		this.password = password;
 	}
 
-	@Size(min = 5, max = 32)
+	
 	public String getUsername() {
 		return username;
 	}

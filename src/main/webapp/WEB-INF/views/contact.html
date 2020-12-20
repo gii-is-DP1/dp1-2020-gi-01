@@ -21,7 +21,7 @@
 			
 			
 			<label for="name">Name and Surname</label>
-   		<input id="fullName" name="name" type="text" placeholder="Input your Name and Surname" th:field="*{fullName}"/>
+   		<input id="fullName" name="name" type="text" pattern="[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]{2,128}" title="Please enter your first and last name correctly." placeholder="Input your Name and Surname" th:field="*{fullName}"/>
    				<ul>
 					<li th:each="err : ${#fields.errors('fullName')}" th:text="${err}" />
 				</ul>
@@ -29,7 +29,7 @@
    		<br>
    		<label for="email">E-mail</label>
    		
-   		<input id= "email" name="email" type="text" placeholder="Input your email" th:field="*{email}"/> 
+   		<input id= "email" name="email" type="text" pattern="^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$" placeholder="Input your email" th:field="*{email}"/> 
    				<ul>
 					<li th:each="err : ${#fields.errors('email')}" th:text="${err}" />
 				</ul>

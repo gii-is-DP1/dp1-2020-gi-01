@@ -23,7 +23,7 @@
 						<!-- USERNAME -->
 						<div class="input-group form-group">
 							
-							<input type="text" class="form-control" placeholder="username"
+							<input type="text" class="form-control" placeholder="username" minlength="4" maxlength="32"
 								name="username" th:field="*{username}">
 							<ul>
 								<li th:each="err : ${#fields.errors('username')}"
@@ -32,7 +32,7 @@
 						</div>
 						<!-- PASSWORD -->
 						<div class="input-group form-group">
-							<input type="password" class="form-control"
+							<input type="password" class="form-control" 
 								placeholder="password" name="password" th:field="*{password}">
 							<ul>
 								<li th:each="err : ${#fields.errors('password')}"
@@ -43,7 +43,7 @@
 						<input type="hidden" id="id" name="id" th:field="*{form.id}">
 
 						<div class="input-group form-group">
-							<input type="text" class="form-control" placeholder="name"
+							<input type="text" class="form-control" placeholder="name" pattern="[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]{2,64}"
 								name="name" th:field="*{form.name}">
 							<ul>
 								<li th:each="err : ${#fields.errors('form.name')}"
@@ -52,7 +52,7 @@
 						</div>
 						<!-- SURNAME -->
 						<div class="input-group form-group">
-							<input type="text" class="form-control" placeholder="surname"
+							<input type="text" class="form-control" placeholder="surname" pattern="[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]{2,128}"
 								name="surname" th:field="*{form.surname}">
 							<ul>
 								<li th:each="err : ${#fields.errors('form.surname')}"
@@ -61,7 +61,7 @@
 						</div>
 						<!-- EMAIL -->
 						<div class="input-group form-group">
-							<input type="text" class="form-control" placeholder="email"
+							<input type="email" pattern="^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$" class="form-control" placeholder="email"
 								name="email" th:field="*{form.email}">
 							<ul>
 								<li th:each="err : ${#fields.errors('form.email')}"
@@ -79,7 +79,7 @@
 						</div>
 						<!-- PHONE NUMBER -->
 						<div class="input-group form-group">
-							<input type="text" class="form-control"
+							<input type="text" class="form-control" minlength="9" maxlength="9"
 								placeholder="Phone number" name="phoneNumber"
 								th:field="*{form.phoneNumber}">
 							<ul>
@@ -88,8 +88,8 @@
 							</ul>
 						</div>
 						<div class="row align-items-center remember">
-							<input type="checkbox" th:field="*{acceptTerms}">
-							 Accept terms and conditions
+							<input type="checkbox" th:field="*{acceptTerms}" required>
+							 Accept terms and conditions.
 						</div>
 
 						<div class="form-group">
