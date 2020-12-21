@@ -28,7 +28,7 @@
 		
 		
 			<label for="reserv">Day of the reservation</label>
-   		<input id="fechaBooking" name="reserv" type="date" min="" max="2021-01-1" th:field="*{reservationDate}"/>
+   		<input id="fechaBooking" name="reserv" type="date" min="" max="2021-01-01" th:field="*{reservationDate}"/>
    				<ul>
 					<li th:each="err : ${#fields.errors('reservationDate')}" th:text="${err}" />
 				</ul>

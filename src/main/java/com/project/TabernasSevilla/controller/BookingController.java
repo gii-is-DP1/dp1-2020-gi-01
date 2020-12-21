@@ -1,5 +1,7 @@
 package com.project.TabernasSevilla.controller;
 
+
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +32,7 @@ public class BookingController {
 	
 	@RequestMapping(value="/save",method = RequestMethod.POST)
 	public String saveBooking(@ModelAttribute @Valid final BookingForm bookform, final BindingResult binding, Model model) {
+		//@RequestParam("placementDate") @DateTimeFormat(pattern="yyyy-MM-dd") LocalDateTime placementDate 
 		if(binding.hasErrors()) {
 			model.addAttribute("bookingForm", bookform);
 			return this.createBookingEditModel(bookform, model);
