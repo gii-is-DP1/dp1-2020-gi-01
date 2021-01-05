@@ -21,13 +21,15 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Table extends BaseEntity {
 
-	@ManyToOne(optional=false,fetch = FetchType.EAGER)
+	@ManyToOne(optional=false,fetch = FetchType.LAZY)
 	private Establishment establishment;
 	
 	@NotBlank
 	private Integer number;
 	@NotBlank
 	private Integer seating;
+	@NotBlank
+	private Integer occupied;
 
 	@NotBlank
 	private LocalDateTime hourSeated;
