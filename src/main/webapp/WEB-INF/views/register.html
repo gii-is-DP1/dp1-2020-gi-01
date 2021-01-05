@@ -19,7 +19,21 @@
 					<form role="form" th:action="@{/register/save}" th:method="post"
 						th:object="${registerForm}">
 
-						<input type="hidden" id="key" name="key" th:field="*{key}">
+<!-- 						<input type="hidden" id="key" name="key" th:field="*{key}"> -->
+						<!-- register key -->
+						<div class="row align-items-center remember">
+							<input type="checkbox" name="show-emp" onclick="showMe('enter-key')">
+							 Register as an employee
+						</div>
+						
+						<div class="input-group form-group" id="enter-key" style="display:none; ">
+							<input type="text" class="form-control" placeholder="registration key" minlength="4" maxlength="32"
+								name="key" th:field="*{key}" style="width:100%;">
+							<ul>
+								<li th:each="err : ${#fields.errors('key')}"
+									th:text="${err}" />
+							</ul>
+						</div>
 						<!-- USERNAME -->
 						<div class="input-group form-group">
 							
@@ -43,7 +57,7 @@
 						<input type="hidden" id="id" name="id" th:field="*{form.id}">
 
 						<div class="input-group form-group">
-							<input type="text" class="form-control" placeholder="name" pattern="[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]{2,64}"
+							<input type="text" class="form-control" placeholder="name" pattern="[a-zA-ZÃ Ã¡Ã¢Ã¤Ã£Ã¥Ä…Ä�Ä‡Ä™Ã¨Ã©ÃªÃ«Ä—Ä¯Ã¬Ã­Ã®Ã¯Å‚Å„Ã²Ã³Ã´Ã¶ÃµÃ¸Ã¹ÃºÃ»Ã¼Å³Å«Ã¿Ã½Å¼ÅºÃ±Ã§Ä�Å¡Å¾Ã€Ã�Ã‚Ã„ÃƒÃ…Ä„Ä†ÄŒÄ–Ä˜ÃˆÃ‰ÃŠÃ‹ÃŒÃ�ÃŽÃ�Ä®Å�ÅƒÃ’Ã“Ã”Ã–Ã•Ã˜Ã™ÃšÃ›ÃœÅ²ÅªÅ¸Ã�Å»Å¹Ã‘ÃŸÃ‡Å’Ã†ÄŒÅ Å½âˆ‚Ã° ,.'-]{2,64}"
 								name="name" th:field="*{form.name}">
 							<ul>
 								<li th:each="err : ${#fields.errors('form.name')}"
@@ -52,7 +66,7 @@
 						</div>
 						<!-- SURNAME -->
 						<div class="input-group form-group">
-							<input type="text" class="form-control" placeholder="surname" pattern="[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]{2,128}"
+							<input type="text" class="form-control" placeholder="surname" pattern="[a-zA-ZÃ Ã¡Ã¢Ã¤Ã£Ã¥Ä…Ä�Ä‡Ä™Ã¨Ã©ÃªÃ«Ä—Ä¯Ã¬Ã­Ã®Ã¯Å‚Å„Ã²Ã³Ã´Ã¶ÃµÃ¸Ã¹ÃºÃ»Ã¼Å³Å«Ã¿Ã½Å¼ÅºÃ±Ã§Ä�Å¡Å¾Ã€Ã�Ã‚Ã„ÃƒÃ…Ä„Ä†ÄŒÄ–Ä˜ÃˆÃ‰ÃŠÃ‹ÃŒÃ�ÃŽÃ�Ä®Å�ÅƒÃ’Ã“Ã”Ã–Ã•Ã˜Ã™ÃšÃ›ÃœÅ²ÅªÅ¸Ã�Å»Å¹Ã‘ÃŸÃ‡Å’Ã†ÄŒÅ Å½âˆ‚Ã° ,.'-]{2,128}"
 								name="surname" th:field="*{form.surname}">
 							<ul>
 								<li th:each="err : ${#fields.errors('form.surname')}"
@@ -61,7 +75,7 @@
 						</div>
 						<!-- EMAIL -->
 						<div class="input-group form-group">
-							<input type="email" pattern="^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$" class="form-control" placeholder="email"
+							<input type="email" pattern="^[a-zA-Z0-9.!#$%&â€™*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$" class="form-control" placeholder="email"
 								name="email" th:field="*{form.email}">
 							<ul>
 								<li th:each="err : ${#fields.errors('form.email')}"
@@ -104,5 +118,6 @@
 			</div>
 		</div>
 	</div>
+	<script th:src="@{/js/register.js}"></script>
 </body>
 </html>

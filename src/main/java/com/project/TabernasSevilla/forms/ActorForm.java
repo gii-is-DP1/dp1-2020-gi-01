@@ -10,11 +10,9 @@ import org.hibernate.validator.constraints.URL;
 public class ActorForm {
 
 	private Integer id;
-	@Pattern(regexp ="[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]" 
-	, message = "Please enter your first name correctly.")
+	@NotBlank
 	private String name;
-	@Pattern(regexp ="[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]" 
-	, message = "Please enter your last name correctly.")
+	@NotBlank
 	private String surname;
 	@Size(min = 4, max = 32, message = "username must be between 4 and 32 characters.")
 	@Pattern(regexp = "^[a-zA-Z0-9_]*$", message = "Characters must be alphanumeric")

@@ -1,10 +1,8 @@
 package com.project.TabernasSevilla.service;
 
-import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Random;
 
-import javax.crypto.KeyGenerator;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;

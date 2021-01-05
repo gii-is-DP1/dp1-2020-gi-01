@@ -1,16 +1,9 @@
 package com.project.TabernasSevilla.controller;
 
-import java.util.List;
-
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.project.TabernasSevilla.domain.RegKey;
@@ -26,40 +19,54 @@ public class AdminController {
 	private RegKeyService regKeyService;
 	@Autowired
 	private AuthorityService authService;
-	
+
 	// got to control panel
 	@GetMapping("/control")
 	public String controlPanel() {
 		return "admin/controlpanel";
 	}
+	
+	@GetMapping("/employees/key")
+	public String createKey() {
+		return "admin/employees/keys";
+	}
 
-	// return form to create employee register key
-	@GetMapping("/employees/key/init")
-	public String createKey(Model model) {
+	//TODO: TRY CATCH FOR ERRORS
+	// create manager key
+	@GetMapping("/employees/key/manager")
+	public String createManagerKey(Model model) {
 		RegKey regKey = this.regKeyService.create();
-		List<Authority> auths = this.authService.findAll();
-		model.addAttribute("regkey", regKey);
-		model.addAttribute("authorities", auths);
+		Authority auth = this.authService.findByName("MANAGER");
+		regKey.setAuthority(auth);
+		RegKey saved = this.regKeyService.save(regKey);
+		model.addAttribute("regKey",saved);
 		return "admin/employees/key";
 	}
 
-	// save register key
-	@PostMapping("/employees/key/save")
-	public String saveKey(@ModelAttribute @Valid final RegKey regKey, final BindingResult binding, Model model) {
-		if(binding.hasErrors()) {
-			model.addAttribute("registerForm",regKey);
-			return this.createKeyEditModel(regKey, model);
-		}else {
-			try {
-				this.regKeyService.save(regKey);
-				return "redirect:/control";
-			} catch (final Exception e) {
-				return this.createKeyEditModel(regKey, model, e.getMessage());
-			}
-		}
+	// create cook key
+	@GetMapping("/employees/key/cook")
+	public String createCookKey(Model model) {
+		RegKey regKey = this.regKeyService.create();
+		Authority auth = this.authService.findByName("COOK");
+		regKey.setAuthority(auth);
+		RegKey saved = this.regKeyService.save(regKey);
+		model.addAttribute("regKey",saved);
+		return "admin/employees/key";
 	}
 
-	// AUX -------------------------------------------------------------------------------------------
+	// create waiter key
+	@GetMapping("/employees/key/waiter")
+	public String createWaiterKey(Model model) {
+		RegKey regKey = this.regKeyService.create();
+		Authority auth = this.authService.findByName("WAITER");
+		regKey.setAuthority(auth);
+		RegKey saved = this.regKeyService.save(regKey);
+		model.addAttribute("regKey",saved);
+		return "admin/employees/key";
+	}
+
+	// AUX
+	// -------------------------------------------------------------------------------------------
 	protected String createKeyEditModel(final RegKey regKey, Model model) {
 		return this.createKeyEditModel(regKey, model, null);
 	}
