@@ -57,6 +57,7 @@ public class BookingService {
 		//boka.setNotes(forma.getNotes());
 		boka.setSeating(forma.getSeating());
 		boka.setHourDate(forma.getHourDate());
+		boka.setEstablishment(forma.getLocation());
 		Booking bokaed = save(boka);
 		return bokaed;
 	}

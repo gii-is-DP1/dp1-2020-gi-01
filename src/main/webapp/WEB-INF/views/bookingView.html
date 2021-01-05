@@ -41,21 +41,17 @@
 				var mes = fechaHoy.getMonth() + 1; 
 				var dia = fechaHoy.getDate();
 				var mes2 = fechaHoy.getMonth() +2;
+
 				
-				var minimo = anio + "-" + mes + "-" + dia;
-				var maximo = anio + "-" + mes2 + "-" + dia;
-				
-				if(mes2 == 13){
-					var mes2 = "01";
-					var anio2 = anio+1;
-					var maximo = anio2 + "-" + mes2 + "-" + dia;
-				}else if (dia == 31){
+				if (dia == 31){
 					var maximo = anio + "-" + mes2 + "-" + dia -1;
 				}else if (dia <10){
-					var maximo = anio + "-" + mes2 + "-" + "0"+dia;
+					var dia = "0"+dia;
 				}
 				
-				console.log(anio2);
+				var minimo = anio + "-" + "0"+mes + "-" + dia;
+				var maximo = anio + "-" + "0"+mes2 + "-" + dia;
+				
 				console.log(maximo);
 				console.log(minimo);
 				document.getElementById("fechaBooking").setAttribute("min", minimo);
@@ -108,7 +104,7 @@
   		 <label for="location">Establishment</label>
    		
    		<select form="form" id="location" name="location" type="text"  th:field="*{location}"/>
-   		<option value="Arenal"> Arenal </option> 
+   		<option value="1"> Arenal </option> 
    		<option value="Arenal"> Otro </option> 
    		</select>
    				<ul>

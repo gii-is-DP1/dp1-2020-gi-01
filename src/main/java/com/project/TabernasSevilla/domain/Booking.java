@@ -1,5 +1,6 @@
 package com.project.TabernasSevilla.domain;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -26,10 +27,10 @@ public class Booking extends BaseEntity {
 	private Actor actor;
 	@ManyToOne(fetch = FetchType.LAZY,optional=false)
 	private Establishment establishment;
+	//@NotNull
+	private LocalDate placementDate;
 	@NotNull
-	private LocalDateTime placementDate;
-	@NotNull
-	private LocalDateTime reservationDate;
+	private LocalDate reservationDate;
 	@NotNull
 	private Integer seating;
 	@NotNull

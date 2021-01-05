@@ -1,7 +1,11 @@
 package com.project.TabernasSevilla.forms;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -14,10 +18,10 @@ import lombok.Data;
 public class BookingForm {
 	
 	@DateTimeFormat(pattern="yyyy-MM-dd")
-	private LocalDateTime placementDate;
+	private LocalDate placementDate; //IMPORTANTE ES LOCALDATE, NO LOCALDATETIME
 	
 	@DateTimeFormat(pattern="yyyy-MM-dd")
-	private LocalDateTime reservationDate;
+	private LocalDate reservationDate;
 	private Integer seating;
 	private String hourDate;
 	
@@ -25,6 +29,16 @@ public class BookingForm {
 	
 	private String notes;
 	private Establishment location;
+	
+	public Establishment getLocation() {
+		return this.location;
+	}
+	
+	public void setLocation(Establishment e) {
+		Establishment eso = new Establishment();
+		this.location = eso;
+	}
+	
 	//aqui hay que añadir un pedido que es opcional
 	// Y LOCATION
 	
