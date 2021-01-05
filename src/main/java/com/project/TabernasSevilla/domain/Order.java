@@ -29,7 +29,7 @@ public class Order extends BaseEntity {
 	@ManyToOne(optional=true,fetch=FetchType.EAGER)
 	private Booking booking;
 	@ManyToOne(optional=true,fetch=FetchType.EAGER)
-	private Table table;
+	private RestaurantTable table;
 	
 	@NotNull
 	@Past

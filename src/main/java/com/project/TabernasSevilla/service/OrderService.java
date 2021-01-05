@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.project.TabernasSevilla.domain.Booking;
 import com.project.TabernasSevilla.domain.Order;
-import com.project.TabernasSevilla.domain.Table;
+import com.project.TabernasSevilla.domain.RestaurantTable;
 import com.project.TabernasSevilla.repository.OrderRepository;
 
 @Service
@@ -54,7 +54,7 @@ public class OrderService {
 	}
 	
 	//Create order for table and set type
-	public Order createFromTable(Table table) {
+	public Order createFromTable(RestaurantTable table) {
 		Order order = this.create();
 		order.setTable(table);
 		order.setType(Order.EAT_IN);

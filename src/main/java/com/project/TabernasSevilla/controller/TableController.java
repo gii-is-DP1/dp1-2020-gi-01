@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.project.TabernasSevilla.domain.Establishment;
-import com.project.TabernasSevilla.domain.Table;
+import com.project.TabernasSevilla.domain.RestaurantTable;
 import com.project.TabernasSevilla.service.EstablishmentService;
 import com.project.TabernasSevilla.service.TableService;
 
@@ -27,9 +27,9 @@ public class TableController {
 	@GetMapping("establishment/{id}")
 	public String manageTables(@PathVariable("id") int establishmentId, Model model) {
 		Establishment est = this.establishmentService.findById(establishmentId);
-		List<Table> tables = this.tableService.findByEstablishment(est);
+		List<RestaurantTable> tables = this.tableService.findByEstablishment(est);
 		model.addAttribute("tables", tables);
-		return "manager/tables";
+		return "tables/list";
 	}
 
 	// create table
@@ -44,7 +44,7 @@ public class TableController {
 	// delete table
 	@GetMapping("{tableId}/delete")
 	public String deleteTable(@PathVariable("tableId") int tableId, Model model) {
-		Table table = this.tableService.findById(tableId);
+		RestaurantTable table = this.tableService.findById(tableId);
 		Establishment est = table.getEstablishment();
 		this.tableService.delete(table);
 
@@ -54,7 +54,7 @@ public class TableController {
 	// modify table
 	@GetMapping("{tableId}/modify")
 	public String modifyTable(@PathVariable("tableId") int tableId, Model model,@RequestParam(required=true) final Integer cap, @RequestParam(required=false) final Integer oc) {
-		Table table = this.tableService.findById(tableId);
+		RestaurantTable table = this.tableService.findById(tableId);
 		table.setSeating(cap);
 		if(oc !=null) {
 			table.setOccupied(oc);

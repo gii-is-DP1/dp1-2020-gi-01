@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.project.TabernasSevilla.domain.Establishment;
-import com.project.TabernasSevilla.domain.Table;
+import com.project.TabernasSevilla.domain.RestaurantTable;
 import com.project.TabernasSevilla.repository.TableRepository;
 
 @Service
@@ -19,37 +19,37 @@ public class TableService {
 	private TableRepository tableRepo;
 	
 	//CRUD
-	public Table create() {
-		Table res = new Table();
+	public RestaurantTable create() {
+		RestaurantTable res = new RestaurantTable();
 		return res;
 	}
 	
-	public void delete(Table table) {
+	public void delete(RestaurantTable table) {
 		this.tableRepo.delete(table);
 	}
 	
-	public Table findById(int id) {
+	public RestaurantTable findById(int id) {
 		return this.tableRepo.findById(id).get();
 	}
 	
-	public Table save(Table table) {
+	public RestaurantTable save(RestaurantTable table) {
 		return this.tableRepo.save(table);
 	}
 	
 	//extra
-	public Table quickCreate(Establishment est, int seating) {
-		Table table = this.create();
+	public RestaurantTable quickCreate(Establishment est, int seating) {
+		RestaurantTable table = this.create();
 		table.setEstablishment(est);
 		table.setSeating(seating);
-		Table saved = this.save(table);
+		RestaurantTable saved = this.save(table);
 		return saved;
 	}
 	
-	public List<Table> findByEstablishment(Establishment establishment){
+	public List<RestaurantTable> findByEstablishment(Establishment establishment){
 		return this.tableRepo.findByEstablishment(establishment.getId());
 	}
 	
-	public List<Table> findAll(){
+	public List<RestaurantTable> findAll(){
 		return this.tableRepo.findAll();
 	}
 	

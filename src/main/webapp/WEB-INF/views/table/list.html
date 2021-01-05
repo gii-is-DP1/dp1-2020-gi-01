@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+<meta charset="ISO-8859-1">
+<head>
+<th:block th:include="fragments/common :: head(title='Location')"></th:block>
+</head>
+<body>
+	<th:block th:include="fragments/common :: navbar"></th:block>
+	<div class="container">
+		<div class="card">
+			<div class="container-fliud">
+				<div class="wrapper row">
+					<div class="preview col-md-6">
+						<table class="table">
+							<thead>
+								<tr>
+									<th style="display:none;"></th>
+									<th>Table</th>
+									<th>Hour seated</th>
+									<th>Capacity</th>
+									<th>Occupants</th>
+									<th></th>
+									<th></th>
+									<th></th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody>
+								<th:block th:each="table : ${tables}">
+									<tr>
+										<td style="display:none;"><input type="hidden" th:value="${table.id}" name="id"
+											th:form="form + ${table.id}" /></td>
+										<td th:text="${table.number}"></td>
+										<td th:text="${table.hourSeated}"></td>
+										<!-- CAPACITY -->
+										<td>
+											<div class="input-group">
+												<span class="input-group-btn">
+													<button type="button" class="btn btn-default btn-number"
+														disabled="disabled" data-type="minus"
+														data-field="quant[1]">
+														<span class="glyphicon glyphicon-minus"></span>
+													</button>
+												</span> <input type="text" name="quant[1]"
+													class="form-control input-number"
+													th:value="${table.capacity}" min="1" th:form="form + ${table.id}"> <span
+													class="input-group-btn">
+													<button type="button" class="btn btn-default btn-number"
+														data-type="plus" data-field="quant[1]">
+														<span class="glyphicon glyphicon-plus"></span>
+													</button>
+												</span>
+											</div>
+										</td>
+										<!-- OCCUPANTS -->
+										<td th:text="${table.number}"></td>
+										<td></td>
+										<td>
+											<form th:id="form + ${table.id}" method="get"
+												th:action="@{/table/{id}/modify(id=${table.id})}">
+												<input type="submit" th:name="submit + ${table.id}"
+													value="save" />
+											</form>
+										</td>
+										<td><a th:href="@{/table/{id}/delete(id=${table.id})}"><i
+												class="fa fa-times" aria-hidden="true"></i></a></td>
+									</tr>
+								</th:block>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
