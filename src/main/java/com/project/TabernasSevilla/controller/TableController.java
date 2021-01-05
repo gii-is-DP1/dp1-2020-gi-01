@@ -24,35 +24,35 @@ public class TableController {
 	@Autowired
 	private EstablishmentService establishmentService;
 
-	@GetMapping("establishment/{id}")
+	@GetMapping("/establishment/{id}")
 	public String manageTables(@PathVariable("id") int establishmentId, Model model) {
 		Establishment est = this.establishmentService.findById(establishmentId);
 		List<RestaurantTable> tables = this.tableService.findByEstablishment(est);
 		model.addAttribute("tables", tables);
-		return "tables/list";
+		return "table/list";
 	}
 
 	// create table
-	@GetMapping("establishment/{id}/add")
+	@GetMapping("/establishment/{id}/add")
 	public String addTable(@PathVariable("id") int establishmentId, Model model) {
 		Establishment est = this.establishmentService.findById(establishmentId);
 		this.tableService.quickCreate(est, 1);
 
-		return "redirect:manager/establishment/" + establishmentId + "/tables";
+		return "redirect:/table/establishment/" + establishmentId ;
 	}
 
 	// delete table
-	@GetMapping("{tableId}/delete")
+	@GetMapping("/{tableId}/delete")
 	public String deleteTable(@PathVariable("tableId") int tableId, Model model) {
 		RestaurantTable table = this.tableService.findById(tableId);
 		Establishment est = table.getEstablishment();
 		this.tableService.delete(table);
 
-		return "redirect:manager/establishment/" + est.getId() + "/tables";
+		return "redirect:/table/establishment/" + est.getId() ;
 	}
 
 	// modify table
-	@GetMapping("{tableId}/modify")
+	@GetMapping("/{tableId}/modify")
 	public String modifyTable(@PathVariable("tableId") int tableId, Model model,@RequestParam(required=true) final Integer cap, @RequestParam(required=false) final Integer oc) {
 		RestaurantTable table = this.tableService.findById(tableId);
 		table.setSeating(cap);
@@ -62,6 +62,6 @@ public class TableController {
 		this.tableService.save(table);
 		Establishment est = table.getEstablishment();
 
-		return "redirect:manager/establishment/" + est.getId() + "/tables";
+		return "redirect:/table/establishment/" + est.getId() ;
 	}
 }

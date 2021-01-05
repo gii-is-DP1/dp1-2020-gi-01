@@ -57,6 +57,11 @@
 							</button>
 							-->
 						</div>
+						<div sec:authorize="hasAnyAuthority('ADMIN','MANAGER','WAITER')">
+							<a th:href="@{/table/establishment/{id}(id=${establishment.id})}">
+
+								View tables </a>
+						</div>
 						<div sec:authorize="hasAuthority('CUSTOMER')">
 							<a
 								th:href="@{/customer/setPreferred?id={id}(id=${establishment.id})}">

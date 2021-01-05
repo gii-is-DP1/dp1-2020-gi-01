@@ -62,7 +62,11 @@
 							<!-- link to profile -->
 							<a class="dropdown-item" href="#">Profile</a> <a
 								class="dropdown-item" href="#">Another action</a>
+							<!-- TABLE ACTIONS -->
+							
+							
 							<!-- ADMIN ACTIONS -->
+							<div sec:authorize="hasAuthority('ADMIN')" class="dropdown-divider"></div>
 							<a class="dropdown-item" sec:authorize="hasAuthority('ADMIN')" href="#">Control panel</a>
 							<a class="dropdown-item" sec:authorize="hasAuthority('ADMIN')" th:href="@{/admin/employees/key}">Employees</a>
 							<div class="dropdown-divider"></div>
