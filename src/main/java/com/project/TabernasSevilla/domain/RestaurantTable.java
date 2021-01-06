@@ -1,7 +1,9 @@
 package com.project.TabernasSevilla.domain;
 
 
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -31,6 +33,6 @@ public class RestaurantTable extends BaseEntity {
 	@NotNull
 	private Integer occupied;
 
-	private LocalDateTime hourSeated;
+	private Instant hourSeated;
 	
 }

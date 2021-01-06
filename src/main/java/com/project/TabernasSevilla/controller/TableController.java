@@ -1,5 +1,6 @@
 package com.project.TabernasSevilla.controller;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -31,6 +32,15 @@ public class TableController {
 	public String manageTables(@PathVariable("id") int establishmentId, Model model) {
 		Establishment est = this.establishmentService.findById(establishmentId);
 		List<RestaurantTable> tables = this.tableService.findByEstablishment(est);
+		Long occupied = this.tableService.getOccupancyAtRestaurant(est);
+		Long freeTables = this.tableService.countFreeTables(est);
+		String estimate = this.tableService.estimateFreeTable(est);
+		model.addAttribute("estimate", estimate);
+		model.addAttribute("totalTables", tables.size());
+		model.addAttribute("freeTables", freeTables);
+		model.addAttribute("freeTables", freeTables);
+		model.addAttribute("occupied", occupied);
+		model.addAttribute("establishment", est);
 		model.addAttribute("tables", tables);
 		return "table/list";
 	}
@@ -74,7 +84,7 @@ public class TableController {
 	@GetMapping("/{id}/seat")
 	public String seatTable(Model model, @PathVariable("id") int tableId) {
 		RestaurantTable table = this.tableService.findById(tableId);
-		table.setHourSeated(LocalDateTime.now());
+		table.setHourSeated(Instant.now());
 		this.tableService.save(table);
 		Establishment est = table.getEstablishment();
 		return "redirect:/table/establishment/" + est.getId() ;

@@ -1,5 +1,8 @@
 package com.project.TabernasSevilla.service;
 
+import java.time.Duration;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -39,6 +42,40 @@ public class TableService {
 	//extra
 	public Long getOccupancyAtRestaurant(Establishment est) {
 		return this.tableRepo.countOccupiedByEstablishment(est.getId());
+	}
+	
+	public Long countFreeTables(Establishment est) {
+		return this.tableRepo.countFreeTables(est.getId());
+	}
+	
+	//hard coded, ugly way
+	public String estimateFreeTable(Establishment est) {
+		String res="";
+		List<RestaurantTable> tables = this.findByEstablishment(est);
+		RestaurantTable oldest = null;
+		Duration oldestDuration = Duration.ofMinutes(0);
+		for(RestaurantTable t: tables) {
+			if(t.getHourSeated()!=null) {
+				Duration currentDuration = Duration.between(t.getHourSeated(), Instant.now());
+				int compare = oldestDuration.compareTo(currentDuration);
+				if(compare < 0) {
+					oldestDuration = currentDuration;
+					oldest = t;
+				}
+			}else {
+				oldest = null;
+				break;
+			}
+		}
+		if(oldest == null) {
+			res = "Available right now";
+		}else {
+			Instant estimate = oldest.getHourSeated().plus(1,ChronoUnit.HOURS);
+			Duration dur = Duration.between(Instant.now(), estimate);
+			//TODO: parse this shit string
+			res = "Estimated wait of: "+dur.toString();
+		}
+		return res;
 	}
 	
 	public RestaurantTable quickCreate(Establishment est, int seating) {

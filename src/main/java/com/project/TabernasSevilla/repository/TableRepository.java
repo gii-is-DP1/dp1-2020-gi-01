@@ -14,5 +14,8 @@ public interface TableRepository extends JpaRepository<RestaurantTable,Integer>{
 	
 	@Query("SELECT SUM (t.occupied) FROM RestaurantTable t WHERE t.establishment.id = ?1")
 	public Long countOccupiedByEstablishment(int establishmentId);
+	
+	@Query("SELECT COUNT(t) FROM RestaurantTable t WHERE t.establishment.id = ?1 AND t.hourSeated = NULL")
+	public Long countFreeTables(int establishmentId);
 
 }
