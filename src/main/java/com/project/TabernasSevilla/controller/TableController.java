@@ -1,5 +1,8 @@
 package com.project.TabernasSevilla.controller;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,15 +56,37 @@ public class TableController {
 
 	// modify table
 	@GetMapping("/{tableId}/modify")
-	public String modifyTable(@PathVariable("tableId") int tableId, Model model,@RequestParam(required=true) final Integer cap, @RequestParam(required=false) final Integer oc) {
+	public String modifyTable(@PathVariable("tableId") int tableId, Model model,@RequestParam(required=false) final Integer num,@RequestParam(required=true) final Integer cap, @RequestParam(required=false) final Integer oc) {
 		RestaurantTable table = this.tableService.findById(tableId);
 		table.setSeating(cap);
 		if(oc !=null) {
 			table.setOccupied(oc);
 		}
+		if(num!=null) {
+			table.setNumber(num);
+		}
 		this.tableService.save(table);
 		Establishment est = table.getEstablishment();
 
+		return "redirect:/table/establishment/" + est.getId() ;
+	}
+	
+	@GetMapping("/{id}/seat")
+	public String seatTable(Model model, @PathVariable("id") int tableId) {
+		RestaurantTable table = this.tableService.findById(tableId);
+		table.setHourSeated(LocalDateTime.now());
+		this.tableService.save(table);
+		Establishment est = table.getEstablishment();
+		return "redirect:/table/establishment/" + est.getId() ;
+	}
+	
+	@GetMapping("/{id}/unseat")
+	public String unseatTable(Model model, @PathVariable("id") int tableId) {
+		RestaurantTable table = this.tableService.findById(tableId);
+		table.setHourSeated(null);
+		table.setOccupied(0);
+		this.tableService.save(table);
+		Establishment est = table.getEstablishment();
 		return "redirect:/table/establishment/" + est.getId() ;
 	}
 }

@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,14 +24,13 @@ public class RestaurantTable extends BaseEntity {
 	@ManyToOne(optional=false,fetch = FetchType.LAZY)
 	private Establishment establishment;
 	
-	@NotBlank
+	@NotNull
 	private Integer number;
-	@NotBlank
+	@NotNull
 	private Integer seating;
-	@NotBlank
+	@NotNull
 	private Integer occupied;
 
-	@NotBlank
 	private LocalDateTime hourSeated;
 	
 }

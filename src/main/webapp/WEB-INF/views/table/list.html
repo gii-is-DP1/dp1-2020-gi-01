@@ -16,12 +16,10 @@
 						<table class="table">
 							<thead>
 								<tr>
-									<th style="display: none;"></th>
 									<th>Table</th>
 									<th>Hour seated</th>
 									<th>Capacity</th>
 									<th>Occupants</th>
-									<th></th>
 									<th></th>
 									<th></th>
 									<th></th>
@@ -30,25 +28,30 @@
 							<tbody>
 								<th:block th:each="table : ${tables}">
 									<tr>
-										<td style="display: none;"><input type="hidden"
-											th:value="${table.id}" name="id" th:form="form + ${table.id}" /></td>
-										<td th:text="${table.number}"></td>
+										<td >
+											<input type="number"
+													class="count" name="num" th:value="${table.number}" th:form="form + ${table.id}">
+										</td>
 										<td th:text="${table.hourSeated}"></td>
 										<!-- CAPACITY -->
 										<td>
-											
 												<input type="number"
-													class="count" name="qty" th:value="${table.seating}" th:form="form + ${table.id}">
-								
-											
+													class="count" name="cap" th:value="${table.seating}" th:form="form + ${table.id}">
 										</td>
 										<!-- OCCUPANTS -->
-										<td th:text="${table.number}"></td>
-										<td></td>
+										<td>
+												<input type="number"
+													class="count" name="oc" th:value="${table.occupied}" th:form="form + ${table.id}">
+										</td>
+										<!-- SEAT -->
+										<td>
+											<a th:href="@{/table/{id}/unseat(id=${table.id})}" th:if= "${table.hourSeated != null}">Unseat</a>
+											<a th:href="@{/table/{id}/seat(id=${table.id})}" th:if= "${table.hourSeated == null}">Seat</a>
+										</td>
 										<td>
 											<form th:id="form + ${table.id}" method="get"
 												th:action="@{/table/{id}/modify(id=${table.id})}">
-												<input type="submit" th:name="submit + ${table.id}"
+												<input type="submit"
 													value="save" />
 											</form>
 										</td>
