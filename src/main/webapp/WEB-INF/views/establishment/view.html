@@ -57,6 +57,9 @@
 							</button>
 							-->
 						</div>
+						<div>
+							<span th:inline="text">Current occupancy: [[${occupied}]]/[[${establishment.capacity}]]</span>
+						</div>
 						<div sec:authorize="hasAnyAuthority('ADMIN','MANAGER','WAITER')">
 							<a th:href="@{/table/establishment/{id}(id=${establishment.id})}">
 

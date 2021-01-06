@@ -10,6 +10,7 @@ import org.springframework.util.Assert;
 
 import com.project.TabernasSevilla.domain.Establishment;
 import com.project.TabernasSevilla.service.EstablishmentService;
+import com.project.TabernasSevilla.service.TableService;
 
 @Controller
 @RequestMapping("/location")
@@ -17,12 +18,16 @@ public class EstablishmentController {
 
 	@Autowired 
 	private EstablishmentService establishmentService;
+	@Autowired
+	private TableService tableService;
 	
 	@GetMapping("/view")
 	public String viewLocation (@RequestParam(required=true) final Integer id, Model model) {
 		Establishment est = this.establishmentService.findById(id);
 		Assert.notNull(est,"Establishment could not be found");
+		Long occupied = this.tableService.getOccupancyAtRestaurant(est);
 		model.addAttribute("establishment",est);
+		model.addAttribute("occupied",occupied);
 		return "establishment/view";
 	}
 }

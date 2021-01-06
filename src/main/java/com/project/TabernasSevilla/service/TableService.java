@@ -37,6 +37,10 @@ public class TableService {
 	}
 	
 	//extra
+	public Long getOccupancyAtRestaurant(Establishment est) {
+		return this.tableRepo.countOccupiedByEstablishment(est.getId());
+	}
+	
 	public RestaurantTable quickCreate(Establishment est, int seating) {
 		RestaurantTable table = this.create();
 		table.setEstablishment(est);
