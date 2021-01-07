@@ -1,5 +1,7 @@
 package com.project.TabernasSevilla.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +39,13 @@ public class BookingController {
 		model.addAttribute("establishment", booking.getEstablishment());
 		model.addAttribute("booking", booking);
 		return "booking/edit";
+	}
+	
+	@RequestMapping("/")
+	public String list(Model model) {
+		List<Booking> bookings = this.bookService.findByPrincipalActor();
+		model.addAttribute("bookings", bookings);
+		return "booking/list";
 	}
 
 	@RequestMapping(value = "/save", method = RequestMethod.POST)

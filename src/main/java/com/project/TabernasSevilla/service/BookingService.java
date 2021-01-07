@@ -59,6 +59,10 @@ public class BookingService {
 		return this.bookingRepo.findByEstablishment(est.getId());
 	}
 	
+	public List<Booking> findByPrincipalActor(){
+		return this.bookingRepo.findByActor(this.actorService.getPrincipal().getId());
+	}
+	
 	public List<Booking> findUnallocatedByEstablishment(Establishment est){
 		List<Booking> bookings = this.findByEstablishment(est);
 		List<RestaurantTable> tables = this.tableService.findBooked(est);

@@ -48,7 +48,6 @@
 						</div></li>
 					<li class="nav-item "><a class="nav-link"
 						th:href="@{/contact/init}"> Work with us </a></li>
-					<li class="nav-item"><a class="nav-link" th:href="@{/booking/init}">Booking</a></li>
 				</ul>
 				<ul class="navbar-nav ">
 					<!-- only show if authenticated -->
@@ -60,8 +59,9 @@
 					</a>
 						<div class="dropdown-menu dropdown-menu-right">
 							<!-- link to profile -->
-							<a class="dropdown-item" href="#">Profile</a> <a
-								class="dropdown-item" href="#">Another action</a>
+							<a class="dropdown-item" href="#">Profile</a> 
+							<a class="dropdown-item" th:href="@{/booking/}">My reservations</a>
+							
 							<!-- TABLE ACTIONS -->
 							
 							

@@ -33,6 +33,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 			.antMatchers("/cook/**").hasAuthority("COOK")
 			.antMatchers("/waiter/**").hasAuthority("WAITER")
 			.antMatchers("/table/**").hasAnyAuthority("ADMIN","MANAGER","WAITER")
+			.antMatchers("/booking/**").authenticated()
 			.anyRequest().authenticated();
 		http
 	 		.formLogin()
