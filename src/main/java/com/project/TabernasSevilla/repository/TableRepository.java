@@ -17,5 +17,8 @@ public interface TableRepository extends JpaRepository<RestaurantTable,Integer>{
 	
 	@Query("SELECT COUNT(t) FROM RestaurantTable t WHERE t.establishment.id = ?1 AND t.hourSeated = NULL")
 	public Long countFreeTables(int establishmentId);
+	
+	@Query("SELECT t FROM RestaurantTable t WHERE t.establishment.id = ?1 AND t.booking != NULL")
+	public List<RestaurantTable> findBookedByEstablishment(int establishmentId);
 
 }

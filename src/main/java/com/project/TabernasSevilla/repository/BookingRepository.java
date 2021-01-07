@@ -11,6 +11,5 @@ public interface BookingRepository extends JpaRepository<Booking,Integer>{
 	
 	@Query("SELECT b FROM Booking b WHERE b.establishment.id = ?1")
 	public List<Booking> findByEstablishment(int establishmentId);
-	
-	//TODO: return all for establishment where reservation date > today's date
+
 }

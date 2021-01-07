@@ -111,4 +111,8 @@ public class TableService {
 		return this.tableRepo.findAll();
 	}
 	
+	public List<RestaurantTable> findBooked(Establishment est){
+		return this.tableRepo.findBookedByEstablishment(est.getId());
+	}
+	
 }
