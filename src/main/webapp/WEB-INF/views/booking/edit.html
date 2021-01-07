@@ -17,7 +17,12 @@
 				<div>
 					<span th:inline="text">Restaurant: <a href="">[[${establishment.title}]]</a></span>
 				</div>
-
+				<div>
+					<span>Please place reservations with a minimum of 2 hours notice</span>
+				</div>
+				<div>
+					<p th:text="${message}"></p>
+				</div>
 				<div class="card-body">
 					<form role="form" th:action="@{/booking/save}" th:method="post"
 						th:object="${booking}" id="bookingForm">
@@ -91,9 +96,7 @@
 					</form>
 				</div>
 			</div>
-			<div>
-				<p th:text="${message}"></p>
-			</div>
+			
 		</div>
 	</div>
 </body>
