@@ -12,7 +12,7 @@
 		<div class="card">
 			<div class="container-fliud">
 				<div class="wrapper row">
-					<div class="preview col-md-6">
+					<div class="preview col-">
 
 						<div class="wrapper row">
 							<table class="table">
@@ -23,6 +23,7 @@
 										<th>Description</th>
 										<th>Score</th>
 										<th>Price</th>
+										<th>Allergens</th>
 										<th></th>
 										<th></th>
 									</tr>
@@ -30,9 +31,10 @@
 								<tbody>
 									<th:block th:each="dish : ${dishes}">
 										<tr>
-										<!-- IMAGE -->
+											<!-- IMAGE -->
 											<td>
-												<div class="img-thumbnai" th:src="${dish.picture}">
+												<div style="width: 140px;">
+													<img class="img-thumbnail" th:src="${dish.picture}" />
 												</div>
 											</td>
 											<!-- NAME -->
@@ -41,12 +43,23 @@
 											<td th:text="${dish.description}"></td>
 											<!-- SCORE -->
 											<td>
-												<div th:replace="fragments/score :: stars(score=${dish.score})"></div>
+												<div
+													th:replace="fragments/score :: stars(score=${dish.score})"></div>
 											</td>
 											<!-- PRICE -->
 											<td th:inline="text">[[${dish.price}]]€</td>
+											<!-- ALLERGENS -->
+											<td>
+												<div class="row">
+													<th:block th:each="allergen : ${dish.allergens}">
+														<div style="width: 70px;">
+															<img class="img-thumbnail" th:src="${allergen.icon}" />
+														</div>
+													</th:block>
+												</div>
+											</td>
 											<!-- ADD TO ORDER -->
-											
+
 											<!-- ACTIOS; only for employees -->
 											<td></td>
 											<td></td>
