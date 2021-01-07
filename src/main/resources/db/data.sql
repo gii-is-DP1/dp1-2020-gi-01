@@ -25,3 +25,5 @@ INSERT INTO DISH(id,version,name,description,picture,price,score) VALUES (1,0,'F
 
 INSERT INTO DISH_ALLERGENS(dish_id, allergens_id) VALUES (1,3);
 INSERT INTO DISH_ALLERGENS(dish_id, allergens_id) VALUES (1,2);
+
+INSERT INTO PROMOTION(id, version, code, description, end_date, start_date, title, uses) VALUES (1, 0, 'FORT01', 'fortnite burger + patatas', '30/01/2021', '01/01/2021', 'first promo', 10000);

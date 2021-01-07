@@ -15,6 +15,6 @@ public class Promotion extends BaseEntity {
 	private String description;
 	private String code;
 	private Integer uses;
-	private LocalDateTime startDate;
-	private LocalDateTime endDate;
+	private String startDate;
+	private String endDate;
 }

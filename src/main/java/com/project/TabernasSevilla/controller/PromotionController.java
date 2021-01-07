@@ -33,7 +33,7 @@ public class PromotionController {
 
 	@GetMapping()
 	public String promotionList(ModelMap modelMap) {
-		String view = "promotions/promotionList";
+		String view = "promotions/list";
 		Iterable<Promotion> promotions = promoService.promotionList();
 		modelMap.addAttribute("promotions", promotions);
 		return view;
@@ -49,7 +49,7 @@ public class PromotionController {
 
 	@PostMapping(path = "/save")
 	public String savePromotion(@Valid Promotion promotion, BindingResult result, ModelMap modelMap) {
-		String view = "promotions/promotionList";
+		String view = "promotions/list";
 		if (result.hasErrors()) {
 			modelMap.addAttribute("promotion", promotion);
 			return "promotions/createPromotionForm";
