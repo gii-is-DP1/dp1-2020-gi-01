@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -53,6 +54,14 @@ public class BookingController {
 				return this.createBookingEditModel(booking, model, e.getMessage());
 			}
 		}
+	}
+	
+	@GetMapping("/{id}/delete")
+	public String delete(@PathVariable("id") int bookingId, Model model) {
+		Booking booking = this.bookService.findById(bookingId).get();
+		model.addAttribute("establishment", booking.getEstablishment());
+		this.bookService.delete(booking);
+		return "booking/deleted";
 	}
 
 	private String createBookingEditModel(final Booking booking, Model model) {
