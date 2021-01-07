@@ -13,6 +13,7 @@ import org.springframework.util.Assert;
 
 import com.project.TabernasSevilla.domain.Booking;
 import com.project.TabernasSevilla.domain.Establishment;
+import com.project.TabernasSevilla.domain.RestaurantTable;
 import com.project.TabernasSevilla.forms.BookingForm;
 import com.project.TabernasSevilla.repository.BookingRepository;
 import com.project.TabernasSevilla.security.UserService;
@@ -54,6 +55,20 @@ public class BookingService {
 	//OTHER METHODS
 	
 	//TODO: return all for establishment
+	public List<Booking> findByEstablishment(Establishment est){
+		return this.bookingRepo.findByEstablishment(est.getId());
+	}
+	
+	public List<Booking> findUnallocatedByEstablishment(Establishment est){
+		List<Booking> bookings = this.findByEstablishment(est);
+		List<RestaurantTable> tables = this.tableService.findBooked(est);
+		for(RestaurantTable t:tables) {
+			if(bookings.contains(t.getBooking())) {
+				bookings.remove(t.getBooking());
+			}
+		}	
+		return bookings;
+	}
 	
 	//TODO: return all for establishment where reservation date > today's date
 	

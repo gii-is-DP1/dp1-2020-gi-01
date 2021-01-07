@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+<meta charset="ISO-8859-1">
+<head>
+<th:block th:include="fragments/common :: head(title='Location')"></th:block>
+</head>
+<body>
+	<th:block th:include="fragments/common :: navbar"></th:block>
+	<div class="container">
+		<div class="card">
+			<div class="container-fliud">
+				<div class="wrapper row">
+					<div class="preview col-md-6">
+						<div class="wrapper row" th:fragment="list-booking(bookings)">
+							<table class="table">
+								<thead>
+									<tr>
+										<th>Restaurant</th>
+										<th>Reservation date</th>
+										<th>Seating</th>
+										<th>Placement date</th>
+										<th>Notes</th>
+										<th></th>
+										<th></th>
+									</tr>
+								</thead>
+								<tbody>
+									<th:block th:each="booking : ${bookings}">
+										<tr>
+											<!-- ESTABLISHMENT -->
+											<td th:text="${booking.establishment.title}">
+											</td>
+											<!-- RESERVATION DATE -->
+											<td th:text="${booking.reservationDate}"></td>
+											<!-- SEATING -->
+											<td th:text="${booking.seating}"></td>
+											<!-- PLACEMENT -->
+											<td th:text="${booking.placementDate}"></td>
+											<!-- ACTIONS -->
+											
+											<td><a href="#"><i
+													class="fa fa-pencil" aria-hidden="true"></i></a></td>
+													
+											<td><a th:href="@{/booking/{id}/delete(id=${booking.id})}"><i
+													class="fa fa-times" aria-hidden="true"></i></a></td>
+										</tr>
+									</th:block>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

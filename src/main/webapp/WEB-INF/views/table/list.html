@@ -12,20 +12,31 @@
 		<div class="card">
 			<div class="container-fliud">
 				<div class="wrapper row">
-					<div class="preview col-md-6">
+					<div class="preview col">
+						<div class="wrapper row">
+							<span><b> Unallocated reservations </b></span>
+						</div>
+						<div
+							th:replace="booking/list :: list-booking(bookings=${bookings})"></div>
 						<div class="wrapper row">
 							<div class="preview col-md-6">
 								<div>
-									<span th:inline="text"> <b>Restaurant capacity:</b> [[${occupied}]]/[[${establishment.capacity}]]</span>
+									<span th:inline="text"> <b>Restaurant capacity:</b>
+										[[${occupied}]]/[[${establishment.capacity}]]
+									</span>
 								</div>
 								<div>
-									<span th:inline="text"> <b>Free tables:</b> [[${freeTables}]]/[[${totalTables}]]</span>
+									<span th:inline="text"> <b>Free tables:</b>
+										[[${freeTables}]]/[[${totalTables}]]
+									</span>
 								</div>
 								<div>
 									<span th:inline="text"> <b>[[${estimate}]]</b></span>
 								</div>
 								<div>
-									<a th:href="@{/table/establishment/{id}/add(id=${establishment.id})}">Create table</a>
+									<a
+										th:href="@{/table/establishment/{id}/add(id=${establishment.id})}">Create
+										table</a>
 								</div>
 							</div>
 						</div>
@@ -37,6 +48,7 @@
 										<th>Hour seated</th>
 										<th>Capacity</th>
 										<th>Occupants</th>
+										<th>Reservation</th>
 										<th></th>
 										<th></th>
 										<th></th>
@@ -56,6 +68,17 @@
 											<!-- OCCUPANTS -->
 											<td><input type="number" class="count" name="oc"
 												th:value="${table.occupied}" th:form="form + ${table.id}">
+											</td>
+											<!-- RESERVATION -->
+											<td>
+												<select name="bookingId" th:form="form + ${table.id}">
+													<option th:if="${table.booking != null}" th:value="${table.booking.reservationDate}"></option>
+													<option th:if="${table.booking != null}" value="">--</option>
+													<option th:if="${table.booking == null}" value="">--</option>
+													<option th:each="booking : ${bookings}"
+													th:value="${booking.id}"
+													th:utext="${booking.reservationDate}" />
+												</select>
 											</td>
 											<!-- SEAT -->
 											<td><a th:href="@{/table/{id}/unseat(id=${table.id})}"

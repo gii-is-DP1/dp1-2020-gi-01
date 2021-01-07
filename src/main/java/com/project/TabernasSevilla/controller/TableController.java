@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.project.TabernasSevilla.domain.Booking;
 import com.project.TabernasSevilla.domain.Establishment;
 import com.project.TabernasSevilla.domain.RestaurantTable;
+import com.project.TabernasSevilla.service.BookingService;
 import com.project.TabernasSevilla.service.EstablishmentService;
 import com.project.TabernasSevilla.service.TableService;
 
@@ -27,14 +29,21 @@ public class TableController {
 	private TableService tableService;
 	@Autowired
 	private EstablishmentService establishmentService;
+	@Autowired
+	private BookingService bookingService;
 
 	@GetMapping("/establishment/{id}")
 	public String manageTables(@PathVariable("id") int establishmentId, Model model) {
 		Establishment est = this.establishmentService.findById(establishmentId);
 		List<RestaurantTable> tables = this.tableService.findByEstablishment(est);
+		for(RestaurantTable t: tables) {
+			t.getBooking();
+		}
 		Long occupied = this.tableService.getOccupancyAtRestaurant(est);
 		Long freeTables = this.tableService.countFreeTables(est);
 		String estimate = this.tableService.estimateFreeTable(est);
+		List<Booking> bookings = this.bookingService.findUnallocatedByEstablishment(est);
+		model.addAttribute("bookings", bookings);
 		model.addAttribute("estimate", estimate);
 		model.addAttribute("totalTables", tables.size());
 		model.addAttribute("freeTables", freeTables);
@@ -66,7 +75,7 @@ public class TableController {
 
 	// modify table
 	@GetMapping("/{tableId}/modify")
-	public String modifyTable(@PathVariable("tableId") int tableId, Model model,@RequestParam(required=false) final Integer num,@RequestParam(required=true) final Integer cap, @RequestParam(required=false) final Integer oc) {
+	public String modifyTable(@PathVariable("tableId") int tableId, Model model,@RequestParam(required=false) Integer bookingId,@RequestParam(required=false) final Integer num,@RequestParam(required=true) final Integer cap, @RequestParam(required=false) final Integer oc) {
 		RestaurantTable table = this.tableService.findById(tableId);
 		table.setSeating(cap);
 		if(oc !=null) {
@@ -74,6 +83,12 @@ public class TableController {
 		}
 		if(num!=null) {
 			table.setNumber(num);
+		}
+		if(bookingId!=null) {
+			Booking booking = this.bookingService.findById(bookingId).get();
+			table.setBooking(booking);
+		}else {
+			table.setBooking(null);
 		}
 		this.tableService.save(table);
 		Establishment est = table.getEstablishment();
