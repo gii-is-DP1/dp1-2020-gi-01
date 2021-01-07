@@ -26,8 +26,10 @@ public class EstablishmentController {
 		Establishment est = this.establishmentService.findById(id);
 		Assert.notNull(est,"Establishment could not be found");
 		Long occupied = this.tableService.getOccupancyAtRestaurant(est);
+		String estimate = this.tableService.estimateFreeTable(est);
 		model.addAttribute("establishment",est);
 		model.addAttribute("occupied",occupied);
+		model.addAttribute("estimate",estimate);
 		return "establishment/view";
 	}
 }

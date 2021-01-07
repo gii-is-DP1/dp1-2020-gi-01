@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+<meta charset="ISO-8859-1">
+<head>
+<th:block th:include="fragments/common :: head(title='Location')"></th:block>
+</head>
+<body>
+	<th:block th:include="fragments/common :: navbar"></th:block>
+	<div class="container">
+		<div class="card">
+			<div class="container-fliud">
+				<div class="wrapper row">
+					<div class="preview col-md-6">
+
+						<div class="wrapper row">
+							<table class="table">
+								<thead>
+									<tr>
+										<th></th>
+										<th>Name</th>
+										<th>Description</th>
+										<th>Score</th>
+										<th>Price</th>
+										<th></th>
+										<th></th>
+									</tr>
+								</thead>
+								<tbody>
+									<th:block th:each="dish : ${dishes}">
+										<tr>
+										<!-- IMAGE -->
+											<td>
+												<div class="img-thumbnai" th:src="${dish.picture}">
+												</div>
+											</td>
+											<!-- NAME -->
+											<td th:inline="text"><b>[[${dish.name}]]</b></td>
+											<!-- DESCRIPTION -->
+											<td th:text="${dish.description}"></td>
+											<!-- SCORE -->
+											<td>
+												<div th:replace="fragments/score :: stars(score=${dish.score})"></div>
+											</td>
+											<!-- PRICE -->
+											<td th:inline="text">[[${dish.price}]]€</td>
+											<!-- ADD TO ORDER -->
+											
+											<!-- ACTIOS; only for employees -->
+											<td></td>
+											<td></td>
+										</tr>
+									</th:block>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

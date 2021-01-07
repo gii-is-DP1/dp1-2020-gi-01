@@ -13,3 +13,7 @@ INSERT INTO ESTABLISHMENT(id,version,title,description,picture,capacity,current_
 INSERT INTO RESTAURANT_TABLE(id,version,establishment_id,number,seating,occupied,hour_seated) VALUES (1,0,1,1,8,0,null);
 INSERT INTO RESTAURANT_TABLE(id,version,establishment_id,number,seating,occupied,hour_seated) VALUES (2,0,1,2,9,0,null);
 INSERT INTO RESTAURANT_TABLE(id,version,establishment_id,number,seating,occupied,hour_seated) VALUES (3,0,1,3,10,0,null);
+
+INSERT INTO ALLERGEN(id,version,name,abbreviation,icon) VALUES (1,0,'Tree nuts','TN','https://www.foodprotection.org/upl/images/resources/food-allergen-icons/55a818c9b64da21160b76-5b04e851.jpg');
+INSERT INTO ALLERGEN(id,version,name,abbreviation,icon) VALUES (2,0,'Wheat','W','https://www.foodprotection.org/upl/images/resources/food-allergen-icons/55a819011a12825600bd9-512e788d.jpg');
+INSERT INTO ALLERGEN(id,version,name,abbreviation,icon) VALUES (3,0,'Soy','S','https://www.foodprotection.org/upl/images/resources/food-allergen-icons/55a818b1374ce5123b565-c62f0eb5.jpg');

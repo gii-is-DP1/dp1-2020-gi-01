@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToMany;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -26,8 +28,8 @@ public class Dish extends BaseEntity{
 		private Double price;
 		@Min(0) @Max(5)@NotBlank
 		private Double score;
-		@ElementCollection
-		private List<String> allergens;
+		@ManyToMany(fetch=FetchType.EAGER)
+		private List<Allergen> allergens;
 
 	}
 

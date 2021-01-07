@@ -6,7 +6,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,63 +24,62 @@ public class DishController {
 	private DishService dishService;
 
 	@GetMapping(path = "/{dishId}")
-	public String showDishInfo(@PathVariable("dishId") int dishId, ModelMap modelMap) {
+	public String showDishInfo(@PathVariable("dishId") int dishId, Model model) {
 		String view = "dishes/dishInfo"; // vista a la que pasamos la informacion
 		Dish dish = dishService.findById(dishId).get(); // plato en concreto, con toda su información
-		modelMap.addAttribute("dish", dish);
+		model.addAttribute("dish", dish);
 		return view;
 	}
 
-	@GetMapping()
-	public String dishList(ModelMap modelMap) {
-		String view = "dishes/dishList";
+	@GetMapping("/")
+	public String dishList(Model model) {
 		List<Dish> dishes = dishService.findAll();
-		modelMap.addAttribute("dishes", dishes);
-		return view;
+		model.addAttribute("dishes", dishes);
+		return "dishes/list";
 
 	}
 
 	@GetMapping(path = "/new")
-	public String createDish(ModelMap modelMap) {
+	public String createDish(Model model) {
 		String view = "dishes/createDishForm";
-		modelMap.addAttribute("dish", new Dish());
+		model.addAttribute("dish", new Dish());
 		return view;
 	}
 
 	@PostMapping(path = "/save")
-	public String saveDish(@Valid Dish dish, BindingResult result, ModelMap modelMap) {
+	public String saveDish(@Valid Dish dish, BindingResult result, Model model) {
 		String view = "dishes/dishList";
 		if (result.hasErrors()) {
-			modelMap.addAttribute("dish", dish);
+			model.addAttribute("dish", dish);
 			return "dishes/createDishForm";
 		} else {
 			dishService.save(dish);
-			modelMap.addAttribute("message", "Dish successfully saved");
-			view = dishList(modelMap);
+			model.addAttribute("message", "Dish successfully saved");
+			view = dishList(model);
 		}
 		return view;
 	}
 
 	@GetMapping(path = "/delete/{dishId}")
-	public String deleteDish(@PathVariable("dishId") int dishId, ModelMap modelMap) {
+	public String deleteDish(@PathVariable("dishId") int dishId, Model model) {
 		String view = "dishes/dishList";
 		Optional<Dish> dish = dishService.findById(dishId);
 		if (dish.isPresent()) {
 			dishService.delete(dish.get());
-			modelMap.addAttribute("message", "Dish succesfully deleted");
-			view = dishList(modelMap);
+			model.addAttribute("message", "Dish succesfully deleted");
+			view = dishList(model);
 		} else {
-			modelMap.addAttribute("message", "Dish not found");
-			view = dishList(modelMap);
+			model.addAttribute("message", "Dish not found");
+			view = dishList(model);
 		}
 		return view;
 	}
 
 	@GetMapping(value = "{dishId}/edit")
-	public String updateDishForm(@PathVariable("dishId") int dishId, ModelMap modelMap) {
+	public String updateDishForm(@PathVariable("dishId") int dishId, Model model) {
 		String view = "dishes/updateDishForm";
 		Optional<Dish> dish = this.dishService.findById(dishId);
-		modelMap.addAttribute(dish.get());
+		model.addAttribute(dish.get());
 		return view;
 	}
 

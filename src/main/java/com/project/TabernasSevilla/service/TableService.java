@@ -68,7 +68,7 @@ public class TableService {
 			}
 		}
 		if(oldest == null) {
-			res = "Available right now";
+			res = "Table available right now";
 		}else {
 			Instant estimate = oldest.getHourSeated().plus(1,ChronoUnit.HOURS);
 			Duration dur = Duration.between(Instant.now(), estimate);
