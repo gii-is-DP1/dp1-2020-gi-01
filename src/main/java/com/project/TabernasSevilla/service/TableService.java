@@ -78,6 +78,23 @@ public class TableService {
 		return res;
 	}
 	
+	public Instant estimateFreeTableInstant(Establishment est) {
+		Instant res = Instant.now();
+		List<RestaurantTable> tables = this.findByEstablishment(est);
+		for(RestaurantTable t: tables) {
+			if(t.getHourSeated()!=null) {
+				int compare = res.compareTo(t.getHourSeated());
+				if(compare < 0) {
+					res = t.getHourSeated();
+				}
+			}else {
+				break;
+			}
+		}
+
+		return res;
+	}
+	
 	public RestaurantTable quickCreate(Establishment est, int seating) {
 		RestaurantTable table = this.create();
 		table.setEstablishment(est);

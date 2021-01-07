@@ -1,5 +1,7 @@
 package com.project.TabernasSevilla.service;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 
@@ -7,10 +9,13 @@ import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import com.project.TabernasSevilla.domain.Booking;
+import com.project.TabernasSevilla.domain.Establishment;
 import com.project.TabernasSevilla.forms.BookingForm;
 import com.project.TabernasSevilla.repository.BookingRepository;
+import com.project.TabernasSevilla.security.UserService;
 
 @Service
 @Transactional
@@ -18,6 +23,10 @@ public class BookingService {
 	
 	@Autowired
 	private BookingRepository bookingRepo;
+	@Autowired
+	private ActorService actorService;
+	@Autowired
+	private TableService tableService;
 	
 	//CRUD
 	
@@ -48,17 +57,36 @@ public class BookingService {
 	
 	//TODO: return all for establishment where reservation date > today's date
 	
-	public Booking register(final BookingForm forma) {
-		Booking boka = create();
-		boka.setPlacementDate(forma.getPlacementDate());
-		boka.setReservationDate(forma.getReservationDate());
-		boka.setContactPhone(forma.getContactPhone());
-		//TODO: fix to accomodate for multiple notes or change to have just one note 
-		//boka.setNotes(forma.getNotes());
-		boka.setSeating(forma.getSeating());
-		boka.setHourDate(forma.getHourDate());
-		boka.setEstablishment(forma.getLocation());
-		Booking bokaed = save(boka);
-		return bokaed;
+	public Booking initialize(Establishment est) {
+		Booking res = this.create();
+		res.setActor(this.actorService.getPrincipal());
+		res.setPlacementDate(Instant.now());
+		res.setEstablishment(est);
+		return res;
 	}
+	
+	public Booking register(Booking booking) {
+		Instant free = this.tableService.estimateFreeTableInstant(booking.getEstablishment());
+		Instant min = Instant.now().plus(2,ChronoUnit.HOURS);
+		Assert.isTrue(free.compareTo(booking.getReservationDate())<0,"Cannot book for this time: restaurant is too busy");
+		Assert.isTrue(min.compareTo(booking.getReservationDate())<0,"Cannot book for this time: booking notice too short");
+		booking.setActor(this.actorService.getPrincipal());
+		booking.setPlacementDate(Instant.now());
+		Booking saved = this.save(booking);
+		return saved;
+	}
+	
+//	public Booking register(final BookingForm forma) {
+//		Booking boka = create();
+//		boka.setPlacementDate(forma.getPlacementDate());
+//		boka.setReservationDate(forma.getReservationDate());
+//		boka.setContactPhone(forma.getContactPhone());
+//		//TODO: fix to accomodate for multiple notes or change to have just one note 
+//		//boka.setNotes(forma.getNotes());
+//		boka.setSeating(forma.getSeating());
+//		boka.setHourDate(forma.getHourDate());
+//		boka.setEstablishment(forma.getLocation());
+//		Booking bokaed = save(boka);
+//		return bokaed;
+//	}
 }

@@ -13,6 +13,7 @@ import com.project.TabernasSevilla.forms.ActorForm;
 import com.project.TabernasSevilla.forms.RegisterForm;
 import com.project.TabernasSevilla.repository.AbstractActorRepository;
 import com.project.TabernasSevilla.security.Authority;
+import com.project.TabernasSevilla.security.UserService;
 
 @Service
 @Transactional
@@ -32,6 +33,8 @@ public class ActorService {
 	private CookService cookService;
 	@Autowired
 	private WaiterService waiterService;
+	@Autowired
+	private UserService userService;
 	
 	public ActorService() {
 		super();
@@ -83,7 +86,13 @@ public class ActorService {
 		}
 	}
 	
-
+	public Actor getPrincipal() {
+		return this.findByUsername(this.userService.getPrincipal().getUsername());
+	}
+	
+	public Actor findByUsername(String username) {
+		return this.actorRepo.findActorByUser(username);
+	}
 
 	public Collection<String> getAuthority(final Actor actor) {
 		final Collection<Authority> auth = actor.getUser().getAuthorities();

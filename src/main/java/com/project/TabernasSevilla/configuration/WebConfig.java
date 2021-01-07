@@ -5,6 +5,9 @@ import org.springframework.format.FormatterRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import com.project.TabernasSevilla.converters.EstablishmentToStringConverter;
+import com.project.TabernasSevilla.converters.StringToInstantConverter;
+
 
 public class WebConfig implements WebMvcConfigurer {
 	
@@ -22,6 +25,7 @@ public class WebConfig implements WebMvcConfigurer {
     public void addFormatters(FormatterRegistry registry) {
     	
         registry.addConverter(idToEntityConverter);
+        registry.addConverter(new StringToInstantConverter());
     }
 
 

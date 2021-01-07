@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+<title>Spring Boot User Authentication</title>
+<th:block th:include="fragments/common :: head"></th:block>
+</head>
+<body>
+	<th:block th:include="fragments/common :: navbar"></th:block>
+
+
+	<div class="container">
+		<div class="d-flex justify-content-center h-100">
+			<div class="card">
+				<div class="card-header">
+					<h3>Place a reservation</h3>
+				</div>
+				<div>
+					<span th:inline="text">Restaurant: <a href="">[[${establishment.title}]]</a></span>
+				</div>
+
+				<div class="card-body">
+					<form role="form" th:action="@{/booking/save}" th:method="post"
+						th:object="${booking}" id="bookingForm">
+
+						<input type="hidden" name="establishment"
+							th:field="*{establishment}"> 
+						<ul>
+								<li th:each="err : ${#fields.errors('establishment')}"
+									th:text="${err}" />
+							</ul>
+						<input type="hidden"
+							name="actor" th:field="*{actor}"> 
+							<ul>
+								<li th:each="err : ${#fields.errors('actor')}"
+									th:text="${err}" />
+							</ul>
+						<input type="hidden"
+							name="placementDate" th:field="*{placementDate}">
+							<ul>
+								<li th:each="err : ${#fields.errors('placementDate')}"
+									th:text="${err}" />
+							</ul>
+
+						<!-- RESERVATION DATE -->
+						<div class="input-group form-group">
+							<span>Reservation date</span>
+							<input type="datetime-local" class="form-control" placeholder="Reservation date"
+								name="reservationDate" th:field="*{reservationDate}">
+							<ul>
+								<li th:each="err : ${#fields.errors('reservationDate')}"
+									th:text="${err}" />
+							</ul>
+						</div>
+
+						<!-- SEATING -->
+						<div class="input-group form-group">
+							<span>Seating</span> <input type="number" class="form-control"
+								placeholder="1" name="seating" th:field="*{seating}">
+							<ul>
+								<li th:each="err : ${#fields.errors('seating')}"
+									th:text="${err}" />
+							</ul>
+						</div>
+
+						<!-- CONTACT -->
+						<div class="input-group form-group">
+							<span>Contact number</span> <input type="tel"
+								class="form-control" placeholder="contactPhone" name="contactcontactPhone"
+								th:field="*{contactPhone}">
+							<ul>
+								<li th:each="err : ${#fields.errors('contactPhone')}"
+									th:text="${err}" />
+							</ul>
+						</div>
+						
+						<!-- NOTES -->
+						<div class="input-group form-group">
+							<span>Notes</span> <textarea 
+								class="form-control" name="notes" rows="8" cols="3"
+								th:field="*{notes}" form="bookingForm"></textarea>
+							<ul>
+								<li th:each="err : ${#fields.errors('notes')}"
+									th:text="${err}" />
+							</ul>
+						</div>
+
+						<div class="form-group">
+							<input type="submit" value="Book now"
+								class="btn float-right login_btn">
+						</div>
+					</form>
+				</div>
+			</div>
+			<div>
+				<p th:text="${message}"></p>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

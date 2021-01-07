@@ -40,7 +40,7 @@
 						
 						<!-- RESERVATION -->
 						<div class="p-1">
-							<button type="button" class="btn btn-secondary">Make a reservation</button>
+							<a th:href="@{/booking/init/{id}(id=${establishment.id})}" role="button" class="btn btn-secondary" aria-pressed="true">Make reservation</a>
 						</div>
 						
 						<div>

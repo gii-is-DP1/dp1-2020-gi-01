@@ -1,5 +1,6 @@
 package com.project.TabernasSevilla.domain;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -23,20 +24,18 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Booking extends BaseEntity {
 
-	@ManyToOne(fetch = FetchType.EAGER,optional=false)
+	@ManyToOne(fetch = FetchType.LAZY,optional=false)
 	private Actor actor;
 	@ManyToOne(fetch = FetchType.LAZY,optional=false)
 	private Establishment establishment;
-	//@NotNull
-	private LocalDate placementDate;
 	@NotNull
-	private LocalDate reservationDate;
+	private Instant placementDate;
+	@NotNull
+	private Instant reservationDate;
 	@NotNull
 	private Integer seating;
-	@NotNull
-	private String hourDate;
 
 	private String contactPhone;
-	@ElementCollection
-	private List<String> notes;
+
+	private String notes;
 }
