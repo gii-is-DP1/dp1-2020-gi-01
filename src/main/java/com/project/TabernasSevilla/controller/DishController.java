@@ -2,12 +2,14 @@ package com.project.TabernasSevilla.controller;
 
 import java.util.List;
 import java.util.Optional;
+
 import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +20,7 @@ import com.project.TabernasSevilla.service.DishService;
 
 @Controller
 @RequestMapping("/dishes")
-public class DishController {
+public class DishController extends AbstractController {
 
 	@Autowired
 	private DishService dishService;
@@ -31,7 +33,7 @@ public class DishController {
 		return view;
 	}
 
-	@GetMapping("/")
+	@GetMapping(path = "/list")
 	public String dishList(Model model) {
 		List<Dish> dishes = dishService.findAll();
 		model.addAttribute("dishes", dishes);
@@ -48,7 +50,7 @@ public class DishController {
 
 	@PostMapping(path = "/save")
 	public String saveDish(@Valid Dish dish, BindingResult result, Model model) {
-		String view = "dishes/dishList";
+		String view = "redirect:/dishes/list";
 		if (result.hasErrors()) {
 			model.addAttribute("dish", dish);
 			return "dishes/createDishForm";
@@ -62,16 +64,21 @@ public class DishController {
 
 	@GetMapping(path = "/delete/{dishId}")
 	public String deleteDish(@PathVariable("dishId") int dishId, Model model) {
-		String view = "dishes/dishList";
-		Optional<Dish> dish = dishService.findById(dishId);
-		if (dish.isPresent()) {
-			dishService.delete(dish.get());
-			model.addAttribute("message", "Dish succesfully deleted");
-			view = dishList(model);
-		} else {
-			model.addAttribute("message", "Dish not found");
-			view = dishList(model);
+
+		String view = super.checkIfCurrentUserIsAllowed("redirect:/dishes/list", "ADMIN");
+
+		if (view != "error") {
+			Optional<Dish> dish = dishService.findById(dishId);
+			if (dish.isPresent()) {
+				dishService.delete(dish.get());
+				model.addAttribute("message", "Dish succesfully deleted");
+				view = dishList(model);
+			} else {
+				model.addAttribute("message", "Dish not found");
+				view = dishList(model);
+			}
 		}
+
 		return view;
 	}
 
@@ -84,15 +91,24 @@ public class DishController {
 	}
 
 	@PostMapping(value = "{dishId}/edit")
-	public String processUpdateDishForm(@Valid Dish dish, BindingResult result,
-			@PathVariable("dishId") int dishId) {
+	public String processUpdateDishForm(@Valid Dish dish, BindingResult result, @PathVariable("dishId") int dishId) {
 		String view = "dishes/updateDishForm";
+
 		if (result.hasErrors()) {
 			return view;
 		} else {
+
 			dish.setId(dishId);
-			this.dishService.save(dish);
-			return "redirect:/dishes/{dishId}";
+
+			try {
+				this.dishService.save(dish);
+			} catch (Exception e) {
+				FieldError error = new FieldError("dish", "picture", "Invalid URL");
+				result.addError(error);
+				return view;
+			}
+
+			return "redirect:/dishes/list";
 		}
 	}
 

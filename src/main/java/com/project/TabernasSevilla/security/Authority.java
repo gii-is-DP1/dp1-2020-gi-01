@@ -7,29 +7,27 @@ import org.springframework.security.core.GrantedAuthority;
 
 import com.project.TabernasSevilla.domain.BaseEntity;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Getter @Setter
-public class Authority extends BaseEntity implements GrantedAuthority{
+@Getter
+@Setter
+@AllArgsConstructor
+public class Authority extends BaseEntity implements GrantedAuthority {
 
 	// Constructors -----------------------------------------------------------
 
-		private static final long	serialVersionUID	= 1L;
-				
+	private static final long serialVersionUID = 1L;
 
-		public Authority() {
-			super();
-		}
+	public Authority() {
+		super();
+	}
 
+	// Attributes -------------------------------------------------------------
 
-		// Attributes -------------------------------------------------------------
-
-		@NotBlank
-		private String				authority;
-
-
-
+	@NotBlank
+	private String authority;
 
 }

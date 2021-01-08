@@ -34,14 +34,13 @@ import lombok.Setter;
 @MappedSuperclass
 @Getter
 @Setter
-public class BaseEntity {
+public abstract class BaseEntity {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.TABLE)
-	private int id;	
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	private int id;
 	@Version
 	private int version;
-
 
 	// Object interface -------------------------------------------------------
 

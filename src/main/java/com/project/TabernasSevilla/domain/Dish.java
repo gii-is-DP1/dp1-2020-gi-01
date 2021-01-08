@@ -20,16 +20,16 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Dish extends BaseEntity{
-		@NotBlank
-		private String name;
-		private String description;
-		private String picture;
-		private Double price;
-		@Min(0) @Max(5)@NotBlank
-		private Double score;
-		@ManyToMany(fetch=FetchType.EAGER)
-		private List<Allergen> allergens;
+public class Dish extends BaseEntity {
+	@NotBlank
+	private String name;
+	private String description;
+	private String picture;
+	private Double price;
+	@Min(0)
+	@Max(5)
+	private Double score;
+	@ManyToMany(fetch = FetchType.EAGER)
+	private List<Allergen> allergens;
 
-	}
-
+}
