@@ -17,13 +17,4 @@ INSERT INTO RESTAURANT_TABLE(id,version,establishment_id,number,seating,occupied
 INSERT INTO RESTAURANT_TABLE(id,version,establishment_id,number,seating,occupied,hour_seated) VALUES (2,0,1,2,9,0,null);
 INSERT INTO RESTAURANT_TABLE(id,version,establishment_id,number,seating,occupied,hour_seated) VALUES (3,0,1,3,10,0,null);
 
-INSERT INTO ALLERGEN(id,version,name,abbreviation,icon) VALUES (1,0,'Tree nuts','TN','https://cdn.icon-icons.com/icons2/463/PNG/128/Alergeno-frutos-secos_43906.png');
-INSERT INTO ALLERGEN(id,version,name,abbreviation,icon) VALUES (2,0,'Gluten','G','https://cdn.icon-icons.com/icons2/463/PNG/128/Alergeno-cereal-con-gluten_43908.png');
-INSERT INTO ALLERGEN(id,version,name,abbreviation,icon) VALUES (3,0,'Soy','S','https://cdn.icon-icons.com/icons2/463/PNG/128/Alergeno-soja_43896.png');
-
-INSERT INTO DISH(id,version,name,description,picture,price,score) VALUES (1,0,'Fornite burger','You will never get this','https://www.paperangelsvlog.com/wp-content/uploads/2019/02/Fortnite-Durr-Burger-Final.jpg',15,5);
-
-INSERT INTO DISH_ALLERGENS(dish_id, allergens_id) VALUES (1,3);
-INSERT INTO DISH_ALLERGENS(dish_id, allergens_id) VALUES (1,2);
-
 INSERT INTO PROMOTION(id, version, code, description, end_date, start_date, title, uses) VALUES (1, 0, 'FORT01', 'fortnite burger + patatas', '30/01/2021', '01/01/2021', 'first promo', 10000);

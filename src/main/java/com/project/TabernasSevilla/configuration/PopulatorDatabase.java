@@ -59,11 +59,6 @@ public class PopulatorDatabase implements CommandLineRunner {
 
 		Dish saved = this.repository.save(d);
 
-		Authority authorityAdmin = repositoryAuthority.save(new Authority("ADMIN"));
-
-		User user = new User("admin", "$2a$10$i20jFJvEBpTaNXO36Th1pO5WHoc8nBSGcanDVueTPUwapMlXnqvnW",
-				new HashSet<>(Arrays.asList(authorityAdmin)));
-		repositoryUser.save(user);
 	}
 
 }
