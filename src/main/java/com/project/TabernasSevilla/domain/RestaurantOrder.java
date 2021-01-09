@@ -48,7 +48,7 @@ public class RestaurantOrder extends BaseEntity {
 
 	@NotNull
 	@Pattern(regexp = "^" + RestaurantOrder.OPEN + "|" + RestaurantOrder.CLOSED + "|" + RestaurantOrder.PLACED + "|" + RestaurantOrder.PREP + "|"
-			+ RestaurantOrder.READY + "|" + RestaurantOrder.STS_DELIVERY + "|" + RestaurantOrder.CANCELLED + "$")
+			+ RestaurantOrder.READY + "|" + RestaurantOrder.STS_DELIVERY + "|" + RestaurantOrder.CANCELLED + "|" + RestaurantOrder.DRAFT+ "$")
 	private String status;
 
 	public List<String> getTypes(){

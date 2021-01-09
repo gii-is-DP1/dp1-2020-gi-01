@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.criteria.Order;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,8 +101,10 @@ public class OrderService {
 		order.setActor(actor);
 		order.setDish(new ArrayList<Dish>());
 		order.setEstablishment(est);
+		order.setType(RestaurantOrder.DELIVERY);
 		order.setStatus(RestaurantOrder.DRAFT);
-		return order;
+		RestaurantOrder saved = this.save(order);
+		return saved;
 	}
 	
 	//online type order

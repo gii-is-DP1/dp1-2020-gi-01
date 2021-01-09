@@ -52,7 +52,7 @@ public class OrderController {
 		
 		List<Dish> dishes = this.dishService.findAll();
 		model.addAttribute("dishes", dishes);
-
+		model.addAttribute("establishment",order.getEstablishment());
 		model.addAttribute("order", order);
 		return "order/edit";
 	}
