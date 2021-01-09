@@ -31,7 +31,8 @@ public class Establishment extends BaseEntity {
 
 	@URL
 	private String picture;
-	
+	@NotBlank
+	private String address;
 	@NotBlank @Min(1)
 	private Integer capacity;
 	@NotBlank

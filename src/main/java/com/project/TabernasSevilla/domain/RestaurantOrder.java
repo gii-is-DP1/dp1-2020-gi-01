@@ -28,7 +28,7 @@ public class RestaurantOrder extends BaseEntity {
 
 	@ManyToOne(optional=false,fetch=FetchType.LAZY)
 	private Actor actor;
-	@ManyToOne(optional=false,fetch=FetchType.LAZY)
+	@ManyToOne(optional=false,fetch=FetchType.EAGER)
 	private Establishment establishment;
 	@ManyToOne(optional=true,fetch=FetchType.EAGER)
 	private RestaurantTable table;

@@ -6,7 +6,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import javax.persistence.criteria.Order;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -115,10 +114,36 @@ public class OrderService {
 		return saved;
 	}
 	
+	public Boolean checkOwnership(RestaurantOrder order) {
+		return order.getActor().getId() == this.actorService.getPrincipal().getId();
+	}
+	
+	public RestaurantOrder contextualSave(RestaurantOrder order) {
+		switch(order.getType()) {
+		case RestaurantOrder.EAT_IN:
+			Assert.isTrue(this.userService.principalHasAnyAuthority(Arrays.asList("WAITER","COOK","MANAGER","ADMIN")),"Cannot save type of order: not an employee");
+			return this.openOrder(order);
+		case RestaurantOrder.DELIVERY:
+			Assert.isTrue(!order.getAddress().isBlank() && order.getAddress()!=null,"Order needs an address for delivery");
+			return this.placeOrder(order);
+		default:
+			return this.placeOrder(order);
+		}
+	}
+	
+	public Double calculateTotal(RestaurantOrder order) {
+		Double res = 0d;
+		for(Dish d: order.getDish()) {
+			res = res + d.getPrice();
+		}
+		return res;
+	}
+	
 	//online type order
 	public RestaurantOrder placeOrder(RestaurantOrder order) {
+		order.getActor();
 		Assert.isTrue(!order.getType().equals("EAT-IN"),"Cannot place this type of order");
-		Assert.isTrue(order.getActor().equals(this.actorService.getPrincipal()),"Cannot place order for someone else");
+		Assert.isTrue(order.getActor().getId()==this.actorService.getPrincipal().getId(),"Cannot place order for someone else");
 		order.setStatus(RestaurantOrder.PLACED);
 		//log order placed
 		this.orderLogService.log(order, order.getStatus());

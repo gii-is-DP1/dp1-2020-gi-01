@@ -54,7 +54,11 @@
 				</ul>
 				<ul class="navbar-nav ">
 					<!-- only show if authenticated -->
-
+					<li class="nav-item active" sec:authorize="isAuthenticated()">
+					<a class="nav-link" th:href="@{/order/}">
+							<i class="fa fa-shopping-cart"></i>
+					</a>
+					</li>
 					<li class="nav-item dropdown" sec:authorize="isAuthenticated()">
 						<!-- display username --> <a sec:authentication="name"
 						class="nav-link dropdown-toggle" role="button"
