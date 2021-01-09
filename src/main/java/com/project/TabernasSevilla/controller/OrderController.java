@@ -71,6 +71,21 @@ public class OrderController {
 			return "order/edit";
 		}
 	}
+	
+	@GetMapping("/{orderId}/remove/{dishId}")
+	public String removeDish(Model model, @PathVariable("orderId") int orderId, @PathVariable("dishId") int dishId) {
+		try {
+			RestaurantOrder order = this.orderService.findById(orderId).get();
+			Dish dish = this.dishService.findById(dishId).get();
+			this.orderService.removeDish(order, dish);
+			return "redirect:/order/";
+		} catch (Throwable t) {
+			List<Dish> dishes = this.dishService.findAll();
+			model.addAttribute("dishes", dishes);
+			model.addAttribute("message", t.getMessage());
+			return "order/edit";
+		}
+	}
 
 	@GetMapping("/closed")
 	public String listInactive(Model model) {

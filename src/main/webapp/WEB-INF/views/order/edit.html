@@ -98,7 +98,7 @@
 											<th></th>
 											<th>Name</th>
 											<th>Price</th>
-
+											<th></th>
 										</tr>
 									</thead>
 									<tbody>
@@ -115,6 +115,12 @@
 
 												<!-- PRICE -->
 												<td th:inline="text">[[${dish.price}]]€</td>
+												
+												<!-- REMOVE -->
+												<td>
+													<a th:href="@{'/order/'+${order.id}+'/remove/'+${dish.id}}"><i
+													class="fa fa-times" aria-hidden="true"></i></a>
+												</td>
 											</tr>
 										</th:block>
 									</tbody>

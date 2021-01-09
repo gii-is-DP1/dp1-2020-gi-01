@@ -80,6 +80,14 @@ public class OrderService {
 		return saved;
 	}
 	
+	public RestaurantOrder removeDish(RestaurantOrder order, Dish dish) {
+		Assert.isTrue(order.getStatus().equals(RestaurantOrder.DRAFT) || order.getStatus().equals(RestaurantOrder.OPEN),"Cannot remove dish from order");
+		List<Dish> dishes = order.getDish();
+		dishes.remove(dish);
+		RestaurantOrder saved = this.save(order);
+		return saved;
+	}
+	
 	public RestaurantOrder findDraftByPrincipal(){
 		Actor actor = this.actorService.getPrincipal();
 		return this.findDraftByActor(actor);
