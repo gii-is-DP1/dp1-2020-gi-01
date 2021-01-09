@@ -72,7 +72,7 @@
 											<!-- RESERVATION -->
 											<td>
 												<select name="bookingId" th:form="form + ${table.id}">
-													<option th:if="${table.booking != null}" th:value="${table.booking.reservationDate}"></option>
+													<option th:if="${table.booking != null}" th:value="${table.booking.id}" th:utext="${table.booking.reservationDate}"></option>
 													<option th:if="${table.booking != null}" value="">--</option>
 													<option th:if="${table.booking == null}" value="">--</option>
 													<option th:each="booking : ${bookings}"
