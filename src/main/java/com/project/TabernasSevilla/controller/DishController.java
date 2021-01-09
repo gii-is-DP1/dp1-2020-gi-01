@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.project.TabernasSevilla.domain.Dish;
+import com.project.TabernasSevilla.domain.Review;
+import com.project.TabernasSevilla.repository.ReviewRepository;
 import com.project.TabernasSevilla.service.DishService;
 
 @Controller
@@ -24,12 +26,17 @@ public class DishController extends AbstractController {
 
 	@Autowired
 	private DishService dishService;
+	
+	@Autowired
+	private ReviewRepository reviewRepo;
 
 	@GetMapping(path = "/{dishId}")
 	public String showDishInfo(@PathVariable("dishId") int dishId, Model model) {
 		String view = "dishes/dishInfo"; // vista a la que pasamos la informacion
 		Dish dish = dishService.findById(dishId).get(); // plato en concreto, con toda su información
 		model.addAttribute("dish", dish);
+		List<Review> reviews = reviewRepo.findByDish(dishId);
+		model.addAttribute("reviews", reviews);
 		return view;
 	}
 

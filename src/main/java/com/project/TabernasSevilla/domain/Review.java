@@ -1,38 +1,49 @@
 package com.project.TabernasSevilla.domain;
 
 
-import java.time.LocalDateTime;
-
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Review extends BaseEntity {
-	@ManyToOne
-	private Booking booking;
-	@ManyToOne
+//@Table(name = "review")
+public class Review extends BaseEntity{
+ 
+    @ManyToOne(fetch = FetchType.LAZY,optional=false)
+	private Actor actor;
+    
+    @ManyToOne(fetch = FetchType.LAZY,optional=false)
 	private Dish dish;
-	
-	private String title;
-
-	private String description;
-
-	@Min(1) @Max(5) @NotNull
-	private Integer score;
-	
-	@NotNull
-	private LocalDateTime date;
+    
+ 
+    @Column(name = "comment", nullable = false, length = 1000)
+    private String comment;
+ 
+    @Column(name = "rating", nullable = true)
+    private int rating;
+    
+    /*
+    @ManyToOne
+    @JoinColumn(name = "product", nullable = false)
+    private Product product;
+ 
+    @Column(name = "created", nullable = true)
+    private Date created;    
+ 
+    @PrePersist
+      protected void onCreate() {
+        created = new Date();
+      }
+ 	*/
+    //getters and setters
+//toString method
+ 
 }

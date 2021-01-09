@@ -2,7 +2,6 @@ package com.project.TabernasSevilla.domain;
 
 import java.util.List;
 
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
@@ -20,7 +19,9 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+
 public class Dish extends BaseEntity {
+
 	@NotBlank
 	private String name;
 	private String description;
@@ -31,5 +32,8 @@ public class Dish extends BaseEntity {
 	private Double score;
 	@ManyToMany(fetch = FetchType.EAGER)
 	private List<Allergen> allergens;
+	
+	//@OneToMany
+	//private List<Review> reviews;
 
 }

@@ -12,6 +12,6 @@ public interface ReviewRepository extends JpaRepository<Review,Integer>{
 	@Query("SELECT r FROM Review r WHERE r.dish.id = ?1")
 	public List<Review> findByDish(int dishId);
 	
-	@Query("SELECT r FROM Review r WHERE r.booking.establishment.id = ?1")
-	public List<Review> findByEstablishment(int establishmentId);
+	//@Query("SELECT r FROM Review r WHERE r.booking.establishment.id = ?1")
+	//public List<Review> findByEstablishment(int establishmentId);
 }
