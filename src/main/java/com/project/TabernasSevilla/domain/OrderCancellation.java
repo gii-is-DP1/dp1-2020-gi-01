@@ -22,7 +22,7 @@ import lombok.Setter;
 public class OrderCancellation extends BaseEntity {
 
 	@OneToOne(fetch = FetchType.LAZY)
-	private Order order;
+	private RestaurantOrder order;
 	@NotNull
 	private LocalDateTime placementDate;
 	@NotBlank

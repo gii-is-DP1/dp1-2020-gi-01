@@ -13,6 +13,7 @@ import com.project.TabernasSevilla.forms.ActorForm;
 import com.project.TabernasSevilla.forms.RegisterForm;
 import com.project.TabernasSevilla.repository.AbstractActorRepository;
 import com.project.TabernasSevilla.security.Authority;
+import com.project.TabernasSevilla.security.User;
 import com.project.TabernasSevilla.security.UserService;
 
 @Service
@@ -85,6 +86,8 @@ public class ActorService {
 			this.customerService.register(form);
 		}
 	}
+	
+	
 	
 	public Actor getPrincipal() {
 		return this.findByUsername(this.userService.getPrincipal().getUsername());

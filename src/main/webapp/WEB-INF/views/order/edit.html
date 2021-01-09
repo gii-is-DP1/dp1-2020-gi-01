@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+<meta charset="ISO-8859-1">
+<head>
+<th:block th:include="fragments/common :: head(title='Location')"></th:block>
+</head>
+<body>
+	<th:block th:include="fragments/common :: navbar"></th:block>
+	<div class="container">
+		<div class="card">
+			<div class="container-fliud">
+				<div class="wrapper row">
+					<div class="preview col-md-6">
+						<div class="wrapper row">
+							<b>Dishes</b>
+						</div>
+						<div class="wrapper row">
+							<table class="table">
+								<thead>
+									<tr>
+										<th></th>
+										<th>Name</th>
+										<th>Score</th>
+										<th>Price</th>
+										<th></th>
+									</tr>
+								</thead>
+								<tbody>
+									<th:block th:each="dish : ${dishes}">
+										<tr>
+											<!-- IMAGE -->
+											<td>
+												<div style="width: 140px;">
+													<img class="img-thumbnail" th:src="${dish.picture}" />
+												</div>
+											</td>
+											<!-- NAME -->
+											<td th:inline="text"><b>[[${dish.name}]]</b></td>
+											<!-- SCORE -->
+											<td>
+												<div
+													th:replace="fragments/score :: stars(score=${dish.score})"></div>
+											</td>
+											<!-- PRICE -->
+											<td th:inline="text">[[${dish.price}]]€</td>
+											<!-- ADD TO ORDER -->
+											<td><a
+												th:href="@{'/order/'+${order.id}+'/add/'+${dish.id}}"
+												role="button" class="btn btn-secondary" aria-pressed="true">Add</a>
+											</td>
+										</tr>
+									</th:block>
+								</tbody>
+							</table>
+						</div>
+
+
+					</div>
+					<div class="details col-md-6">
+						<form method="post" th:action="@{/order/save}" id="orderForm"
+							th:object="${order}">
+							<div class="wrapper row">
+								<b|>Your order</b>
+							</div>
+							<!-- ID  & OTHER STUFF-->
+							<input type="hidden" name="id" th:field="*{id}"> <input
+								type="hidden" name="actor" th:field="*{actor}"> <input
+								type="hidden" name="status" th:field="*{status}"><input
+								type="hidden" name="dish" th:field="*{dish}">
+
+							<!-- ESTABLISHMENT -->
+							<input type="hidden" name="establishment"
+								th:field="*{establishment}">
+							<div class="wrapper row">
+								<a href="">[[${establishment.title}]]</a>
+							</div>
+
+							<!-- TYPE -->
+							<div class="wrapper row">
+								<select name="type" id="type" form="orderForm">
+									<option th:each="typeStr : ${order.getOnlineTypes()}"
+										th:value="${typeStr}" th:utext="${typeStr}" />
+								</select>
+							</div>
+
+							<!-- ADDRESS -->
+							<div class="wrapper row">
+								<input type="text" name="address" th:value="*{address}" />
+							</div>
+
+							<!-- DISHES -->
+							<div class="wrapper row">
+								<table class="table">
+									<thead>
+										<tr>
+											<th></th>
+											<th>Name</th>
+											<th>Price</th>
+
+										</tr>
+									</thead>
+									<tbody>
+										<th:block th:each="dish : ${order.dish}">
+											<tr>
+												<!-- IMAGE -->
+												<td>
+													<div style="width: 140px;">
+														<img class="img-thumbnail" th:src="${dish.picture}" />
+													</div>
+												</td>
+												<!-- NAME -->
+												<td th:inline="text"><b>[[${dish.name}]]</b></td>
+
+												<!-- PRICE -->
+												<td th:inline="text">[[${dish.price}]]€</td>
+											</tr>
+										</th:block>
+									</tbody>
+								</table>
+							</div>
+							
+							<!-- SUBMIT -->
+							<div class="wrapper row">
+							
+							</div>
+							
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

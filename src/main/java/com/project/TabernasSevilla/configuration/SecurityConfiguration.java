@@ -23,7 +23,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		http
 			.authorizeRequests()
 			.antMatchers("/resources/**").permitAll()
-			.antMatchers("/**").permitAll()
 			.antMatchers("/register/**").permitAll()
 			.antMatchers("/register/").permitAll()
 			.antMatchers("/customer/**").hasAuthority("CUSTOMER")
@@ -34,6 +33,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 			.antMatchers("/waiter/**").hasAuthority("WAITER")
 			.antMatchers("/table/**").hasAnyAuthority("ADMIN","MANAGER","WAITER")
 			.antMatchers("/booking/**").authenticated()
+			.antMatchers("/order/**").permitAll()
+			.antMatchers("/**").permitAll()
 			.anyRequest().authenticated();
 		http
 	 		.formLogin()

@@ -33,10 +33,10 @@ public class UserService implements UserDetailsService {
 	}
 
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException{
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		User appUser = userRepo.findByUsername(username);
-		if (appUser == null) { 
-			throw new  UsernameNotFoundException(username); 
+		if (appUser == null) {
+			throw new UsernameNotFoundException(username);
 		}
 
 		List<GrantedAuthority> grantList = new ArrayList<>();
@@ -46,7 +46,8 @@ public class UserService implements UserDetailsService {
 			grantList.add(grantedAuthority);
 		}
 
-		UserDetails user = (UserDetails) new org.springframework.security.core.userdetails.User(appUser.getUsername(), appUser.getPassword(), grantList);
+		UserDetails user = (UserDetails) new org.springframework.security.core.userdetails.User(appUser.getUsername(),
+				appUser.getPassword(), grantList);
 		return user;
 
 	}
@@ -70,6 +71,30 @@ public class UserService implements UserDetailsService {
 		return user;
 	}
 
+	public Boolean principalHasAuthority(String authority) {
+		User user = this.getPrincipal();
+		Authority auth = this.authService.findByName(authority);
+		if (user.getAuthorities().contains(auth)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public Boolean principalHasAnyAuthority(List<String> authority) {
+		Boolean res = true;
+		User user = this.getPrincipal();
+		for (String s : authority) {
+			Authority auth = this.authService.findByName(s);
+			if (!user.getAuthorities().contains(auth)) {
+				res = false;
+				break;
+			}
+
+		}
+		return res;
+	}
+
 	public User getPrincipal() {
 		User result;
 		SecurityContext context;
@@ -83,7 +108,7 @@ public class UserService implements UserDetailsService {
 		principal = authentication.getPrincipal();
 		org.springframework.security.core.userdetails.User secUser = (org.springframework.security.core.userdetails.User) principal;
 		result = this.userRepo.findByUsername(secUser.getUsername());
-		
+
 		Assert.notNull(result, "Error on getPrincipal: error on casting");
 
 		return result;

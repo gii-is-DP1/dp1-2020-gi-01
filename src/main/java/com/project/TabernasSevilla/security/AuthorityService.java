@@ -21,7 +21,7 @@ public class AuthorityService {
 
 	// Values -----------------------------------------------------------------
 
-	public static final Set<String> authorities = new HashSet<>(Arrays.asList("CUSTOMER", "ADMIN"));
+	public static final Set<String> authorities = new HashSet<>(Arrays.asList("CUSTOMER", "ADMIN","COOK","WAITER","MANAGER"));
 
 
 	public Authority saveAuthority(Authority authority) {

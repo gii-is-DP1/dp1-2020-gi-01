@@ -37,6 +37,10 @@
 						<div class="p-1">
 							<a th:href="@{/dishes/list}" role="button" class="btn btn-secondary" aria-pressed="true">View menu</a>
 						</div>
+						<!-- ORDER -->
+						<div class="p-1">
+							<a th:href="@{/order/est/{id}(id=${establishment.id})}" role="button" class="btn btn-secondary" aria-pressed="true">Place an order</a>
+						</div>
 						
 						<!-- RESERVATION -->
 						<div class="p-1">
