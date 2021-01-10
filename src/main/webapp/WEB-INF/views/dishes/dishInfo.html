@@ -74,6 +74,43 @@
 
 						</div>
 						
+						<div>
+						<a>Write your own review (must be logged in)</a>
+						<form enctype="multipart/form-data" th:action="@{/dishes/savecomment/{dishId}(dishId=${dish.id})}"
+								role="form" method="post">
+								
+								<label for="rating"> Rating </label>
+								<input type="number" size="4" class="form-control"
+								placeholder="1" name="rating" min="1" max="5" th:field="${reviewComment.rating}">
+								<ul>
+									<li th:each="err : ${#fields.errors('reviewComment.rating')}" th:text="${err}" />
+								</ul>
+								
+								
+								<label for="comment">Comment:</label> <input id="comment" name="comment"
+									type="text" th:field="${reviewComment.comment}" placeholder="Write a review">
+									<ul>
+									<li th:each="err : ${#fields.errors('reviewComment.comment')}" th:text="${err}" />
+								</ul>
+								
+								<input type="hidden"
+										name="actor" th:field="${reviewComment.actor}" th:text="${#authentication.getPrincipal().authorities}">
+										<!-- lo coge bien pero no le estoy pasando el objecto exactamente  --> 
+										<ul>
+									<li th:each="err : ${#fields.errors('reviewComment.actor')}" th:text="${err}" />
+								</ul>
+										
+								<input type="text" name="dish" th:name="${reviewComment.dish}" th:id="${reviewComment.dish}" th:value="${dish}"/>
+								<ul>
+									<li th:each="err : ${#fields.errors('reviewComment.dish')}" th:text="${err}" />
+								</ul>
+								
+								
+								<input type="submit" size="5" name="save" value="Post review" />
+								
+								</form>
+						</div>
+						
 						<div class="table">
 							<a>    Reviews:</a> <br>
 								<div th:each="review :${reviews}">

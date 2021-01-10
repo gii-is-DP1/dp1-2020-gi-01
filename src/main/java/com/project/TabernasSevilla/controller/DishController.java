@@ -27,6 +27,9 @@ public class DishController extends AbstractController {
 	@Autowired
 	private DishService dishService;
 	
+	@Autowired 
+	private ReviewRepository repoReview;
+	
 	@Autowired
 	private ReviewRepository reviewRepo;
 
@@ -37,6 +40,8 @@ public class DishController extends AbstractController {
 		model.addAttribute("dish", dish);
 		List<Review> reviews = reviewRepo.findByDish(dishId);
 		model.addAttribute("reviews", reviews);
+		
+		model.addAttribute("reviewComment", new Review());
 		return view;
 	}
 
@@ -65,6 +70,25 @@ public class DishController extends AbstractController {
 			dishService.save(dish);
 			model.addAttribute("message", "Dish successfully saved");
 			view = dishList(model);
+		}
+		return view;
+	}
+	@PostMapping(path = "/savecomment/{dishId}")
+	public String saveComment(@Valid Review review, BindingResult result, Model model, @PathVariable("dishId") String dishId) {
+		String view = "redirect:/dishes/" + dishId;
+		if (result.hasErrors()) {
+			System.out.println("::::::::::::::::Bueno amigo algo has hecho mal ::::::::::::::::::::");
+			System.out.println("comment de review: "+review.getComment());
+			System.out.println("rating: "+ review.getRating());
+			System.out.println("actor: "+ review.getActor().getUser().getUsername());
+			//System.out.println("dish id: " + review.getDish().getId());
+			
+		
+			return "redirect:/dishes/" + dishId;
+		} else {
+			repoReview.save(review);
+			//model.addAttribute("message", "Dish successfully saved");
+			view = "redirect:/dishes/" + dishId;
 		}
 		return view;
 	}
