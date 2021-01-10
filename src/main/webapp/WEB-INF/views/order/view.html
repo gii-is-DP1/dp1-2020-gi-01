@@ -61,7 +61,7 @@
 							</div>
 						</div>
 						<div class="wrapper row" th:if="${order.status !='DRAFT'}">
-							<span th:inline="text">Current status: <b>[[${order.status}]]</b></span>
+							<span th:inline="text">Current status: <b>[[${order.status}]]</b></span>&nbsp;-&nbsp;<span th:if="${cancel}" th:text="${cancel.reason}"></span>
 						</div>
 						<div class="wrapper row" th:if="${order.status =='DRAFT'}">
 							<div class="col">
