@@ -17,7 +17,7 @@ public class ContactServiceTest {
 	
 	protected ContactService contactService;
 
-	//This is a testing class for ContactService that stores the curriculums of the people who want to apply for a job at Tavernas Sevilla
+	//This is a testing class for ContactService that stores the curriculums of the people who want to apply for a job at Tabernas Sevilla
 	// found in "Work with us!"
 	@Test
 	public void shouldCreateAnInstanceCorrectly() {
@@ -28,7 +28,6 @@ public class ContactServiceTest {
 		try {
 			this.contactService.save(cv);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			Logger.getLogger(ContactServiceTest.class.getName()).log(Level.SEVERE, null, e);
 			e.printStackTrace();
 		}
