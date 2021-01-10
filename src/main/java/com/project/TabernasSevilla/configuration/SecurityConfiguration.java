@@ -33,7 +33,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 			.antMatchers("/waiter/**").hasAuthority("WAITER")
 			.antMatchers("/table/**").hasAnyAuthority("ADMIN","MANAGER","WAITER")
 			.antMatchers("/booking/**").authenticated()
-			.antMatchers("/order/**").permitAll()
+			.antMatchers("/order/**").authenticated()
 			.antMatchers("/**").permitAll()
 			.anyRequest().authenticated();
 		http
