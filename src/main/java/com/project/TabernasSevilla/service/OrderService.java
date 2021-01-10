@@ -92,6 +92,15 @@ public class OrderService {
 		return this.findDraftByActor(actor);
 	}
 	
+	public List<RestaurantOrder> findActiveByEstablishment(Establishment est){
+		return this.orderRepo.findActiveByEstablishment(est.getId());
+	}
+	
+	public List<RestaurantOrder> findInactiveByEstablishment(Establishment est){
+		return this.orderRepo.findInactiveByEstablishment(est.getId());
+	}
+	
+	
 	public List<RestaurantOrder> findActiveByPrincipal(){
 		Actor actor = this.actorService.getPrincipal();
 		return this.orderRepo.findActiveByActor(actor.getId());
@@ -165,11 +174,6 @@ public class OrderService {
 	}
 	
 	public RestaurantOrder cancelOrder(RestaurantOrder order) {
-		if(this.userService.principalHasAuthority("CUSTOMER")) {
-			Assert.isTrue(order.getActor().equals(this.actorService.getPrincipal()),"Cannot cancel order for someone else");
-		}else {
-			Assert.isTrue(this.userService.principalHasAnyAuthority(Arrays.asList("ADMIN","MANAGER","COOK","WAITER")),"Cannot cancel order");
-		}
 		order.setStatus(RestaurantOrder.CANCELLED);
 		//log order cancellation
 		this.orderLogService.log(order, order.getStatus());

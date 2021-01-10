@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+<title>Spring Boot User Authentication</title>
+<th:block th:include="fragments/common :: head"></th:block>
+</head>
+<body>
+	<th:block th:include="fragments/common :: navbar"></th:block>
+
+
+	<div class="container">
+		<div class="d-flex justify-content-center h-100">
+			<div class="card">
+				<div class="card-header">
+					<h3>Cancel order?</h3>
+				</div>
+				<div class="card-body">
+					<div>
+						<span th:text="${message}"></span>
+					</div>
+					<!-- EMPLOYEE CANCELLATION -->
+					<div th:if="${cancel.reason == null}">
+						<form role="cancel" th:action="@{/order/cancel/save}" th:method="post"
+							th:object="${cancel}" id="cancelForm">
+							<input type="hidden" name="id" th:field="*{id}">
+							<input type="hidden" name="order" th:field="*{order}">
+							<input type="hidden" name="placementDate" th:field="*{placementDate}">
+							
+							<input type="text" name="reason" th:field="*{reason}" th:value="*{reason}">
+							
+							<div class="wrapper row">
+								<input type="submit" value="Cancel"
+									class="btn float-right login_btn">
+							</div>
+							
+							</form>
+					</div>
+					<!-- OWNER CANCELLATION -->
+					<div th:if="${cancel.reason != null}">
+						<form role="cancel" th:action="@{/order/cancel/save}" th:method="post"
+							th:object="${cancel}" id="cancelForm">
+							<input type="hidden" name="id" th:field="*{id}">
+							<input type="hidden" name="order" th:field="*{order}">
+							<input type="hidden" name="reason" th:field="*{reason}">
+							<input type="hidden" name="placementDate" th:field="*{placementDate}">
+							
+							<div class="wrapper row">
+								<input type="submit" value="Cancel"
+									class="btn float-right login_btn">
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</body>
+</html>

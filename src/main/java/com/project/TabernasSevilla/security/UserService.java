@@ -82,12 +82,12 @@ public class UserService implements UserDetailsService {
 	}
 
 	public Boolean principalHasAnyAuthority(List<String> authority) {
-		Boolean res = true;
+		Boolean res = false;
 		User user = this.getPrincipal();
 		for (String s : authority) {
 			Authority auth = this.authService.findByName(s);
-			if (!user.getAuthorities().contains(auth)) {
-				res = false;
+			if (user.getAuthorities().contains(auth)) {
+				res = true;
 				break;
 			}
 
