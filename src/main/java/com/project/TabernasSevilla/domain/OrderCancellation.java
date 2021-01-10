@@ -1,6 +1,7 @@
 package com.project.TabernasSevilla.domain;
 
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
@@ -24,7 +25,7 @@ public class OrderCancellation extends BaseEntity {
 	@OneToOne(fetch = FetchType.LAZY)
 	private RestaurantOrder order;
 	@NotNull
-	private LocalDateTime placementDate;
+	private Instant placementDate;
 	@NotBlank
 	private String reason;
 }
