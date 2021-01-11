@@ -8,8 +8,7 @@
 	<link th:href="@{/css/index.css}" rel="stylesheet" />
 	<link th:rel="stylesheet"
 		th:href="@{/css/bootstrap/bootstrap.min.css} " />
-	<link th:rel="stylesheet"
-		th:href="@{/css/custom/fix.css} " />
+	<link th:rel="stylesheet" th:href="@{/css/custom/fix.css} " />
 	<link
 		href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css"
 		rel="stylesheet" type="text/css" />
@@ -40,23 +39,24 @@
 						class="nav-link dropdown-toggle" th:href="@{/}" role="button"
 						data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							Locations </a> <!-- Location list -->
-						<div class="dropdown-menu"
-							th:each="loc: ${@establishmentService.findAll()}">
-							<a class="dropdown-item"
-								th:href="@{/location/view?id={id}(id=${loc.id})}"
-								th:text="${loc.title}"></a>
+						<div class="dropdown-menu">
+							
+								<a th:each="loc: ${@establishmentService.findAll()}" class="dropdown-item"
+									th:href="@{/location/view?id={id}(id=${loc.id})}"
+									th:text="${loc.title}"></a>
+						
 						</div></li>
 					<li class="nav-item "><a class="nav-link"
 						th:href="@{/contact/init}"> Work with us </a></li>
-						
-						<li class="nav-item "><a class="nav-link"
+
+					<li class="nav-item "><a class="nav-link"
 						th:href="@{/promotions}"> Promotions </a></li>
 				</ul>
 				<ul class="navbar-nav ">
 					<!-- only show if authenticated -->
 					<li class="nav-item active" sec:authorize="isAuthenticated()">
-					<a class="nav-link" th:href="@{/order/}">
-							<i class="fa fa-shopping-cart"></i>
+						<a class="nav-link" th:href="@{/order/}"> <i
+							class="fa fa-shopping-cart"></i>
 					</a>
 					</li>
 					<li class="nav-item dropdown" sec:authorize="isAuthenticated()">
@@ -66,16 +66,19 @@
 					</a>
 						<div class="dropdown-menu dropdown-menu-right">
 							<!-- link to profile -->
-							<a class="dropdown-item" href="#">Profile</a> 
-							<a class="dropdown-item" th:href="@{/booking/}">My reservations</a>
+							<a class="dropdown-item" href="#">Profile</a> <a
+								class="dropdown-item" th:href="@{/booking/}">My reservations</a>
 							<a class="dropdown-item" th:href="@{/order/open}">My orders</a>
 							<!-- TABLE ACTIONS -->
-							
-							
+
+
 							<!-- ADMIN ACTIONS -->
-							<div sec:authorize="hasAuthority('ADMIN')" class="dropdown-divider"></div>
-							<a class="dropdown-item" sec:authorize="hasAuthority('ADMIN')" href="#">Control panel</a>
-							<a class="dropdown-item" sec:authorize="hasAuthority('ADMIN')" th:href="@{/admin/employees/key}">Employees</a>
+							<div sec:authorize="hasAuthority('ADMIN')"
+								class="dropdown-divider"></div>
+							<a class="dropdown-item" sec:authorize="hasAuthority('ADMIN')"
+								href="#">Control panel</a> <a class="dropdown-item"
+								sec:authorize="hasAuthority('ADMIN')"
+								th:href="@{/admin/employees/key}">Employees</a>
 							<div class="dropdown-divider"></div>
 							<!-- logout action -->
 							<a class="dropdown-item" th:href="@{/logout}">Logout</a>
@@ -111,9 +114,8 @@
     <a href="#">    Torneo</a>
     <a href="#">    Nervi�n</a>
     <a href="#">    Arenal</a>  -->
-			<a href="#">Menu</a> 
-			<a th:href="@{/booking/init}">Booking</a> 
-			<a th:href="@{/contact/init}">Contact</a>
+			<a href="#">Menu</a> <a th:href="@{/booking/init}">Booking</a> <a
+				th:href="@{/contact/init}">Contact</a>
 
 
 

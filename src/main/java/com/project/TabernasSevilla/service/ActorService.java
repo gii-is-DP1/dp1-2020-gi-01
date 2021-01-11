@@ -74,12 +74,16 @@ public class ActorService {
 			switch(auth.getAuthority()) {
 			case "MANAGER":
 				this.managerService.register(form);
+				break;
 			case "ADMIN":
 				this.adminService.register(form);
+				break;
 			case "WAITER":
 				this.waiterService.register(form);
+				break;
 			case "COOK":
 				this.cookService.register(form);
+				break;
 			}
 				
 		}else {

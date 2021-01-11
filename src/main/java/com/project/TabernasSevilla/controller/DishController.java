@@ -10,14 +10,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.project.TabernasSevilla.domain.Actor;
 import com.project.TabernasSevilla.domain.Dish;
 import com.project.TabernasSevilla.domain.Review;
 import com.project.TabernasSevilla.repository.ReviewRepository;
+import com.project.TabernasSevilla.service.ActorService;
 import com.project.TabernasSevilla.service.DishService;
 
 @Controller
@@ -26,6 +29,9 @@ public class DishController extends AbstractController {
 
 	@Autowired
 	private DishService dishService;
+	
+	@Autowired
+	private ActorService actorService;
 	
 	@Autowired 
 	private ReviewRepository repoReview;
@@ -40,8 +46,9 @@ public class DishController extends AbstractController {
 		model.addAttribute("dish", dish);
 		List<Review> reviews = reviewRepo.findByDish(dishId);
 		model.addAttribute("reviews", reviews);
+		Review rev = new Review();
 		
-		model.addAttribute("reviewComment", new Review());
+		model.addAttribute("reviewComment", rev);
 		return view;
 	}
 
@@ -74,14 +81,26 @@ public class DishController extends AbstractController {
 		return view;
 	}
 	@PostMapping(path = "/savecomment/{dishId}")
-	public String saveComment(@Valid Review review, BindingResult result, Model model, @PathVariable("dishId") String dishId) {
+	public String saveComment(@Valid Review review, BindingResult result, Model model, @PathVariable("dishId") int dishId) {
 		String view = "redirect:/dishes/" + dishId;
+		Dish dish = dishService.findById(dishId).get();
+		//System.out.println(dish.getName());
+		
+		Actor actor = this.actorService.getPrincipal(); //usuario logeao
+		
+		review.setActor(actor);
+		review.setDish(dish);
+		
 		if (result.hasErrors()) {
 			System.out.println("::::::::::::::::Bueno amigo algo has hecho mal ::::::::::::::::::::");
 			System.out.println("comment de review: "+review.getComment());
 			System.out.println("rating: "+ review.getRating());
+			
+			System.out.println("dish id: " + review.getDish().getId());
 			System.out.println("actor: "+ review.getActor().getUser().getUsername());
-			//System.out.println("dish id: " + review.getDish().getId());
+			
+			List<ObjectError> errors = result.getAllErrors();
+	        for(int i=0;i<result.getErrorCount();i++){System.out.println("]]]]]]] error "+i+" is: "+errors.get(i).toString());}
 			
 		
 			return "redirect:/dishes/" + dishId;

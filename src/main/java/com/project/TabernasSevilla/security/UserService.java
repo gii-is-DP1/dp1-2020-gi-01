@@ -1,6 +1,7 @@
 package com.project.TabernasSevilla.security;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -63,7 +64,7 @@ public class UserService implements UserDetailsService {
 	public User createUser(final String authority) {
 		final User user = new User();
 
-		final Set<Authority> auths = user.getAuthorities();
+		final Set<Authority> auths = new HashSet<>();
 		final Authority auth = this.authService.findByName(authority);
 		auths.add(auth);
 

@@ -12,6 +12,7 @@ INSERT INTO ADMIN(id,version,avatar,email,name,phone_number,surname,username) VA
 
 INSERT INTO ESTABLISHMENT(id,version,title,description,picture,capacity,current_capacity,phone,opening_hours,score,address) VALUES (1,0,'Ristaurante 1','This is a test','https://image.tmdb.org/t/p/w780/nRBGsgG68OmgsZWaRbS5vjjsOBu.jpg',10,10,'123456788','8:30 - 18:00',3,'C/ Address 1');
 INSERT INTO ESTABLISHMENT(id,version,title,description,picture,capacity,current_capacity,phone,opening_hours,score,address) VALUES (2,0,'Arenal','Test full tavern','https://image.tmdb.org/t/p/w780/nRBGsgG68OmgsZWaRbS5vjjsOBu.jpg',10,0,'123456788','8:30 - 18:00',5,'C/ Address 1');
+INSERT INTO ESTABLISHMENT(id,version,title,description,picture,capacity,current_capacity,phone,opening_hours,score,address) VALUES (3,0,'McDonalds','This is a test','https://image.tmdb.org/t/p/w780/nRBGsgG68OmgsZWaRbS5vjjsOBu.jpg',10,10,'123456788','8:30 - 18:00',4,'C/ Address 1');
 
 INSERT INTO RESTAURANT_TABLE(id,version,establishment_id,number,seating,occupied,hour_seated) VALUES (1,0,1,1,8,0,null);
 INSERT INTO RESTAURANT_TABLE(id,version,establishment_id,number,seating,occupied,hour_seated) VALUES (2,0,1,2,9,0,null);
