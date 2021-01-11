@@ -1,6 +1,7 @@
 package com.project.TabernasSevilla.domain;
 
 import javax.persistence.Entity;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 import lombok.AllArgsConstructor;
@@ -15,6 +16,7 @@ public class Curriculum extends BaseEntity {
 	@NotBlank
 	private String fullName;	
 	@NotBlank
+	@Email
 	private String email;
 	
 	private String cv;

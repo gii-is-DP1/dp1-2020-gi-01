@@ -1,8 +1,6 @@
 package com.project.TabernasSevilla.domain;
 
 
-import java.time.LocalDateTime;
-
 import javax.persistence.Entity;
 import lombok.Data;
 
