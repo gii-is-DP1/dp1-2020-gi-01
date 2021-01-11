@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+<meta charset="ISO-8859-1">
+<head>
+<th:block th:include="fragments/common :: head(title='Location')"></th:block>
+</head>
+<body>
+	<th:block th:include="fragments/common :: navbar"></th:block>
+	<div class="container">
+		<div class="card">
+			<div class="container-fliud">
+				<div class="wrapper row">
+					<div class="preview col-md-6">
+
+
+						<img th:src="${establishment.picture}" class="img-fluid" />
+
+
+					</div>
+					<div class="details col-md-6">
+						<h3 class="product-title" th:text="${establishment.title}"></h3>
+						<!-- SCORE FRAGMENT -->
+						<div class="rating">
+							<div
+								th:replace="fragments/score :: stars(score=${establishment.score})"></div>
+							<span class="review-no">41 reviews</span>
+						</div>
+						<p class="product-description"
+							th:text="${establishment.description}"></p>
+						<h4>
+							CONTACT: <span th:text="${establishment.phone}"></span>
+						</h4>
+						
+						<!-- MENU -->
+						<div class="p-1">
+							<a th:href="@{/dishes/list}" role="button" class="btn btn-secondary" aria-pressed="true">View menu</a>
+						</div>
+						<!-- ORDER -->
+						<div class="p-1">
+							<a th:href="@{/order/est/{id}(id=${establishment.id})}" role="button" class="btn btn-secondary" aria-pressed="true">Place an order</a>
+						</div>
+						
+						<!-- RESERVATION -->
+						<div class="p-1">
+							<a th:href="@{/booking/init/{id}(id=${establishment.id})}" role="button" class="btn btn-secondary" aria-pressed="true">Make reservation</a>
+						</div>
+						
+						<div>
+							<span th:inline="text">[[${estimate}]]</span>
+						</div>
+						
+						<div>
+							<span th:inline="text">Current occupancy: [[${occupied}]]/[[${establishment.capacity}]]</span>
+						</div>
+						<div sec:authorize="hasAnyAuthority('ADMIN','MANAGER','WAITER')">
+							<a th:href="@{/table/establishment/{id}(id=${establishment.id})}">
+
+								Manage tables and reservations</a>
+						</div>
+						<div sec:authorize="hasAnyAuthority('ADMIN','MANAGER','WAITER')">
+							<a th:href="@{/order/est/{id}/list(id=${establishment.id})}">
+
+								View orders </a>
+						</div>
+						<div sec:authorize="hasAuthority('CUSTOMER')">
+							<a
+								th:href="@{/customer/setPreferred?id={id}(id=${establishment.id})}">
+
+								Set as preferred establishment </a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

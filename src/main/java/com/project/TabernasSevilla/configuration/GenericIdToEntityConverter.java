@@ -15,7 +15,7 @@ import org.springframework.core.convert.converter.ConditionalGenericConverter;
 import org.springframework.core.convert.support.DefaultConversionService;
 import org.springframework.stereotype.Component;
 
-import com.project.TabernasSevilla.model.BaseEntity;
+import com.project.TabernasSevilla.domain.BaseEntity;
 
 @Component()
 public final class GenericIdToEntityConverter implements ConditionalGenericConverter {

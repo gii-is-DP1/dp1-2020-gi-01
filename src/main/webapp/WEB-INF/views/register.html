@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+<title>Spring Boot User Authentication</title>
+<th:block th:include="fragments/common :: head"></th:block>
+</head>
+<body>
+	<th:block th:include="fragments/common :: navbar"></th:block>
+
+
+	<div class="container">
+		<div class="d-flex justify-content-center h-100">
+			<div class="card">
+				<div class="card-header">
+					<h3>Register</h3>
+				</div>
+
+				<div class="card-body">
+					<form role="form" th:action="@{/register/save}" th:method="post"
+						th:object="${registerForm}">
+
+<!-- 						<input type="hidden" id="key" name="key" th:field="*{key}"> -->
+						<!-- register key -->
+						<div class="row align-items-center remember">
+							<input type="checkbox" name="show-emp" onclick="showMe('enter-key')">
+							 Register as an employee
+						</div>
+						
+						<div class="input-group form-group" id="enter-key" style="display:none; ">
+							<input type="text" class="form-control" placeholder="registration key" minlength="4" maxlength="32"
+								name="key" th:field="*{key}" style="width:100%;">
+							<ul>
+								<li th:each="err : ${#fields.errors('key')}"
+									th:text="${err}" />
+							</ul>
+						</div>
+						<!-- USERNAME -->
+						<div class="input-group form-group">
+							
+							<input type="text" class="form-control" placeholder="username" minlength="4" maxlength="32"
+								name="username" th:field="*{username}">
+							<ul>
+								<li th:each="err : ${#fields.errors('username')}"
+									th:text="${err}" />
+							</ul>
+						</div>
+						<!-- PASSWORD -->
+						<div class="input-group form-group">
+							<input type="password" class="form-control" 
+								placeholder="password" name="password" th:field="*{password}">
+							<ul>
+								<li th:each="err : ${#fields.errors('password')}"
+									th:text="${err}" />
+							</ul>
+						</div>
+						<!-- NAME -->
+						<input type="hidden" id="id" name="id" th:field="*{form.id}">
+
+						<div class="input-group form-group">
+							<input type="text" class="form-control" placeholder="name" pattern="[a-zA-ZÃ Ã¡Ã¢Ã¤Ã£Ã¥Ä…Ä�Ä‡Ä™Ã¨Ã©ÃªÃ«Ä—Ä¯Ã¬Ã­Ã®Ã¯Å‚Å„Ã²Ã³Ã´Ã¶ÃµÃ¸Ã¹ÃºÃ»Ã¼Å³Å«Ã¿Ã½Å¼ÅºÃ±Ã§Ä�Å¡Å¾Ã€Ã�Ã‚Ã„ÃƒÃ…Ä„Ä†ÄŒÄ–Ä˜ÃˆÃ‰ÃŠÃ‹ÃŒÃ�ÃŽÃ�Ä®Å�ÅƒÃ’Ã“Ã”Ã–Ã•Ã˜Ã™ÃšÃ›ÃœÅ²ÅªÅ¸Ã�Å»Å¹Ã‘ÃŸÃ‡Å’Ã†ÄŒÅ Å½âˆ‚Ã° ,.'-]{2,64}"
+								name="name" th:field="*{form.name}">
+							<ul>
+								<li th:each="err : ${#fields.errors('form.name')}"
+									th:text="${err}" />
+							</ul>
+						</div>
+						<!-- SURNAME -->
+						<div class="input-group form-group">
+							<input type="text" class="form-control" placeholder="surname" pattern="[a-zA-ZÃ Ã¡Ã¢Ã¤Ã£Ã¥Ä…Ä�Ä‡Ä™Ã¨Ã©ÃªÃ«Ä—Ä¯Ã¬Ã­Ã®Ã¯Å‚Å„Ã²Ã³Ã´Ã¶ÃµÃ¸Ã¹ÃºÃ»Ã¼Å³Å«Ã¿Ã½Å¼ÅºÃ±Ã§Ä�Å¡Å¾Ã€Ã�Ã‚Ã„ÃƒÃ…Ä„Ä†ÄŒÄ–Ä˜ÃˆÃ‰ÃŠÃ‹ÃŒÃ�ÃŽÃ�Ä®Å�ÅƒÃ’Ã“Ã”Ã–Ã•Ã˜Ã™ÃšÃ›ÃœÅ²ÅªÅ¸Ã�Å»Å¹Ã‘ÃŸÃ‡Å’Ã†ÄŒÅ Å½âˆ‚Ã° ,.'-]{2,128}"
+								name="surname" th:field="*{form.surname}">
+							<ul>
+								<li th:each="err : ${#fields.errors('form.surname')}"
+									th:text="${err}" />
+							</ul>
+						</div>
+						<!-- EMAIL -->
+						<div class="input-group form-group">
+							<input type="email" pattern="^[a-zA-Z0-9.!#$%&â€™*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$" class="form-control" placeholder="email"
+								name="email" th:field="*{form.email}">
+							<ul>
+								<li th:each="err : ${#fields.errors('form.email')}"
+									th:text="${err}" />
+							</ul>
+						</div>
+						<!-- AVATAR -->
+						<div class="input-group form-group">
+							<input type="text" class="form-control" placeholder="avatar"
+								name="avatar" th:field="*{form.avatar}">
+							<ul>
+								<li th:each="err : ${#fields.errors('form.avatar')}"
+									th:text="${err}" />
+							</ul>
+						</div>
+						<!-- PHONE NUMBER -->
+						<div class="input-group form-group">
+							<input type="text" class="form-control" minlength="9" maxlength="9"
+								placeholder="Phone number" name="phoneNumber"
+								th:field="*{form.phoneNumber}">
+							<ul>
+								<li th:each="err : ${#fields.errors('form.phoneNumber')}"
+									th:text="${err}" />
+							</ul>
+						</div>
+						<div class="row align-items-center remember">
+							<input type="checkbox" th:field="*{acceptTerms}" required>
+							 Accept terms and conditions.
+						</div>
+
+						<div class="form-group">
+							<input type="submit" value="Register"
+								class="btn float-right login_btn">
+						</div>
+					</form>
+				</div>
+			</div>
+			<div>
+				<p th:text="${message}"></p>
+			</div>
+		</div>
+	</div>
+	<script th:src="@{/js/register.js}"></script>
+</body>
+</html>

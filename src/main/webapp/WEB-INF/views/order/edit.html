@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+<meta charset="ISO-8859-1">
+<head>
+<th:block th:include="fragments/common :: head(title='Location')"></th:block>
+</head>
+<body>
+	<th:block th:include="fragments/common :: navbar"></th:block>
+	<div class="container">
+		<div class="card">
+			<div class="container-fliud">
+				<div class="wrapper row">
+					<div class="preview col-md-6">
+						<div class="wrapper row">
+							<b>Dishes</b>
+						</div>
+						<div class="wrapper row">
+							<table class="table">
+								<thead>
+									<tr>
+										<th></th>
+										<th>Name</th>
+										<th>Score</th>
+										<th>Price</th>
+										<th></th>
+									</tr>
+								</thead>
+								<tbody>
+									<th:block th:each="dish : ${dishes}">
+										<tr>
+											<!-- IMAGE -->
+											<td>
+												<div style="width: 140px;">
+													<img class="img-thumbnail" th:src="${dish.picture}" />
+												</div>
+											</td>
+											<!-- NAME -->
+											<td th:inline="text"><b>[[${dish.name}]]</b></td>
+											<!-- SCORE -->
+											<td>
+												<div
+													th:replace="fragments/score :: stars(score=${dish.score})"></div>
+											</td>
+											<!-- PRICE -->
+											<td th:inline="text">[[${dish.price}]]€</td>
+											<!-- ADD TO ORDER -->
+											<td><a
+												th:href="@{'/order/'+${order.id}+'/add/'+${dish.id}}"
+												role="button" class="btn btn-secondary" aria-pressed="true">Add</a>
+											</td>
+										</tr>
+									</th:block>
+								</tbody>
+							</table>
+						</div>
+
+
+					</div>
+					<div class="details col-md-6">
+
+						<div class="wrapper row">
+							<b>Your order</b>
+						</div>
+						<!-- ID  & OTHER STUFF-->
+						
+						<!-- 							<ul> -->
+						<!-- 								<li th:each="err : ${#fields.errors('id')}" th:text="${err}" /> -->
+						<!-- 							</ul> -->
+						<!-- 							<input type="hidden" name="actor" th:field="*{actor}"> -->
+						<!-- 							<ul> -->
+						<!-- 								<li th:each="err : ${#fields.errors('actor')}" th:text="${err}" /> -->
+						<!-- 							</ul> -->
+						<!-- 							<input type="hidden" name="status" th:field="*{status}"> -->
+						<!-- 							<ul> -->
+						<!-- 								<li th:each="err : ${#fields.errors('status')}" th:text="${err}" /> -->
+						<!-- 							</ul> -->
+						<!-- 							<input type="hidden" name="dish" th:field="*{dish}"> -->
+						<!-- 							<ul> -->
+						<!-- 								<li th:each="err : ${#fields.errors('dish')}" th:text="${err}" /> -->
+						<!-- 							</ul> -->
+						<!-- 							<input type="hidden" name="table" th:field="*{table}"> -->
+						<!-- 							<ul> -->
+						<!-- 								<li th:each="err : ${#fields.errors('table')}" th:text="${err}" /> -->
+						<!-- 							</ul> -->
+
+						<!-- ESTABLISHMENT -->
+						<div class="wrapper row">
+							<a href="">[[${establishment.title}]]</a>
+						</div>
+						<form method="get" th:action="@{/order/checkout}" id="orderForm"
+							th:object="${order}">
+							
+							<input type="hidden" name="id" th:field="*{id}">
+							<!-- TYPE -->
+							<div class="wrapper row">
+								<select name="type" id="type" form="orderForm">
+									<option th:each="typeStr : ${order.getOnlineTypes()}"
+										th:value="${typeStr}" th:utext="${typeStr}" />
+								</select>
+								<ul>
+									<li th:each="err : ${#fields.errors('type')}" th:text="${err}" />
+								</ul>
+							</div>
+
+							<!-- ADDRESS -->
+							<div class="wrapper row">
+								<input type="text" name="address" th:value="*{address}" />
+								<ul>
+									<li th:each="err : ${#fields.errors('address')}"
+										th:text="${err}" />
+								</ul>
+							</div>
+
+							<!-- DISHES -->
+							<div class="wrapper row">
+								<table class="table">
+									<thead>
+										<tr>
+											<th></th>
+											<th>Name</th>
+											<th>Price</th>
+											<th></th>
+										</tr>
+									</thead>
+									<tbody>
+										<th:block th:each="dish : ${order.dish}">
+											<tr>
+												<!-- IMAGE -->
+												<td>
+													<div style="width: 140px;">
+														<img class="img-thumbnail" th:src="${dish.picture}" />
+													</div>
+												</td>
+												<!-- NAME -->
+												<td th:inline="text"><b>[[${dish.name}]]</b></td>
+
+												<!-- PRICE -->
+												<td th:inline="text">[[${dish.price}]]€</td>
+
+												<!-- REMOVE -->
+												<td><a
+													th:href="@{'/order/'+${order.id}+'/remove/'+${dish.id}}"><i
+														class="fa fa-times" aria-hidden="true"></i></a></td>
+											</tr>
+										</th:block>
+									</tbody>
+								</table>
+							</div>
+
+							<div class="wrapper row">
+								<span th:text="${message}"></span>
+							</div>
+							<!-- SUBMIT -->
+							<div class="wrapper row">
+								<input type="submit" value="Order"
+									class="btn float-right login_btn">
+							</div>
+
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

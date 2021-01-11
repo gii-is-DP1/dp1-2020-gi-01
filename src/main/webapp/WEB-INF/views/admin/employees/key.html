@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+<meta charset="ISO-8859-1">
+<head>
+<th:block th:include="fragments/common :: head(title='Location')"></th:block>
+</head>
+<body>
+	<th:block th:include="fragments/common :: navbar"></th:block>
+	<div class="container">
+		<div class="card">
+			<div class="container-fliud">
+				<div class="wrapper row">
+
+					<div sec:authorize="hasAuthority('ADMIN')">
+						<span th:inline="text">Register key: [[${regKey.key}]]</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

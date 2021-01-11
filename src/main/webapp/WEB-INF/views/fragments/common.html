@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+<th:block th:fragment="head(title)">
+	<title th:text="${title}"></title>
+	<link th:href="@{/css/index.css}" rel="stylesheet" />
+	<link th:rel="stylesheet"
+		th:href="@{/css/bootstrap/bootstrap.min.css} " />
+	<link th:rel="stylesheet" th:href="@{/css/custom/fix.css} " />
+	<link
+		href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css"
+		rel="stylesheet" type="text/css" />
+	<script
+		src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script th:src="@{/js/bootstrap/bootstrap.min.js}"></script>
+</th:block>
+</head>
+<body>
+	<header th:fragment="navbar">
+		<nav
+			class="navbar navbar-icon-top navbar-expand-lg navbar-dark bg-dark"
+			style="padding-left: 80px; padding-right: 80px;">
+			<a class="navbar-brand" th:href="@{/}">Tabernas Sevilla</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse"
+				data-target="#navbarSupportedContent"
+				aria-controls="navbarSupportedContent" aria-expanded="false"
+				aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item active"><a class="nav-link" th:href="@{/}">
+							<i class="fa fa-home"></i> Home
+					</a></li>
+					<!-- LOCATIONS -->
+					<li class="nav-item active dropdown"><a
+						class="nav-link dropdown-toggle" th:href="@{/}" role="button"
+						data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							Locations </a> <!-- Location list -->
+						<div class="dropdown-menu">
+							
+								<a th:each="loc: ${@establishmentService.findAll()}" class="dropdown-item"
+									th:href="@{/location/view?id={id}(id=${loc.id})}"
+									th:text="${loc.title}"></a>
+						
+						</div></li>
+					<li class="nav-item "><a class="nav-link"
+						th:href="@{/contact/init}"> Work with us </a></li>
+
+					<li class="nav-item "><a class="nav-link"
+						th:href="@{/promotions}"> Promotions </a></li>
+				</ul>
+				<ul class="navbar-nav ">
+					<!-- only show if authenticated -->
+					<li class="nav-item active" sec:authorize="isAuthenticated()">
+						<a class="nav-link" th:href="@{/order/}"> <i
+							class="fa fa-shopping-cart"></i>
+					</a>
+					</li>
+					<li class="nav-item dropdown" sec:authorize="isAuthenticated()">
+						<!-- display username --> <a sec:authentication="name"
+						class="nav-link dropdown-toggle" role="button"
+						data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					</a>
+						<div class="dropdown-menu dropdown-menu-right">
+							<!-- link to profile -->
+							<a class="dropdown-item" href="#">Profile</a> <a
+								class="dropdown-item" th:href="@{/booking/}">My reservations</a>
+							<a class="dropdown-item" th:href="@{/order/open}">My orders</a>
+							<!-- TABLE ACTIONS -->
+
+
+							<!-- ADMIN ACTIONS -->
+							<div sec:authorize="hasAuthority('ADMIN')"
+								class="dropdown-divider"></div>
+							<a class="dropdown-item" sec:authorize="hasAuthority('ADMIN')"
+								href="#">Control panel</a> <a class="dropdown-item"
+								sec:authorize="hasAuthority('ADMIN')"
+								th:href="@{/admin/employees/key}">Employees</a>
+							<div class="dropdown-divider"></div>
+							<!-- logout action -->
+							<a class="dropdown-item" th:href="@{/logout}">Logout</a>
+						</div>
+					</li>
+					<!-- only show if anonymous -->
+					<li class="nav-item" sec:authorize="isAnonymous()">
+						<!-- link to login --> <a class="nav-link" th:href="@{/login}">
+							Login </a>
+					</li>
+				</ul>
+				<!-- only show if anonymous -->
+				<!-- form link to regiter/init using GET -->
+				<form class="form-inline my-2 my-lg-0" sec:authorize="isAnonymous()"
+					th:action="@{/register/init}" method="get">
+					<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Register</button>
+				</form>
+
+			</div>
+		</nav>
+		<!--   
+        <button id="menuBtn" class="hamburger block sm:hidden focus:outline-none" type="button" onclick="navToggle();">
+            <span class="hamburger__top-bun"></span>
+            <span class="hamburger__bottom-bun"></span>
+        </button>
+			-->
+
+		<div id="mySidenav" class="sidenav" th:fragment="side">
+			<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+			<a href="/index">Home</a> <a href="#">Taverns</a>
+			<!-- 
+   	<a href="#">    Porvenir</a>
+    <a href="#">    Torneo</a>
+    <a href="#">    Nerviï¿½n</a>
+    <a href="#">    Arenal</a>  -->
+			<a href="#">Menu</a> <a th:href="@{/booking/init}">Booking</a> <a
+				th:href="@{/contact/init}">Contact</a>
+
+
+
+		</div>
+
+		<span class="derecha" style="font-size: 30px; cursor: pointer"
+			onclick="openNav()">&#9776; </span>
+
+		<script>
+			function openNav() {
+				document.getElementById("mySidenav").style.width = "250px";
+			}
+			function closeNav() {
+				document.getElementById("mySidenav").style.width = "0";
+			}
+		</script>
+	</header>
+
+	<!-- Footer -->
+	<footer class="bg-white" th:fragment="footer">
+		<div class="container py-5">
+			<div class="row py-3">
+				<div class="col-lg-2 col-md-6 mb-4 mb-lg-0">
+					<h6 class="text-uppercase font-weight-bold mb-4">About</h6>
+					<ul class="list-unstyled mb-0">
+						<li class="mb-2"><a href="#" class="text-muted">Contact
+								Us</a></li>
+						<li class="mb-2"><a href="#" class="text-muted">About Us</a></li>
+						<li class="mb-2"><a href="#" class="text-muted">Stories</a></li>
+						<li class="mb-2"><a href="#" class="text-muted">Press</a></li>
+					</ul>
+				</div>
+				<div class="col-lg-2 col-md-6 mb-4 mb-lg-0">
+					<h6 class="text-uppercase font-weight-bold mb-4">Help</h6>
+					<ul class="list-unstyled mb-0">
+						<li class="mb-2"><a href="#" class="text-muted">Payments</a></li>
+						<li class="mb-2"><a href="#" class="text-muted">Shipping</a></li>
+						<li class="mb-2"><a href="#" class="text-muted">Cancellation</a></li>
+						<li class="mb-2"><a href="#" class="text-muted">Returns</a></li>
+					</ul>
+				</div>
+				<div class="col-lg-2 col-md-6 mb-4 mb-lg-0">
+					<h6 class="text-uppercase font-weight-bold mb-4">Policy</h6>
+					<ul class="list-unstyled mb-0">
+						<li class="mb-2"><a href="#" class="text-muted">Return
+								Policy</a></li>
+						<li class="mb-2"><a href="#" class="text-muted">Terms Of
+								Use</a></li>
+						<li class="mb-2"><a href="#" class="text-muted">Security</a></li>
+						<li class="mb-2"><a href="#" class="text-muted">Privacy</a></li>
+					</ul>
+				</div>
+				<div class="col-lg-2 col-md-6 mb-4 mb-lg-0">
+					<h6 class="text-uppercase font-weight-bold mb-4">Company</h6>
+					<ul class="list-unstyled mb-0">
+						<li class="mb-2"><a href="#" class="text-muted">Login</a></li>
+						<li class="mb-2"><a href="#" class="text-muted">Register</a></li>
+						<li class="mb-2"><a href="#" class="text-muted">Sitemap</a></li>
+						<li class="mb-2"><a href="#" class="text-muted">Our
+								Products</a></li>
+					</ul>
+				</div>
+				<div class="col-lg-4 col-md-6 mb-lg-0">
+					<h6 class="text-uppercase font-weight-bold mb-4">Registered
+						Office Address</h6>
+					<p class="text-muted mb-4">Here , write the complete address of
+						the Registered office address along with telephone number.</p>
+					<ul class="list-inline mt-4">
+						<li class="list-inline-item"><a href="#" target="_blank"
+							title="twitter"><i class="fab fa-2x fa-twitter"></i></a></li>
+						<li class="list-inline-item"><a href="#" target="_blank"
+							title="facebook"><i class="fab fa-2x fa-facebook-f"></i></a></li>
+						<li class="list-inline-item"><a href="#" target="_blank"
+							title="instagram"><i class="fab fa-2x fa-instagram"></i></a></li>
+						<li class="list-inline-item"><a href="#" target="_blank"
+							title="pinterest"><i class="fab fa-2x fa-youtube"></i></a></li>
+						<li class="list-inline-item"><a href="#" target="_blank"
+							title="vimeo"><i class="fab fa-2x fa-google"></i></a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<hr class="p-0 m-0 b-0">
+		<div class="bg-light py-2">
+			<div class="container text-center">
+				<p class="text-muted mb-0 py-2">© 2019 BBBootstrap All risghts
+					reserved.</p>
+			</div>
+		</div>
+	</footer>
+
+</body>
+
+</html>

@@ -1,18 +1,12 @@
 package com.project.TabernasSevilla.configuration;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.core.convert.ConversionService;
 import org.springframework.format.FormatterRegistry;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
-import org.springframework.web.servlet.view.JstlView;
+
+import com.project.TabernasSevilla.converters.EstablishmentToStringConverter;
+import com.project.TabernasSevilla.converters.StringToInstantConverter;
 
 
 public class WebConfig implements WebMvcConfigurer {
@@ -20,18 +14,20 @@ public class WebConfig implements WebMvcConfigurer {
 	@Autowired
 	GenericIdToEntityConverter idToEntityConverter;
 	
+
+	
+    /* ******************************************************************* */
+    /*  GENERAL CONFIGURATION ARTIFACTS                                    */
+    /*  Static Resources, i18n Messages, Formatters (Conversion Service)   */
+    /* ******************************************************************* */
+
     @Override
     public void addFormatters(FormatterRegistry registry) {
     	
         registry.addConverter(idToEntityConverter);
+        registry.addConverter(new StringToInstantConverter());
     }
-    
-    @Override
-    public void configureViewResolvers(ViewResolverRegistry registry) {
-        InternalResourceViewResolver resolver = new InternalResourceViewResolver();
-        resolver.setPrefix("/WEB-INF/views/");
-        resolver.setSuffix(".jsp");
-        resolver.setViewClass(JstlView.class);
-        registry.viewResolver(resolver);
-    }
+
+
 }
+    

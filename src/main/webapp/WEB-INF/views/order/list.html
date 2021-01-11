@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+<meta charset="ISO-8859-1">
+<head>
+<th:block th:include="fragments/common :: head(title='Location')"></th:block>
+</head>
+<body>
+	<th:block th:include="fragments/common :: navbar"></th:block>
+	<div class="container">
+		<div class="card">
+			<div class="container-fliud">
+				<div class="wrapper row">
+					<div class="preview col">
+						<div class="wrapper row">
+							<div class="preview col">
+								<div class="wrapper row">
+								<table class="table">
+									<thead>
+										<tr>
+											<th></th>
+											<th>Restaurant</th>
+											<th>Date placed</th>
+											<th>Status</th>
+											<th></th>
+											<th></th>
+											<th></th>
+											<th></th>
+											<th></th>
+										</tr>
+									</thead>
+									<tbody>
+										<th:block th:each="order : ${orders}">
+											<tr>
+												<!-- RESTAURANT -->
+												<td><span th:inline="text"><a
+														th:href="@{/location/view?id={id}(id=${order.establishment.id})}">[[${order.establishment.title}]]</a></span>
+												</td>
+												<!-- DATE PLACED -->
+												<td th:text="${order.placementDate}"></td>
+												<!-- STATUS -->
+												<td th:text="${order.status}"></td>
+												<!-- VIEW -->
+												<td><a th:href="@{/order/{id}/view(id=${order.id})}"
+													role="button" class="btn btn-secondary" aria-pressed="true">View</a>
+												</td>
+												<!-- CANCEL -->
+												<td><a th:href="@{/order/cancel/{id}(id=${order.id})}"
+													role="button" class="btn btn-secondary" aria-pressed="true">Cancel</a></td>
+
+												<!-- EMPLOYEE ACTIONS -->
+												<!-- TABLE -->
+												<td></td>
+												<!-- EDIT -->
+												<td></td>
+												<!-- DELETE -->
+												<td></td>
+											</tr>
+										</th:block>
+									</tbody>
+								</table>
+								</div>
+								<!-- VIEW PREVIOUS ORDERS -->
+								<div th:if="${prev == null}">
+									<a th:href="@{/order/closed}" th:if="${est==null}">View historic</a>
+									<a th:href="@{/order/est/{id}/list/prev(id=${est.id})}" th:if="${est!=null}">View historic</a>
+								</div>
+								<!-- VIEW CURRENT ORDERS -->
+								<div th:if="${prev != null}">
+									<a th:href="@{/order/open}" th:if="${est==null}">View active orders</a>
+									<a th:href="@{/order/est/{id}/list(id=${est.id})}" th:if="${est!=null}">View active orders</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
