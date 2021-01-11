@@ -39,7 +39,7 @@ public class CustomerService {
 	
 	public Customer setPreferredEstablishment(int establishmentId) {
 		Customer cust = this.costumerRepo.findActorByUser(this.userService.getPrincipal().getUsername());
-		cust.setPreferredEstablishment(this.establishmentService.findById(establishmentId));
+		cust.setFavEstablishment(this.establishmentService.findById(establishmentId));
 		 Customer saved = this.save(cust);
 		 return saved;		
 	}
@@ -57,7 +57,7 @@ public class CustomerService {
 		customer.setName(form.getForm().getName());
 		customer.setSurname(form.getForm().getSurname());
 		customer.setPhoneNumber(form.getForm().getPhoneNumber());
-		customer.setPreferredEstablishment(null);
+		customer.setFavEstablishment(null);
 		User user = this.userService.createUser("CUSTOMER");
 		final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		user.setPassword(encoder.encode(form.getPassword()));

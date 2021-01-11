@@ -20,5 +20,5 @@ import lombok.Setter;
 public class Customer extends Actor{
 
 	@ManyToOne(optional = true,fetch = FetchType.EAGER)
-	private Establishment preferredEstablishment;
+	private Establishment favEstablishment;
 }
