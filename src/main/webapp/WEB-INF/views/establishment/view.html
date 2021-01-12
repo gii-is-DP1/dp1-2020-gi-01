@@ -33,6 +33,11 @@
 							CONTACT: <span th:text="${establishment.phone}"></span>
 						</h4>
 						
+						<!-- ACTIVE ORDERS  -->
+						<div class="p-1">
+							<a th:href="@{/order/{establishmentId}/all(establishmentId=${establishment.id})}" role="button" class="btn btn-secondary" aria-pressed="true">Active dishes</a>
+						</div>
+						
 						<!-- MENU -->
 						<div class="p-1">
 							<a th:href="@{/dishes/list}" role="button" class="btn btn-secondary" aria-pressed="true">View menu</a>

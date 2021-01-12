@@ -1,6 +1,5 @@
 package com.project.TabernasSevilla.controller;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +16,6 @@ import com.project.TabernasSevilla.domain.Establishment;
 import com.project.TabernasSevilla.domain.OrderCancellation;
 import com.project.TabernasSevilla.domain.OrderLog;
 import com.project.TabernasSevilla.domain.RestaurantOrder;
-import com.project.TabernasSevilla.security.UserService;
-import com.project.TabernasSevilla.service.ActorService;
 import com.project.TabernasSevilla.service.DishService;
 import com.project.TabernasSevilla.service.EstablishmentService;
 import com.project.TabernasSevilla.service.OrderCancellationService;
@@ -40,7 +37,6 @@ public class OrderController {
 	@Autowired
 	private OrderCancellationService orderCancellationService;
 
-
 	@GetMapping("/est/{id}")
 	public String create(Model model, @PathVariable(value = "id") Integer establishmentId) {
 		RestaurantOrder order = this.orderService.findDraftByPrincipal();
@@ -53,7 +49,7 @@ public class OrderController {
 
 		return createRegisterEditModel(order, model);
 	}
-	
+
 	@GetMapping("/est/{id}/list")
 	public String listActiveByEstablishment(Model model, @PathVariable(value = "id") Integer establishmentId) {
 		Establishment est = this.estService.findById(establishmentId);
@@ -62,13 +58,13 @@ public class OrderController {
 		model.addAttribute("est", est);
 		return "order/list";
 	}
-	
+
 	@GetMapping("/est/{id}/list/prev")
 	public String listInactiveByEstablishment(Model model, @PathVariable(value = "id") Integer establishmentId) {
 		Establishment est = this.estService.findById(establishmentId);
 		List<RestaurantOrder> orders = this.orderService.findInactiveByEstablishment(est);
 		model.addAttribute("orders", orders);
-		model.addAttribute("prev",true);
+		model.addAttribute("prev", true);
 		model.addAttribute("est", est);
 		return "order/list";
 	}
@@ -78,31 +74,31 @@ public class OrderController {
 		try {
 			RestaurantOrder order = this.orderService.findDraftByPrincipal();
 			return createRegisterEditModel(order, model);
-		}catch(Exception e) {
+		} catch (Exception e) {
 			return "order/view";
 		}
 	}
-	
+
 	@GetMapping("/{id}/view")
 	public String view(Model model, @PathVariable("id") int orderId) {
 		RestaurantOrder order = this.orderService.findById(orderId).get();
 		order.getDish();
 		order.getEstablishment();
-		if(order.getStatus().equals(RestaurantOrder.DRAFT)) {
+		if (order.getStatus().equals(RestaurantOrder.DRAFT)) {
 			Double total = this.orderService.calculateTotal(order);
 			model.addAttribute("total", total);
-		}else if(order.getStatus().equals(RestaurantOrder.CANCELLED)) {
+		} else if (order.getStatus().equals(RestaurantOrder.CANCELLED)) {
 			OrderCancellation cancel = this.orderCancellationService.findByOrder(order);
 			model.addAttribute("cancel", cancel);
 			List<OrderLog> logs = this.orderLogService.findByOrder(order);
 			model.addAttribute("logs", logs);
-		}else{
+		} else {
 			List<OrderLog> logs = this.orderLogService.findByOrder(order);
 			model.addAttribute("logs", logs);
 		}
-		
+
 		model.addAttribute("order", order);
-		
+
 		return "order/view";
 	}
 
@@ -136,7 +132,7 @@ public class OrderController {
 	public String listInactive(Model model) {
 		List<RestaurantOrder> orders = this.orderService.findInactiveByPrincipal();
 		model.addAttribute("orders", orders);
-		model.addAttribute("prev",true);
+		model.addAttribute("prev", true);
 		return "order/list";
 	}
 
@@ -147,7 +143,13 @@ public class OrderController {
 		return "order/list";
 	}
 
-	
+	@GetMapping("{establishmentId}/all")
+	public String cookView(Model model, @PathVariable("establishmentId") int establishmentId) {
+		Establishment est = this.estService.findById(establishmentId);
+		List<RestaurantOrder> orders = this.orderService.findActiveByEstablishment(est);
+		model.addAttribute("orders", orders);
+		return "order/list";
+	}
 
 	@GetMapping("/{id}/delete")
 	public String delete(Model model, @PathVariable("id") int orderId) {
@@ -162,26 +164,26 @@ public class OrderController {
 	@GetMapping(value = "/{id}/save")
 	public String save(Model model, @PathVariable("id") int orderId) {
 		RestaurantOrder order = this.orderService.findById(orderId).get();
-		Assert.isTrue(this.orderService.checkOwnership(order),"Cannot save this order");
+		Assert.isTrue(this.orderService.checkOwnership(order), "Cannot save this order");
 		this.orderService.contextualSave(order);
 		return "redirect:/order/open";
 	}
-	
+
 	@GetMapping(value = "/checkout")
-	public String checkout(@RequestParam(required = true) Integer id,@RequestParam(required = true) String type, @RequestParam(required = false) String address,
-			Model model) {
+	public String checkout(@RequestParam(required = true) Integer id, @RequestParam(required = true) String type,
+			@RequestParam(required = false) String address, Model model) {
 		RestaurantOrder order = this.orderService.findById(id).get();
-		
+
 		order.setType(type);
 		order.getEstablishment();
-		try {		
-			if(!address.isBlank() ) {
+		try {
+			if (!address.isBlank()) {
 				order.setAddress(address);
-			}else {
-				Assert.isTrue(type.equals(RestaurantOrder.PICKUP),"Cannot place order without delivery address");
+			} else {
+				Assert.isTrue(type.equals(RestaurantOrder.PICKUP), "Cannot place order without delivery address");
 			}
 			this.orderService.save(order);
-			return "redirect:/order/"+order.getId()+"/view";
+			return "redirect:/order/" + order.getId() + "/view";
 		} catch (final Throwable e) {
 			return createRegisterEditModel(order, order.getEstablishment(), this.dishService.findAll(), model,
 					e.getMessage());
