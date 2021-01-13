@@ -181,5 +181,14 @@ public class OrderService {
 		return saved;
 	}
 	
+	//TODO: better way to handle this
+	public RestaurantOrder updateStatus(RestaurantOrder order, String status) {
+		Assert.isTrue(this.userService.principalIsEmployee(),"Unsuficiant authority");
+		order.setStatus(status);
+		RestaurantOrder saved = this.save(order);
+		this.orderLogService.log(saved, saved.getStatus());
+		return saved;
+	}
+	
 
 }

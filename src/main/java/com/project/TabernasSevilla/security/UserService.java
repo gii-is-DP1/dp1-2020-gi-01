@@ -1,6 +1,7 @@
 package com.project.TabernasSevilla.security;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -80,6 +81,10 @@ public class UserService implements UserDetailsService {
 		} else {
 			return false;
 		}
+	}
+	
+	public Boolean principalIsEmployee() {
+		return principalHasAnyAuthority(Arrays.asList("ADMIN","WAITER","COOK","MANAGER"));
 	}
 
 	public Boolean principalHasAnyAuthority(List<String> authority) {

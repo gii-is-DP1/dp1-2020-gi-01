@@ -16,11 +16,13 @@ import com.project.TabernasSevilla.domain.Establishment;
 import com.project.TabernasSevilla.domain.OrderCancellation;
 import com.project.TabernasSevilla.domain.OrderLog;
 import com.project.TabernasSevilla.domain.RestaurantOrder;
+import com.project.TabernasSevilla.domain.RestaurantTable;
 import com.project.TabernasSevilla.service.DishService;
 import com.project.TabernasSevilla.service.EstablishmentService;
 import com.project.TabernasSevilla.service.OrderCancellationService;
 import com.project.TabernasSevilla.service.OrderLogService;
 import com.project.TabernasSevilla.service.OrderService;
+import com.project.TabernasSevilla.service.TableService;
 
 @Controller
 @RequestMapping("/order")
@@ -36,6 +38,8 @@ public class OrderController {
 	private OrderLogService orderLogService;
 	@Autowired
 	private OrderCancellationService orderCancellationService;
+	@Autowired
+	private TableService tableService;
 
 	@GetMapping("/est/{id}")
 	public String create(Model model, @PathVariable(value = "id") Integer establishmentId) {
@@ -54,9 +58,37 @@ public class OrderController {
 	public String listActiveByEstablishment(Model model, @PathVariable(value = "id") Integer establishmentId) {
 		Establishment est = this.estService.findById(establishmentId);
 		List<RestaurantOrder> orders = this.orderService.findActiveByEstablishment(est);
+		List<String> status = RestaurantOrder.OnlineStatus;
+		model.addAttribute("status", status);
 		model.addAttribute("orders", orders);
 		model.addAttribute("est", est);
 		return "order/list";
+	}
+
+	@GetMapping("{id}/update")
+	public String updateStatus(Model model, @PathVariable("id") int orderId,
+			@RequestParam(required = false, value = "list") Boolean listView,
+			@RequestParam(required = false, value = "sts") String status,
+			@RequestParam(required = false, value = "tbl") Integer tableId) {
+		String res = "redirect:/order" + orderId + "/view";
+
+		try {
+			RestaurantOrder order = this.orderService.findById(orderId).get();
+			if(tableId != null) {
+				RestaurantTable table = this.tableService.findById(tableId);
+				order.setTable(table);
+				this.orderService.save(order);
+			}
+			if (status != null && !status.isBlank()) {
+				this.orderService.updateStatus(order, status);				
+			}
+			if (listView != null && listView == true) {
+				res = "redirect:/order/est/" + order.getEstablishment().getId() + "/list";
+			}
+		} catch (Throwable t) {
+			model.addAttribute("message", t.getMessage());
+		}
+		return res;
 	}
 
 	@GetMapping("/est/{id}/list/prev")

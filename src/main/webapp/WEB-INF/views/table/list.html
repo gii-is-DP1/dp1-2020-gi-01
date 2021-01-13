@@ -87,7 +87,7 @@
 												th:if="${table.hourSeated == null}">Seat</a></td>
 											<td>
 												<form th:id="form + ${table.id}" method="get"
-													th:action="@{/table/{id}/modify(id=${table.id})}">
+													th:action="@{/table/{id}/update(id=${table.id})}">
 													<input type="submit" value="save" />
 												</form>
 											</td>
