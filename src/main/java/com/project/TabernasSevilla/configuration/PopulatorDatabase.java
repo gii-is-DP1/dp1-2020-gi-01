@@ -70,7 +70,7 @@ public class PopulatorDatabase implements CommandLineRunner {
 		// Guardo el objeto
 
 		Dish d = new Dish("Mi plato", "Mi descripción",
-				"https://international-experience.es/wp-content/uploads/2019/08/comidas-mundo.jpg", 20.0, 5.0,
+				"https://international-experience.es/wp-content/uploads/2019/08/comidas-mundo.jpg", 20.0, 4.0,
 				allergensFromD);
 		//creo un user para la review
 		//crear user y de ahi actor con sus propiedades de constructor
@@ -101,7 +101,7 @@ public class PopulatorDatabase implements CommandLineRunner {
 		
 		// la review bien, hay que guardar dish antes de meterlo en review
 		Admin ad = repoAdmin.getOne(1);
-		Review rev = new Review(ad, d, "ta rico la verdad", 4); //actor, dish, comentario, puntuacion
+		Review rev = new Review(ad, d, "ta rico la verdad", 4.0); //actor, dish, comentario, puntuacion
 		Review Rsaved = this.repoReview.save(rev);
 		
 		

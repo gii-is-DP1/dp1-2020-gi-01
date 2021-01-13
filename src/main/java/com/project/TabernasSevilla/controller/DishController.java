@@ -76,7 +76,7 @@ public class DishController extends AbstractController {
 		} else {
 			dishService.save(dish);
 			model.addAttribute("message", "Dish successfully saved");
-			view = dishList(model);
+			//view = dishList(model);
 		}
 		return view;
 	}
@@ -106,11 +106,15 @@ public class DishController extends AbstractController {
 			return "redirect:/dishes/" + dishId;
 		} else {
 			repoReview.save(review);
+			dishService.save(dish);
+
+
 			//model.addAttribute("message", "Dish successfully saved");
 			view = "redirect:/dishes/" + dishId;
 		}
 		return view;
 	}
+
 
 	@GetMapping(path = "/delete/{dishId}")
 	public String deleteDish(@PathVariable("dishId") int dishId, Model model) {
@@ -153,7 +157,7 @@ public class DishController extends AbstractController {
 			try {
 				this.dishService.save(dish);
 			} catch (Exception e) {
-				FieldError error = new FieldError("dish", "picture", "Invalid URL");
+				FieldError error = new FieldError("dish", "picture", "Invalid URL" + e.getMessage());
 				result.addError(error);
 				return view;
 			}
