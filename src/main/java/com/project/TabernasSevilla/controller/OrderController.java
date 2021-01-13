@@ -143,14 +143,6 @@ public class OrderController {
 		return "order/list";
 	}
 
-	@GetMapping("{establishmentId}/all")
-	public String cookView(Model model, @PathVariable("establishmentId") int establishmentId) {
-		Establishment est = this.estService.findById(establishmentId);
-		List<RestaurantOrder> orders = this.orderService.findActiveByEstablishment(est);
-		model.addAttribute("orders", orders);
-		return "order/list";
-	}
-
 	@GetMapping("/{id}/delete")
 	public String delete(Model model, @PathVariable("id") int orderId) {
 		RestaurantOrder order = this.orderService.findById(orderId).get();
