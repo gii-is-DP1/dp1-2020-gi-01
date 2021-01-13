@@ -15,6 +15,9 @@
 					<div class="preview col">
 						<div class="wrapper row">
 							<div class="preview col">
+								<div class="row">
+									<span th:text="${message}"></span>
+								</div>
 								<div class="wrapper row">
 									<table class="table">
 										<thead>
@@ -86,6 +89,7 @@
 																th:value="${table.id}" th:utext="${table.number}" />
 													</select>
 													</td>
+													<td th:if="${order.type != 'EAT_IN'}"></td>
 													<!-- UPDATE STATUS -->
 													
 													<!-- SAVE -->
