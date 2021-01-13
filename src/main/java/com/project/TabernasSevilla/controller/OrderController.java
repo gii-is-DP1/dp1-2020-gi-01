@@ -58,8 +58,12 @@ public class OrderController {
 	public String listActiveByEstablishment(Model model, @PathVariable(value = "id") Integer establishmentId) {
 		Establishment est = this.estService.findById(establishmentId);
 		List<RestaurantOrder> orders = this.orderService.findActiveByEstablishment(est);
-		List<String> status = RestaurantOrder.OnlineStatus;
-		model.addAttribute("status", status);
+		List<String> deliveryStatus = RestaurantOrder.DeliveryStatus;
+		List<String> pickupStatus = RestaurantOrder.PickupStatus;
+		List<String> eatInStatus = RestaurantOrder.EatInStatus;
+		model.addAttribute("deliveryStatus", deliveryStatus);
+		model.addAttribute("pickupStatus", pickupStatus);
+		model.addAttribute("eatInStatus", eatInStatus);
 		model.addAttribute("orders", orders);
 		model.addAttribute("est", est);
 		return "order/list";

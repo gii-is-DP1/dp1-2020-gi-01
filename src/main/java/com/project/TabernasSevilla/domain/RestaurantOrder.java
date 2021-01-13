@@ -73,6 +73,8 @@ public class RestaurantOrder extends BaseEntity {
 	public static final String STS_DELIVERY = "OUT FOR DELIVERY";
 	public static final String DELIVERED = "DELIVERED";
 	public static final String CANCELLED = "CANCELLED";
-	public static final List<String> OnlineStatus = Arrays.asList(RestaurantOrder.PLACED,RestaurantOrder.PREP,RestaurantOrder.READY,RestaurantOrder.STS_DELIVERY,RestaurantOrder.DELIVERED);
+	public static final List<String> DeliveryStatus = Arrays.asList(RestaurantOrder.PLACED,RestaurantOrder.PREP,RestaurantOrder.READY,RestaurantOrder.STS_DELIVERY,RestaurantOrder.DELIVERED);
+	public static final List<String> PickupStatus = Arrays.asList(RestaurantOrder.PLACED,RestaurantOrder.PREP,RestaurantOrder.READY);
+	public static final List<String> EatInStatus = Arrays.asList(RestaurantOrder.OPEN,RestaurantOrder.CLOSED);
 
 }

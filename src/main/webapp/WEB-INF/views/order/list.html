@@ -25,9 +25,8 @@
 												<th>Status</th>
 												<th></th>
 												<th></th>
-												<th></th>
-												<th
-													sec:authorize="hasAnyAuthority('COOK','ADMIN','MANAGER','WAITER')"></th>
+												<th sec:authorize="hasAuthority('CUSTOMER')"></th>
+												
 												<th
 													sec:authorize="hasAnyAuthority('COOK','ADMIN','MANAGER','WAITER')"></th>
 											</tr>
@@ -42,7 +41,30 @@
 													<!-- DATE PLACED -->
 													<td th:text="${order.placementDate}"></td>
 													<!-- STATUS -->
-													<td th:text="${order.status}"></td>
+													<td sec:authorize="hasAuthority('CUSTOMER')" th:text="${order.status}"></td>
+													<td
+														sec:authorize="hasAnyAuthority('COOK','ADMIN','MANAGER','WAITER')"
+														th:if="${order.status != 'CANCELLED' && order.status != 'CLOSED'}">
+														<select name="sts" th:form="form + ${order.id}"
+														th:if="${order.type=='DELIVERY'}">
+															<option th:value="${order.status}"
+																th:utext="${order.status}"></option>
+															<option th:each="sts : ${deliveryStatus}" th:value="${sts}"
+																th:utext="${sts}" />
+													</select> <select name="sts" th:form="form + ${order.id}"
+														th:if="${order.type=='PICKUP'}">
+															<option th:value="${order.status}"
+																th:utext="${order.status}"></option>
+															<option th:each="sts : ${pickupStatus}" th:value="${sts}"
+																th:utext="${sts}" />
+													</select> <select name="sts" th:form="form + ${order.id}"
+														th:if="${order.type=='EAT-IN'}">
+															<option th:value="${order.status}"
+																th:utext="${order.status}"></option>
+															<option th:each="sts : ${eatInStatus}" th:value="${sts}"
+																th:utext="${sts}" />
+													</select>
+													</td>
 													<!-- VIEW -->
 													<td><a th:href="@{/order/{id}/view(id=${order.id})}"
 														role="button" class="btn btn-secondary"
@@ -65,19 +87,13 @@
 													</select>
 													</td>
 													<!-- UPDATE STATUS -->
-													<td
-														sec:authorize="hasAnyAuthority('COOK','ADMIN','MANAGER','WAITER')">
-														<select name="sts" th:form="form + ${order.id}">
-															<option th:value="${order.status}"
-																th:utext="${order.status}"></option>
-															<option th:each="sts : ${status}" th:value="${sts}"
-																th:utext="${sts}" />
-													</select>
-													</td>
+													
 													<!-- SAVE -->
 													<td
-														sec:authorize="hasAnyAuthority('COOK','ADMIN','MANAGER','WAITER')">
-														<input type="hidden" name="list" value="true" th:form="form + ${order.id}"/>
+														sec:authorize="hasAnyAuthority('COOK','ADMIN','MANAGER','WAITER')"
+														th:if="${order.status != 'CANCELLED' && order.status != 'CLOSED'}">
+														<input type="hidden" name="list" value="true"
+														th:form="form + ${order.id}" />
 														<form th:id="form + ${order.id}" method="get"
 															th:action="@{/order/{id}/update(id=${order.id})}">
 															<input type="submit" value="save" />
