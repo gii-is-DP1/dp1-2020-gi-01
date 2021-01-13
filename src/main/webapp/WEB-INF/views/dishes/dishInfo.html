@@ -81,7 +81,7 @@
 								
 								<label for="rating"> Rating </label>
 								<input type="number" size="4" class="form-control"
-								 name="rating" min="1" max="5" th:field="${reviewComment.rating}">
+								placeholder="1" name="rating" min="1" max="5" th:field="${reviewComment.rating}">
 								<ul>
 									<li th:each="err : ${#fields.errors('reviewComment.rating')}" th:text="${err}" />
 								</ul>
@@ -117,8 +117,6 @@
 							<a>    Reviews:</a> <br>
 								<div th:each="review :${reviews}">
 									<a th:text="${review.comment}"></a> (Review by: <a th:text="${review.actor.user.username}"> </a> )
-									<div
-													th:replace="fragments/score :: stars(score=${review.rating})"></div>
 									<br>
 									<br>
 									
