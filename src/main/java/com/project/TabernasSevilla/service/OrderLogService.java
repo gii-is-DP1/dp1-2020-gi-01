@@ -28,12 +28,12 @@ public class OrderLogService {
 	
 	public OrderLog create() {
 		OrderLog res = new OrderLog();
-		res.setMoment(Instant.now());
 		return res;
 	}
 	
 	public OrderLog log(RestaurantOrder order,String status) {
 		OrderLog log = this.create();
+		log.setMoment(Instant.now());
 		log.setOrder(order);
 		log.setStatus(status);
 		return this.save(log);

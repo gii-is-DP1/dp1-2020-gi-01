@@ -24,7 +24,6 @@ public class OrderLog extends BaseEntity {
 
 	@ManyToOne(optional=false,fetch = FetchType.LAZY)
 	private RestaurantOrder order;
-	@Past
 	@NotNull
 	private Instant moment;
 	@NotBlank
