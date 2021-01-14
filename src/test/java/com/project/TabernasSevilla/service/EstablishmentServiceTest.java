@@ -10,13 +10,17 @@ import java.util.logging.Logger;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.stereotype.Service;
+
 import com.project.TabernasSevilla.domain.Dish;
 import com.project.TabernasSevilla.domain.Establishment;
 
-
+@DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
 class EstablishmentServiceTest{
 	@Autowired
-	protected EstablishmentService establishmentService;
+	public EstablishmentService establishmentService;
 	
 	@Test
 	public void shouldCreateAnInstanceCorrectly() {
@@ -38,6 +42,7 @@ class EstablishmentServiceTest{
 			Logger.getLogger(EstablishmentServiceTest.class.getName()).log(Level.SEVERE, null, e);
 			e.printStackTrace();
 		}
+		//System.out.println("############ todos los establecimientos uwu: "+ establishmentService.findAll()); da error el findAll
 		assertThat(est.getId()).isNotNull();
 	}
 

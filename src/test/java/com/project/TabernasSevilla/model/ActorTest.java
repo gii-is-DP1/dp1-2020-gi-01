@@ -1,4 +1,4 @@
-package com.project.TabernasSevilla;
+package com.project.TabernasSevilla.model;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
