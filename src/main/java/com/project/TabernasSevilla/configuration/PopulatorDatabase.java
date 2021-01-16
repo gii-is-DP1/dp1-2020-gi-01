@@ -37,17 +37,17 @@ public class PopulatorDatabase implements CommandLineRunner {
 	@Autowired
 	private AuthorityRepository repositoryAuthority;
 
-	//@Autowired
-	//private UserRepository repositoryUser;
-	
-	@Autowired 
+	// @Autowired
+	// private UserRepository repositoryUser;
+
+	@Autowired
 	private ReviewRepository repoReview;
-	
-	@Autowired 
+
+	@Autowired
 	private AdminRepository repoAdmin;
-	
-	//@Autowired 
-	//private AbstractActorRepository repoActor;
+
+	// @Autowired
+	// private AbstractActorRepository repoActor;
 
 	@Override
 	public void run(String... args) throws Exception {
@@ -70,47 +70,37 @@ public class PopulatorDatabase implements CommandLineRunner {
 		// Guardo el objeto
 
 		Dish d = new Dish("Mi plato", "Mi descripción",
-				"https://international-experience.es/wp-content/uploads/2019/08/comidas-mundo.jpg", 20.0, 4.0,
+				"https://international-experience.es/wp-content/uploads/2019/08/comidas-mundo.jpg", 20.0, 4.0, true,
 				allergensFromD);
-		//creo un user para la review
-		//crear user y de ahi actor con sus propiedades de constructor
-		
+
+		// creo un user para la review
+		// crear user y de ahi actor con sus propiedades de constructor
+
 		/*
-		User us = new User();
-		us.setUsername("Anthony Fantano");
-		us.setPassword("fantano");
-		Authority auth = new Authority();
-		auth.setAuthority("reviewer");
-		Set<Authority> ls = new HashSet<>();
-		ls.add(auth);
-		us.setAuthorities(ls);
-		*/
-		
-		//Actor persona = new Actor();
-		
-		
-		//Actor ActSave =  this.repoActor.save(persona);
-		
-		//creo review
-		//Review rev = new Review(persona, d, "ta rico la verdad", 4);
-		//Review Rsaved = this.repoReview.save(rev);
-		
-		
-		
+		 * User us = new User(); us.setUsername("Anthony Fantano");
+		 * us.setPassword("fantano"); Authority auth = new Authority();
+		 * auth.setAuthority("reviewer"); Set<Authority> ls = new HashSet<>();
+		 * ls.add(auth); us.setAuthorities(ls);
+		 */
+
+		// Actor persona = new Actor();
+
+		// Actor ActSave = this.repoActor.save(persona);
+
+		// creo review
+		// Review rev = new Review(persona, d, "ta rico la verdad", 4);
+		// Review Rsaved = this.repoReview.save(rev);
+
 		Dish saved = this.repository.save(d);
-		
+
 		// la review bien, hay que guardar dish antes de meterlo en review
 		Admin ad = repoAdmin.getOne(1);
-		Review rev = new Review(ad, d, "ta rico la verdad", 4.0); //actor, dish, comentario, puntuacion
+		Review rev = new Review(ad, d, "ta rico la verdad", 4.0); // actor, dish, comentario, puntuacion
 		Review Rsaved = this.repoReview.save(rev);
-		
-		
 
 	}
-	
-	//INSERT INTO REVIEW(id, version, comment, rating, actor_id, dish_id) VALUES (1, 0, 'ta rico la verdad', 4, 1, 3);
-	
-	
-	
+
+	// INSERT INTO REVIEW(id, version, comment, rating, actor_id, dish_id) VALUES
+	// (1, 0, 'ta rico la verdad', 4, 1, 3);
 
 }

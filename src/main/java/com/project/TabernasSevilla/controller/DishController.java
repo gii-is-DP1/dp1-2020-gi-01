@@ -29,13 +29,13 @@ public class DishController extends AbstractController {
 
 	@Autowired
 	private DishService dishService;
-	
+
 	@Autowired
 	private ActorService actorService;
-	
-	@Autowired 
+
+	@Autowired
 	private ReviewRepository repoReview;
-	
+
 	@Autowired
 	private ReviewRepository reviewRepo;
 
@@ -47,7 +47,7 @@ public class DishController extends AbstractController {
 		List<Review> reviews = reviewRepo.findByDish(dishId);
 		model.addAttribute("reviews", reviews);
 		Review rev = new Review();
-		
+
 		model.addAttribute("reviewComment", rev);
 		return view;
 	}
@@ -76,45 +76,46 @@ public class DishController extends AbstractController {
 		} else {
 			dishService.save(dish);
 			model.addAttribute("message", "Dish successfully saved");
-			//view = dishList(model);
+			// view = dishList(model);
 		}
 		return view;
 	}
+
 	@PostMapping(path = "/savecomment/{dishId}")
-	public String saveComment(@Valid Review review, BindingResult result, Model model, @PathVariable("dishId") int dishId) {
+	public String saveComment(@Valid Review review, BindingResult result, Model model,
+			@PathVariable("dishId") int dishId) {
 		String view = "redirect:/dishes/" + dishId;
 		Dish dish = dishService.findById(dishId).get();
-		//System.out.println(dish.getName());
-		
-		Actor actor = this.actorService.getPrincipal(); //usuario logeao
-		
+		// System.out.println(dish.getName());
+
+		Actor actor = this.actorService.getPrincipal(); // usuario logeao
+
 		review.setActor(actor);
 		review.setDish(dish);
-		
+
 		if (result.hasErrors()) {
 			System.out.println("::::::::::::::::Bueno amigo algo has hecho mal ::::::::::::::::::::");
-			System.out.println("comment de review: "+review.getComment());
-			System.out.println("rating: "+ review.getRating());
-			
+			System.out.println("comment de review: " + review.getComment());
+			System.out.println("rating: " + review.getRating());
+
 			System.out.println("dish id: " + review.getDish().getId());
-			System.out.println("actor: "+ review.getActor().getUser().getUsername());
-			
+			System.out.println("actor: " + review.getActor().getUser().getUsername());
+
 			List<ObjectError> errors = result.getAllErrors();
-	        for(int i=0;i<result.getErrorCount();i++){System.out.println("]]]]]]] error "+i+" is: "+errors.get(i).toString());}
-			
-		
+			for (int i = 0; i < result.getErrorCount(); i++) {
+				System.out.println("]]]]]]] error " + i + " is: " + errors.get(i).toString());
+			}
+
 			return "redirect:/dishes/" + dishId;
 		} else {
 			repoReview.save(review);
 			dishService.save(dish);
 
-
-			//model.addAttribute("message", "Dish successfully saved");
+			// model.addAttribute("message", "Dish successfully saved");
 			view = "redirect:/dishes/" + dishId;
 		}
 		return view;
 	}
-
 
 	@GetMapping(path = "/delete/{dishId}")
 	public String deleteDish(@PathVariable("dishId") int dishId, Model model) {
@@ -124,7 +125,8 @@ public class DishController extends AbstractController {
 		if (view != "error") {
 			Optional<Dish> dish = dishService.findById(dishId);
 			if (dish.isPresent()) {
-				dishService.delete(dish.get());
+				Dish d = dishService.findById(dishId).get();
+				d.setIsVisible(false);
 				model.addAttribute("message", "Dish succesfully deleted");
 				view = dishList(model);
 			} else {

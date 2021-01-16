@@ -40,6 +40,7 @@
 										</thead>
 										<tbody>
 											<th:block th:each="dish : ${order.dish}">
+
 												<tr>
 													<!-- IMAGE -->
 													<td>
@@ -61,7 +62,8 @@
 							</div>
 						</div>
 						<div class="wrapper row" th:if="${order.status !='DRAFT'}">
-							<span th:inline="text">Current status: <b>[[${order.status}]]</b></span>&nbsp;-&nbsp;<span th:if="${cancel}" th:text="${cancel.reason}"></span>
+							<span th:inline="text">Current status: <b>[[${order.status}]]</b></span>&nbsp;-&nbsp;<span
+								th:if="${cancel}" th:text="${cancel.reason}"></span>
 						</div>
 						<div class="wrapper row" th:if="${order.status =='DRAFT'}">
 							<div class="col">
@@ -89,12 +91,8 @@
 								<tbody>
 									<th:block th:each="log : ${logs}">
 										<tr>
-											<td>
-												<span th:text="${log.status}"></span>
-											</td>
-											<td>
-												<span th:text="${log.moment}"></span>
-											</td>
+											<td><span th:text="${log.status}"></span></td>
+											<td><span th:text="${log.moment}"></span></td>
 										</tr>
 									</th:block>
 								</tbody>

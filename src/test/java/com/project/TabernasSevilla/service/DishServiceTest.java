@@ -76,13 +76,13 @@ class DishServiceTest {
 		// Guardo el objeto
 
 		Dish d = new Dish("Mi plato", "Mi descripción",
-				"https://international-experience.es/wp-content/uploads/2019/08/comidas-mundo.jpg", 20.0, 5.0,
+				"https://international-experience.es/wp-content/uploads/2019/08/comidas-mundo.jpg", 20.0, 5.0, true,
 				allergensFromD);
-		
+
 		Dish d1 = new Dish();
 		d1 = this.dishRepo.save(d);
-		try { 
-			d1 = this.dishService.findById(d.getId()).get();	
+		try {
+			d1 = this.dishService.findById(d.getId()).get();
 		} catch (Exception e) {
 			Logger.getLogger(DishServiceTest.class.getName()).log(Level.SEVERE, null, e);
 			e.printStackTrace();
