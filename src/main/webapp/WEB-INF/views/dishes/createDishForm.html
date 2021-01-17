@@ -43,19 +43,33 @@
 					<ul>
 						<li th:each="err : ${#fields.errors('price')}" th:text="${err}" />
 					</ul>
-					<label for="allergens">Allergens:</label> 
 					
+					
+					<label for="allergens">Tipo de plato:</label> 
+					<select name="seccion" id="seccion" th:field="*{seccion}">
+  							<option value="ENTRANTES">Entrantes</option>
+  							<option value="BEBIDAS">Bebidas</option>
+  							<option value="VINOS">Vinos</option>
+  							<option value="ENSALADAS">Ensaladas</option>
+  							<option value="PESCADOS">Pescados</option>
+  							<option value="CARNES">Carnes</option>
+  							<option value="POSTRES">Postres</option>
+
+					</select>
+					<ul>
+					
+						<li th:each="err : ${#fields.errors('seccion')}"
+							th:text="${err}" />
+					</ul>
+					
+					
+					
+					<label for="allergens">Allergens:</label> 
 					<select name="allergens" id="allergens" th:field="*{allergens}" multiple>
   							<option value="1">Gluten</option>
   							<option value="2">Lactosa</option>
 
 					</select>
-					
-					<!--  
-					<input id="allergens"
-						name="allergens" type="text" th:field="*{allergens}"
-						placeholder="Allergens" required>
-					-->
 					<ul>
 					
 						<li th:each="err : ${#fields.errors('allergens')}"

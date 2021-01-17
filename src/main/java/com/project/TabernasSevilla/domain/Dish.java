@@ -3,6 +3,8 @@ package com.project.TabernasSevilla.domain;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import javax.validation.constraints.Max;
@@ -44,6 +46,9 @@ public class Dish extends BaseEntity {
 	@Min(0)
 	@Max(5)
 	private Double score;
+	
+	@Enumerated(EnumType.STRING)
+	private Seccion seccion;
 
 	private Boolean isVisible;
 

@@ -16,6 +16,7 @@ import com.project.TabernasSevilla.configuration.SecurityConfiguration;
 import com.project.TabernasSevilla.controller.DishController;
 import com.project.TabernasSevilla.domain.Dish;
 import com.project.TabernasSevilla.domain.Establishment;
+import com.project.TabernasSevilla.domain.Seccion;
 import com.project.TabernasSevilla.repository.*;
 import com.project.TabernasSevilla.security.AuthorityRepository;
 import com.project.TabernasSevilla.security.UserService;
@@ -106,7 +107,7 @@ public class DishControllerTest {
 	void setup() { // inicializar establishment y dish
 
 		Dish d = new Dish("Mi plato", "Mi descripción",
-				"https://international-experience.es/wp-content/uploads/2019/08/comidas-mundo.jpg", 20.0, 4.0, true,
+				"https://international-experience.es/wp-content/uploads/2019/08/comidas-mundo.jpg", 20.0, 4.0, Seccion.CARNES, true,
 				null);
 
 		d.setId(1);
