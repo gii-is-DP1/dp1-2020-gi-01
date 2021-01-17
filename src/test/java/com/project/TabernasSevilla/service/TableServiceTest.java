@@ -23,21 +23,6 @@ class TableServiceTest {
 	@Autowired
 	protected TableService tableService;
 
-	@Test
-	public void shouldCreateAnInstanceCorrectly() {
-		RestaurantTable table = new RestaurantTable(); // job application
-		table.setBooking(new Booking());
-		table.setEstablishment(new Establishment());
-		table.setHourSeated(Instant.now());
-		table.setNumber(3);
-		table.setOccupied(2);
-		table.setSeating(10);
-		try {
-			this.tableService.save(table);
-		} catch (Exception e) {
-			Logger.getLogger(TableServiceTest.class.getName()).log(Level.SEVERE, null, e);
-			e.printStackTrace();
-		}
-		assertThat(table.getId()).isNotNull();
-	}
+//	@Test
+//	estimatefreetable
 }

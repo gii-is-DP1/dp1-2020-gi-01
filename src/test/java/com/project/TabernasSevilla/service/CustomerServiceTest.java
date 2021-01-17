@@ -7,30 +7,36 @@ import java.util.logging.Logger;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Service;
 import com.project.TabernasSevilla.domain.Customer;
+import com.project.TabernasSevilla.domain.Establishment;
+import com.project.TabernasSevilla.repository.CustomerRepository;
+import com.project.TabernasSevilla.security.UserService;
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
 public class CustomerServiceTest {
 	@Autowired
 	protected CustomerService customerService;
+	
+	@Autowired
+	protected CustomerRepository customerRepository;
+	
+	@Autowired
+	protected UserService userService;
 
+	
 	@Test
-	public void shouldCreateAnInstanceCorrectly() {
-		Customer customer = new Customer(); // job application
-		customer.setAvatar("foto");
-		customer.setEmail("paco@us.es");
-		customer.setName("Paco");
-		customer.setPhoneNumber("692398182");
-		customer.setSurname("Zamudio");
-		try {
-			this.customerService.save(customer);
-		} catch (Exception e) {
-			Logger.getLogger(CustomerServiceTest.class.getName()).log(Level.SEVERE, null, e);
-			e.printStackTrace();
-		}
-		assertThat(customer.getId()).isNotNull();
+	public void testSetPreferredEstablishment() {
+		Customer cust = new Customer();
+		Establishment est = new Establishment();
+		est.setId(10);
+		cust = this.customerService.setPreferredEstablishment(10);
+//		Customer saved = this.customerService.save(cust);
+		assertThat(cust.getFavEstablishment().getId());		
 	}
+	
+//	test register
 }

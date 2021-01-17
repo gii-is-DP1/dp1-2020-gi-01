@@ -17,21 +17,6 @@ class CookServiceTest{
 	@Autowired
 	protected CookService cookService;
 
-	@Test
-	public void shouldCreateAnInstanceCorrectly() {
-		Cook cook = new Cook(); // job application
-		cook.setAvatar("foto");
-		cook.setEmail("paco@us.es");
-		cook.setName("Paco");
-		cook.setPhoneNumber("692398182");
-		cook.setSurname("Zamudio");
-		try {
-			this.cookService.save(cook);
-		} catch (Exception e) {
-			Logger.getLogger(CookServiceTest.class.getName()).log(Level.SEVERE, null, e);
-			e.printStackTrace();
-		}
-		assertThat(cook.getId()).isNotNull();
-	}
-
+//	@Test
+//	register
 }

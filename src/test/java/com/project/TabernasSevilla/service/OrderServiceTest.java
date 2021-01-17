@@ -26,22 +26,10 @@ class OrderServiceTest {
 	@Autowired
 	protected OrderService orderService;
 
-	@Test
-	public void shouldCreateAnInstanceCorrectly() {
-		RestaurantOrder order = new RestaurantOrder(); // job application
-		order.setActor(new Customer());
-		order.setAddress("Calle Flor de Albahaca 7");
-		order.setDish(new ArrayList<Dish>());
-		order.setEstablishment(new Establishment());
-		order.setPlacementDate(Instant.now());
-		order.setStatus("Preparing");
-		order.setTable(new RestaurantTable());
-		try {
-			this.orderService.save(order);
-		} catch (Exception e) {
-			Logger.getLogger(OrderServiceTest.class.getName()).log(Level.SEVERE, null, e);
-			e.printStackTrace();
-		}
-		assertThat(order.getId()).isNotNull();
-	}
+//	@Test
+//	adddish
+//	removedish
+//	checkOwnership
+//	calculateTotal
+//	updateStatus
 }

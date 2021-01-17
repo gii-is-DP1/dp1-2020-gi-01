@@ -18,20 +18,6 @@ class ManagerServiceTest {
 	@Autowired
 	protected ManagerService managerService;
 
-	@Test
-	public void shouldCreateAnInstanceCorrectly() {
-		Manager manager = new Manager(); // job application
-		manager.setAvatar("foto");
-		manager.setEmail("paco@us.es");
-		manager.setName("Paco");
-		manager.setPhoneNumber("692398182");
-		manager.setSurname("Zamudio");
-		try {
-			this.managerService.save(manager);
-		} catch (Exception e) {
-			Logger.getLogger(ManagerServiceTest.class.getName()).log(Level.SEVERE, null, e);
-			e.printStackTrace();
-		}
-		assertThat(manager.getId()).isNotNull();
-	}
+//	@Test
+//	register
 }

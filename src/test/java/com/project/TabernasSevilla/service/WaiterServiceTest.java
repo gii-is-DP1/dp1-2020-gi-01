@@ -18,21 +18,7 @@ class WaiterServiceTest {
 	@Autowired
 	protected WaiterService waiterService;
 
-	@Test
-	public void shouldCreateAnInstanceCorrectly() {
-		Waiter waiter = new Waiter(); // job application
-		waiter.setAvatar("foto");
-		waiter.setEmail("paco@us.es");
-		waiter.setName("Paco");
-		waiter.setPhoneNumber("692398182");
-		waiter.setSurname("Zamudio");
-		try {
-			this.waiterService.save(waiter);
-		} catch (Exception e) {
-			Logger.getLogger(WaiterServiceTest.class.getName()).log(Level.SEVERE, null, e);
-			e.printStackTrace();
-		}
-		assertThat(waiter.getId()).isNotNull();
-	}
+//	@Test
+//	reg
 
 }

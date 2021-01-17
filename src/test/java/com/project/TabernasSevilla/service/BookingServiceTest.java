@@ -20,25 +20,7 @@ class BookingServiceTest{
 	@Autowired
 	private BookingService bookingService;
 
-	@Test
-	public void shouldCreateAnInstanceCorrectly() {
-		Booking b = new Booking();
-		Admin a = new Admin();
-		Establishment es = new Establishment();
-		b.setActor(a);
-		b.setContactPhone("655443344");
-		b.setEstablishment(es);
-		b.setPlacementDate(Instant.now());
-		b.setReservationDate(Instant.now());
-		b.setNotes("Una mesita bien limpita");
-		b.setSeating(8);
-		try {
-			this.bookingService.save(b);
-		} catch (Exception e) {
-			Logger.getLogger(BookingServiceTest.class.getName()).log(Level.SEVERE, null, e);
-			e.printStackTrace();
-		}
-		assertThat(b.getId()).isNotNull();
-	}
+//	@Test
+//	register
 
 }
