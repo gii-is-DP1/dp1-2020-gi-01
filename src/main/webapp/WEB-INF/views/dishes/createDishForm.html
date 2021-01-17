@@ -15,52 +15,37 @@
 		<h2>Create a new Dish for the Menu</h2>
 		<div class="card">
 			<div class="container-fluid" style="position: relative;">
-
-
-
-
-
 				<form enctype="multipart/form-data" th:action="@{/dishes/save}"
 					role="form" th:object="${dish}" method="post">
 					<label for="name">Name:</label> <input id="name" name="name"
-						type="text" th:field="*{name}" placeholder="Name">
+						type="text" th:field="*{name}" placeholder="Name" required maxlength="30">
 					<ul>
 						<li th:each="err : ${#fields.errors('name')}" th:text="${err}" />
 					</ul>
 
 					<label for="description">Description:</label> <input
 						id="description" name="description" type="text"
-						th:field="*{description}" placeholder="Description">
+						th:field="*{description}" placeholder="Description" required maxlength="200">
 					<ul>
 						<li th:each="err : ${#fields.errors('description')}"
 							th:text="${err}" />
 					</ul>
 
 					<label for="picture">Picture:</label> <input id="picture"
-						name="picture" type="text" th:field="*{picture}"
-						placeholder="Picture">
+						name="picture" type="url" th:field="*{picture}"
+						placeholder="Picture" required>
 					<ul>
 						<li th:each="err : ${#fields.errors('picture')}" th:text="${err}" />
 					</ul>
 
 					<label for="price">Price:</label> <input id="price" name="price"
-						type="text" th:field="*{price}" placeholder="Price">
+						type="number" th:field="*{price}" placeholder="Price" required min="0">
 					<ul>
 						<li th:each="err : ${#fields.errors('price')}" th:text="${err}" />
 					</ul>
-
-
-					<!--  
-								<label for="score">Score:</label> <input id="score" name="score"
-									type="text" th:field="*{score}" placeholder="Score">
-								<ul>
-									<li th:each="err : ${#fields.errors('score')}" th:text="${err}" />
-								</ul>
-								-->
-
 					<label for="allergens">Allergens:</label> <input id="allergens"
 						name="allergens" type="text" th:field="*{allergens}"
-						placeholder="Allergens">
+						placeholder="Allergens" required>
 					<ul>
 						<li th:each="err : ${#fields.errors('allergens')}"
 							th:text="${err}" />

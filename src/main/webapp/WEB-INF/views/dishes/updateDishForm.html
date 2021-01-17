@@ -19,28 +19,28 @@
 					th:action="@{/dishes/{dishId}/edit(dishId=${dish.id})}" role="form"
 					th:object="${dish}" method="post">
 					<label for="name">Name:</label> <input id="name" name="name"
-						type="text" th:field="*{name}" placeholder="Name">
+						type="text" th:field="*{name}" placeholder="Name" required maxlength="30">
 					<ul>
 						<li th:each="err : ${#fields.errors('name')}" th:text="${err}" />
 					</ul>
 
 					<label for="description">Description:</label> <input
 						id="description" name="description" type="text"
-						th:field="*{description}" placeholder="Description">
+						th:field="*{description}" placeholder="Description" required maxlength="200">
 					<ul>
 						<li th:each="err : ${#fields.errors('description')}"
 							th:text="${err}" />
 					</ul>
 
 					<label for="picture">Picture:</label> <input id="picture"
-						name="picture" type="text" th:field="*{picture}"
-						placeholder="Picture">
+						name="picture" type="url" th:field="*{picture}"
+						placeholder="Picture" required>
 					<ul>
 						<li th:each="err : ${#fields.errors('picture')}" th:text="${err}" />
 					</ul>
 
 					<label for="price">Price:</label> <input id="price" name="price"
-						type="text" th:field="*{price}" placeholder="Price">
+						type="number" th:field="*{price}" placeholder="Price"  required min="0">
 					<ul>
 						<li th:each="err : ${#fields.errors('price')}" th:text="${err}" />
 					</ul>

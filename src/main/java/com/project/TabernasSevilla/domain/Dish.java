@@ -26,12 +26,15 @@ import lombok.Setter;
 public class Dish extends BaseEntity {
 
 	@NotBlank
+	@NotNull
 	private String name;
 
 	@NotBlank
+	@NotNull
 	private String description;
 
 	@NotBlank
+	@NotNull
 	@URL
 	private String picture;
 
