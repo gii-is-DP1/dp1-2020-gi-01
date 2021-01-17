@@ -52,7 +52,7 @@ public class DishController extends AbstractController {
 		return view;
 	}
 
-	@GetMapping(path = "/list")
+	@GetMapping(path = "")
 	public String dishList(Model model) {
 		List<Dish> dishes = dishService.findAll();
 		model.addAttribute("dishes", dishes);
@@ -62,14 +62,14 @@ public class DishController extends AbstractController {
 
 	@GetMapping(path = "/new")
 	public String createDish(Model model) {
-		String view = "dishes/createDishForm";
+		String view = super.checkIfCurrentUserIsAllowed("dishes/createDishForm", "ADMIN");
 		model.addAttribute("dish", new Dish());
 		return view;
 	}
 
 	@PostMapping(path = "/save")
 	public String saveDish(@Valid Dish dish, BindingResult result, Model model) {
-		String view = "redirect:/dishes/list";
+		String view = super.checkIfCurrentUserIsAllowed("redirect:/dishes", "ADMIN");
 		if (result.hasErrors()) {
 			model.addAttribute("dish", dish);
 			return "dishes/createDishForm";
@@ -84,7 +84,7 @@ public class DishController extends AbstractController {
 	@PostMapping(path = "/savecomment/{dishId}")
 	public String saveComment(@Valid Review review, BindingResult result, Model model,
 			@PathVariable("dishId") int dishId) {
-		String view = "redirect:/dishes/" + dishId;
+		String view = super.checkIfCurrentUserIsAllowed("redirect:/dishes/" + dishId, "CUSTOMER");
 		Dish dish = dishService.findById(dishId).get();
 		// System.out.println(dish.getName());
 
@@ -120,7 +120,7 @@ public class DishController extends AbstractController {
 	@GetMapping(path = "/delete/{dishId}")
 	public String deleteDish(@PathVariable("dishId") int dishId, Model model) {
 
-		String view = super.checkIfCurrentUserIsAllowed("redirect:/dishes/list", "ADMIN");
+		String view = super.checkIfCurrentUserIsAllowed("redirect:/dishes", "ADMIN");
 
 		if (view != "error") {
 			Optional<Dish> dish = dishService.findById(dishId);
@@ -148,7 +148,7 @@ public class DishController extends AbstractController {
 
 	@PostMapping(value = "{dishId}/edit")
 	public String processUpdateDishForm(@Valid Dish dish, BindingResult result, @PathVariable("dishId") int dishId) {
-		String view = "dishes/updateDishForm";
+		String view = super.checkIfCurrentUserIsAllowed("redirect:/dishes", "ADMIN");
 
 		if (result.hasErrors()) {
 			return view;
@@ -164,7 +164,7 @@ public class DishController extends AbstractController {
 				return view;
 			}
 
-			return "redirect:/dishes/list";
+			return view;
 		}
 	}
 

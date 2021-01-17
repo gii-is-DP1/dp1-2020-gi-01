@@ -12,14 +12,9 @@
 	<th:block th:include="fragments/common :: navbar"></th:block>
 
 	<div class="container">
-		<h2>Create a new Dish for the Menu</h2>
+		<h2>Modify a Dish from the Menu</h2>
 		<div class="card">
 			<div class="container-fluid" style="position: relative;">
-
-
-
-
-
 				<form enctype="multipart/form-data"
 					th:action="@{/dishes/{dishId}/edit(dishId=${dish.id})}" role="form"
 					th:object="${dish}" method="post">
@@ -48,14 +43,6 @@
 						type="text" th:field="*{price}" placeholder="Price">
 					<ul>
 						<li th:each="err : ${#fields.errors('price')}" th:text="${err}" />
-					</ul>
-
-
-				 
-					<label for="score">Score:</label> <input id="score" name="score"
-						type="text" th:field="*{score}" placeholder="Score">
-					<ul>
-						<li th:each="err : ${#fields.errors('score')}" th:text="${err}" />
 					</ul>
 
 
