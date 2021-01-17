@@ -129,7 +129,7 @@ public class DishControllerTest {
 	@WithMockUser(value = "spring")
 	@Test
 	void httpResponse() throws Exception {
-		mockMvc.perform(get("/dishes/list")).andExpect(status().isOk());
+		mockMvc.perform(get("/dishes")).andExpect(status().isOk());
 	}
 
 }

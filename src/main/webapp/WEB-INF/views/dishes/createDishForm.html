@@ -43,10 +43,21 @@
 					<ul>
 						<li th:each="err : ${#fields.errors('price')}" th:text="${err}" />
 					</ul>
-					<label for="allergens">Allergens:</label> <input id="allergens"
+					<label for="allergens">Allergens:</label> 
+					
+					<select name="allergens" id="allergens" th:field="*{allergens}" multiple>
+  							<option value="1">Gluten</option>
+  							<option value="2">Lactosa</option>
+
+					</select>
+					
+					<!--  
+					<input id="allergens"
 						name="allergens" type="text" th:field="*{allergens}"
 						placeholder="Allergens" required>
+					-->
 					<ul>
+					
 						<li th:each="err : ${#fields.errors('allergens')}"
 							th:text="${err}" />
 					</ul>
