@@ -1,30 +1,21 @@
 package com.project.TabernasSevilla.configuration;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 
-import com.project.TabernasSevilla.domain.Actor;
 import com.project.TabernasSevilla.domain.Admin;
 import com.project.TabernasSevilla.domain.Allergen;
 import com.project.TabernasSevilla.domain.Dish;
 import com.project.TabernasSevilla.domain.Review;
 import com.project.TabernasSevilla.domain.Seccion;
-import com.project.TabernasSevilla.repository.AbstractActorRepository;
 import com.project.TabernasSevilla.repository.AdminRepository;
 import com.project.TabernasSevilla.repository.AllergenRepository;
 import com.project.TabernasSevilla.repository.DishRepository;
 import com.project.TabernasSevilla.repository.ReviewRepository;
-import com.project.TabernasSevilla.security.Authority;
-import com.project.TabernasSevilla.security.AuthorityRepository;
-import com.project.TabernasSevilla.security.User;
-import com.project.TabernasSevilla.security.UserRepository;
 
 @Configuration
 public class PopulatorDatabase implements CommandLineRunner {

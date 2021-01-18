@@ -14,9 +14,8 @@ import org.springframework.stereotype.Service;
 import com.project.TabernasSevilla.domain.Admin;
 import com.project.TabernasSevilla.forms.RegisterForm;
 
-
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
-class AdminServiceTest{
+class AdminServiceTest {
 	@Autowired
 	protected AdminService adminService;
 
@@ -30,18 +29,17 @@ class AdminServiceTest{
 		Admin saved = this.adminService.save(regis);
 		assertThat(saved).isNotNull();
 	}
-	
+
 	@Test
 	public void testingBadRegisterandSave() {
 		RegisterForm form = new RegisterForm();
 		form.setUsername("");
 		form.setPassword("");
 		form.setAcceptTerms(true);
-		assertThrows(ConstraintViolationException.class, ()->{
+		assertThrows(ConstraintViolationException.class, () -> {
 			Admin regis = this.adminService.register(form);
-		Admin saved = this.adminService.save(regis);});
-
-		
+			Admin saved = this.adminService.save(regis);
+		});
 	}
 
 }

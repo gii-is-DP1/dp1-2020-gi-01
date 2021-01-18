@@ -3,7 +3,6 @@ package com.project.TabernasSevilla.forms;
 import javax.validation.Valid;
 import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 public class RegisterForm {
