@@ -46,17 +46,12 @@ public class RestaurantOrder extends BaseEntity {
 
 	@NotNull
 	@Pattern(regexp = "^" + RestaurantOrder.OPEN + "|" + RestaurantOrder.CLOSED + "|" + RestaurantOrder.PLACED + "|" + RestaurantOrder.PREP + "|"
-			+ RestaurantOrder.READY + "|" + RestaurantOrder.STS_DELIVERY + "|" + RestaurantOrder.CANCELLED + "|" + RestaurantOrder.DRAFT+ "$")
+			+ RestaurantOrder.READY + "|" + RestaurantOrder.STS_DELIVERY + "|" + RestaurantOrder.CANCELLED + "|" + RestaurantOrder.DRAFT +  "|" + RestaurantOrder.DELIVERED + "$")
 	private String status;
 
-	public List<String> getTypes(){
-		return Arrays.asList(RestaurantOrder.TAKEAWAY,RestaurantOrder.PICKUP,RestaurantOrder.DELIVERY,RestaurantOrder.EAT_IN);
-	}
-	
-	public List<String> getOnlineTypes(){
+	public List<String> onlineTypes(){
 		return Arrays.asList(RestaurantOrder.PICKUP,RestaurantOrder.DELIVERY);
 	}
-
 	
 	public static final String DRAFT = "DRAFT";
 	

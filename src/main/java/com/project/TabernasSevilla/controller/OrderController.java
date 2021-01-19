@@ -17,6 +17,7 @@ import com.project.TabernasSevilla.domain.OrderCancellation;
 import com.project.TabernasSevilla.domain.OrderLog;
 import com.project.TabernasSevilla.domain.RestaurantOrder;
 import com.project.TabernasSevilla.domain.RestaurantTable;
+import com.project.TabernasSevilla.security.UserService;
 import com.project.TabernasSevilla.service.DishService;
 import com.project.TabernasSevilla.service.EstablishmentService;
 import com.project.TabernasSevilla.service.OrderCancellationService;
@@ -40,7 +41,10 @@ public class OrderController {
 	private OrderCancellationService orderCancellationService;
 	@Autowired
 	private TableService tableService;
+	@Autowired
+	private UserService userService;
 
+	// create
 	@GetMapping("/est/{id}")
 	public String create(Model model, @PathVariable(value = "id") Integer establishmentId) {
 		RestaurantOrder order = this.orderService.findDraftByPrincipal();
@@ -54,6 +58,7 @@ public class OrderController {
 		return createRegisterEditModel(order, model);
 	}
 
+	// list active orders in establishment
 	@GetMapping("/est/{id}/list")
 	public String listActiveByEstablishment(Model model, @PathVariable(value = "id") Integer establishmentId) {
 		Establishment est = this.estService.findById(establishmentId);
@@ -69,25 +74,25 @@ public class OrderController {
 		return "order/list";
 	}
 
+	// update status and/or table
 	@GetMapping("{id}/update")
 	public String updateStatus(Model model, @PathVariable("id") int orderId,
-			@RequestParam(required = false, value = "list") Boolean listView,
+			@RequestParam(required = false, value = "est") Integer estId,
 			@RequestParam(required = false, value = "sts") String status,
 			@RequestParam(required = false, value = "tbl") Integer tableId) {
-		String res = "redirect:/order" + orderId + "/view";
-
+		String res = "redirect:/order/" + orderId + "/view";
+		if (estId != null) {
+			res = "redirect:/order/est/" + estId + "/list";
+		}
 		try {
 			RestaurantOrder order = this.orderService.findById(orderId).get();
-			if(tableId != null) {
+			if (tableId != null) {
 				RestaurantTable table = this.tableService.findById(tableId);
 				order.setTable(table);
 				this.orderService.save(order);
 			}
 			if (status != null && !status.isBlank()) {
-				this.orderService.updateStatus(order, status);				
-			}
-			if (listView != null && listView == true) {
-				res = "redirect:/order/est/" + order.getEstablishment().getId() + "/list";
+				this.orderService.updateStatus(order, status);
 			}
 		} catch (Throwable t) {
 			model.addAttribute("message", t.getMessage());
@@ -95,6 +100,7 @@ public class OrderController {
 		return res;
 	}
 
+	// list closed/cancelled order for establishment
 	@GetMapping("/est/{id}/list/prev")
 	public String listInactiveByEstablishment(Model model, @PathVariable(value = "id") Integer establishmentId) {
 		Establishment est = this.estService.findById(establishmentId);
@@ -105,6 +111,7 @@ public class OrderController {
 		return "order/list";
 	}
 
+	// view draft order (principal)
 	@GetMapping("/")
 	public String edit(Model model) {
 		try {
@@ -115,6 +122,7 @@ public class OrderController {
 		}
 	}
 
+	// view non draft order
 	@GetMapping("/{id}/view")
 	public String view(Model model, @PathVariable("id") int orderId) {
 		RestaurantOrder order = this.orderService.findById(orderId).get();
@@ -129,6 +137,22 @@ public class OrderController {
 			List<OrderLog> logs = this.orderLogService.findByOrder(order);
 			model.addAttribute("logs", logs);
 		} else {
+			if(this.userService.principalIsEmployee()) {
+				switch(order.getType()) {
+				case RestaurantOrder.DELIVERY:
+					List<String> deliveryStatus = RestaurantOrder.DeliveryStatus;
+					model.addAttribute("deliveryStatus", deliveryStatus);
+					break;
+				case RestaurantOrder.PICKUP:
+					List<String> pickupStatus = RestaurantOrder.PickupStatus;
+					model.addAttribute("pickupStatus", pickupStatus);
+					break;
+				case RestaurantOrder.EAT_IN:
+					List<String> eatInStatus = RestaurantOrder.EatInStatus;
+					model.addAttribute("eatInStatus", eatInStatus);
+					break;				
+				}
+			}
 			List<OrderLog> logs = this.orderLogService.findByOrder(order);
 			model.addAttribute("logs", logs);
 		}

@@ -96,7 +96,7 @@
 													<td
 														sec:authorize="hasAnyAuthority('COOK','ADMIN','MANAGER','WAITER')"
 														th:if="${order.status != 'CANCELLED' && order.status != 'CLOSED'}">
-														<input type="hidden" name="list" value="true"
+														<input type="hidden" name="est" th:value="${order.establishment.id}"
 														th:form="form + ${order.id}" />
 														<form th:id="form + ${order.id}" method="get"
 															th:action="@{/order/{id}/update(id=${order.id})}">
