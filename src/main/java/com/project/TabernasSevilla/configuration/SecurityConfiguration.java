@@ -28,6 +28,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 			.antMatchers("/customer/**").hasAuthority("CUSTOMER")
 			.antMatchers("/admin/**").hasAuthority("ADMIN")
 			.antMatchers("/employee/**").hasAnyAuthority("ADMIN","MANAGER","WAITER","COOK")
+			
+			.antMatchers("/dishes").permitAll()
+			.antMatchers("/dishes/{spring:^[0-9]+$}").permitAll()
+			.antMatchers("/dishes/savecomment/{spring:^[0-9]+$}").authenticated()
+			.antMatchers("/dishes/**").hasAuthority("ADMIN")
+			
 			.antMatchers("/manager/**").hasAuthority("MANAGER")
 			.antMatchers("/cook/**").hasAuthority("COOK")
 			.antMatchers("/waiter/**").hasAuthority("WAITER")

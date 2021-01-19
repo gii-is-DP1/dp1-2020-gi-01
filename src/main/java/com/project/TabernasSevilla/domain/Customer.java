@@ -3,9 +3,7 @@ package com.project.TabernasSevilla.domain;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-
 import javax.persistence.ManyToOne;
-
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

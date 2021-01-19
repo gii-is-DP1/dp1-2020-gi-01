@@ -1,29 +1,21 @@
 package com.project.TabernasSevilla.configuration;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 
-import com.project.TabernasSevilla.domain.Actor;
 import com.project.TabernasSevilla.domain.Admin;
 import com.project.TabernasSevilla.domain.Allergen;
 import com.project.TabernasSevilla.domain.Dish;
 import com.project.TabernasSevilla.domain.Review;
-import com.project.TabernasSevilla.repository.AbstractActorRepository;
+import com.project.TabernasSevilla.domain.Seccion;
 import com.project.TabernasSevilla.repository.AdminRepository;
 import com.project.TabernasSevilla.repository.AllergenRepository;
 import com.project.TabernasSevilla.repository.DishRepository;
 import com.project.TabernasSevilla.repository.ReviewRepository;
-import com.project.TabernasSevilla.security.Authority;
-import com.project.TabernasSevilla.security.AuthorityRepository;
-import com.project.TabernasSevilla.security.User;
-import com.project.TabernasSevilla.security.UserRepository;
 
 @Configuration
 public class PopulatorDatabase implements CommandLineRunner {
@@ -34,20 +26,17 @@ public class PopulatorDatabase implements CommandLineRunner {
 	@Autowired
 	private AllergenRepository repositoryAllergen;
 
-	@Autowired
-	private AuthorityRepository repositoryAuthority;
+	// @Autowired
+	// private UserRepository repositoryUser;
 
-	//@Autowired
-	//private UserRepository repositoryUser;
-	
-	@Autowired 
+	@Autowired
 	private ReviewRepository repoReview;
-	
-	@Autowired 
+
+	@Autowired
 	private AdminRepository repoAdmin;
-	
-	//@Autowired 
-	//private AbstractActorRepository repoActor;
+
+	// @Autowired
+	// private AbstractActorRepository repoActor;
 
 	@Override
 	public void run(String... args) throws Exception {
@@ -69,48 +58,61 @@ public class PopulatorDatabase implements CommandLineRunner {
 
 		// Guardo el objeto
 
-		Dish d = new Dish("Mi plato", "Mi descripción",
-				"https://international-experience.es/wp-content/uploads/2019/08/comidas-mundo.jpg", 20.0, 5.0,
-				allergensFromD);
-		//creo un user para la review
-		//crear user y de ahi actor con sus propiedades de constructor
-		
+		Dish dEntrantes1 = new Dish("Gulas al Ajillo", "Exquisita tosta crujiente con gulas de Cádiz",
+				"http://localhost:8080/images/gulas.jpg", 5.0, 4.0, Seccion.ENTRANTES, true, allergensFromD);
+
+		Dish dBebidas1 = new Dish("Coca-Cola", "Refrescante bebida de cola", "http://localhost:8080/images/coke.jpg",
+				1.5, 4.0, Seccion.BEBIDAS, true, allergensFromD);
+
+		Dish dVinos1 = new Dish("Vino Tinto", "Cosecha del 92", "http://localhost:8080/images/vinotinto.jpg", 10.0, 4.0,
+				Seccion.VINOS, true, allergensFromD);
+
+		Dish dEnsaladas1 = new Dish("Ensalada César", "Lechugas de origen español",
+				"http://localhost:8080/images/ensaladacesar.jpg", 5.0, 4.0, Seccion.ENSALADAS, true, allergensFromD);
+
+		Dish dPescados1 = new Dish("Puntillitas", "El placer del mar en tu plato",
+				"http://localhost:8080/images/puntillitas.jpg", 2.5, 4.0, Seccion.PESCADOS, true, allergensFromD);
+
+		Dish dCarnes1 = new Dish("Solomillo de Cerdo", "Carne al punto en su salsa",
+				"http://localhost:8080/images/solomillo.jpg", 5.0, 4.0, Seccion.CARNES, true, allergensFromD);
+
+		Dish dPostres1 = new Dish("Tocino de cielo", "Dulce postre casero", "http://localhost:8080/images/tocino.jpg",
+				2.4, 4.0, Seccion.POSTRES, true, allergensFromD);
+
+		// creo un user para la review
+		// crear user y de ahi actor con sus propiedades de constructor
+
 		/*
-		User us = new User();
-		us.setUsername("Anthony Fantano");
-		us.setPassword("fantano");
-		Authority auth = new Authority();
-		auth.setAuthority("reviewer");
-		Set<Authority> ls = new HashSet<>();
-		ls.add(auth);
-		us.setAuthorities(ls);
-		*/
-		
-		//Actor persona = new Actor();
-		
-		
-		//Actor ActSave =  this.repoActor.save(persona);
-		
-		//creo review
-		//Review rev = new Review(persona, d, "ta rico la verdad", 4);
-		//Review Rsaved = this.repoReview.save(rev);
-		
-		
-		
-		Dish saved = this.repository.save(d);
-		
+		 * User us = new User(); us.setUsername("Anthony Fantano");
+		 * us.setPassword("fantano"); Authority auth = new Authority();
+		 * auth.setAuthority("reviewer"); Set<Authority> ls = new HashSet<>();
+		 * ls.add(auth); us.setAuthorities(ls);
+		 */
+
+		// Actor persona = new Actor();
+
+		// Actor ActSave = this.repoActor.save(persona);
+
+		// creo review
+		// Review rev = new Review(persona, d, "ta rico la verdad", 4);
+		// Review Rsaved = this.repoReview.save(rev);
+
+		Dish savedEN1 = this.repository.save(dEntrantes1);
+		Dish savedB1 = this.repository.save(dBebidas1);
+		Dish savedV1 = this.repository.save(dVinos1);
+		Dish savedE1 = this.repository.save(dEnsaladas1);
+		Dish savedPE1 = this.repository.save(dPescados1);
+		Dish savedC1 = this.repository.save(dCarnes1);
+		Dish savedP1 = this.repository.save(dPostres1);
+
 		// la review bien, hay que guardar dish antes de meterlo en review
 		Admin ad = repoAdmin.getOne(1);
-		Review rev = new Review(ad, d, "ta rico la verdad", 4); //actor, dish, comentario, puntuacion
+		Review rev = new Review(ad, dEntrantes1, "ta rico la verdad", 4.0); // actor, dish, comentario, puntuacion
 		Review Rsaved = this.repoReview.save(rev);
-		
-		
 
 	}
-	
-	//INSERT INTO REVIEW(id, version, comment, rating, actor_id, dish_id) VALUES (1, 0, 'ta rico la verdad', 4, 1, 3);
-	
-	
-	
+
+	// INSERT INTO REVIEW(id, version, comment, rating, actor_id, dish_id) VALUES
+	// (1, 0, 'ta rico la verdad', 4, 1, 3);
 
 }

@@ -5,7 +5,6 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
 import com.project.TabernasSevilla.domain.Curriculum;
 import com.project.TabernasSevilla.forms.ContactForm;
 import com.project.TabernasSevilla.repository.CurriculumRepository;

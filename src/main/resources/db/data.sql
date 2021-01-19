@@ -24,5 +24,3 @@ INSERT INTO ESTABLISHMENT(id,version,title,description,picture,capacity,current_
 INSERT INTO RESTAURANT_TABLE(id,version,establishment_id,number,seating,occupied,hour_seated) VALUES (1,0,1,1,8,0,null);
 INSERT INTO RESTAURANT_TABLE(id,version,establishment_id,number,seating,occupied,hour_seated) VALUES (2,0,1,2,9,0,null);
 INSERT INTO RESTAURANT_TABLE(id,version,establishment_id,number,seating,occupied,hour_seated) VALUES (3,0,1,3,10,0,null);
-
-INSERT INTO PROMOTION(id, version, code, description, end_date, start_date, title, uses) VALUES (1, 0, 'FORT01', 'fortnite burger + patatas', '30/01/2021', '01/01/2021', 'first promo', 10000);

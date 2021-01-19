@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.project.TabernasSevilla.domain.Cook;
 import com.project.TabernasSevilla.domain.Waiter;
 import com.project.TabernasSevilla.forms.RegisterForm;
 import com.project.TabernasSevilla.repository.WaiterRepository;

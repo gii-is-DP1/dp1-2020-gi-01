@@ -1,8 +1,6 @@
 package com.project.TabernasSevilla.service;
 
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -10,8 +8,8 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.project.TabernasSevilla.domain.RestaurantOrder;
 import com.project.TabernasSevilla.domain.OrderLog;
+import com.project.TabernasSevilla.domain.RestaurantOrder;
 import com.project.TabernasSevilla.repository.OrderLogRepository;
 
 @Service
