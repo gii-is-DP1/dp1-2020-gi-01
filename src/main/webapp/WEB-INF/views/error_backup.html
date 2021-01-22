@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+<meta charset="UTF-8">
+<head>
+<th:block th:include="fragments/common :: head(title='Location')"></th:block>
+</head>
+<body
+	th:with="httpStatus=${T(org.springframework.http.HttpStatus).valueOf(#response.status)}">
+	<th:block th:include="fragments/common :: navbar"></th:block>
+	<div class="container">
+		<div class="card">
+			<div class="container-fliud">
+				<div class="wrapper row">
+					<div class="preview col">
+						<h1 th:text="|${httpStatus.value} - ${httpStatus.reasonPhrase}|" style="color:black;">404</h1>
+						<p th:utext="${errorMessage}">Page not found</p>
+						<a th:href="@{/}">Take me home <i class="fa fa-home"
+							aria-hidden="true"></i></a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
