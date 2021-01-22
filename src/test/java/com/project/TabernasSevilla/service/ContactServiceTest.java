@@ -19,11 +19,11 @@ public class ContactServiceTest {
 	// found in "Work with us!"
 	@Test
 	public void testingRegisterandSave() {
-	ContactForm c = new ContactForm();	
-	c.setCv("pdf");
-	c.setEmail("alonso@us.es");
-	c.setFullName("Alonso Perez");
-	Curriculum regis = this.contactService.register(c);
+	ContactForm form = new ContactForm();	
+	form.setCv("pdf");
+	form.setEmail("alonso@us.es");
+	form.setFullName("Alonso");
+	Curriculum regis = this.contactService.register(form);
 	Curriculum saved = this.contactService.save(regis);
 	assertThat(saved).isNotNull();
 	}

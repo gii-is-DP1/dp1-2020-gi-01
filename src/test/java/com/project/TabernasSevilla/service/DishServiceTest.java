@@ -67,7 +67,6 @@ class DishServiceTest {
 		dish.setIsVisible(true);
 		Dish d1 = this.dishService.save(dish);
 		d1 = this.dishService.findById(dish.getId()).get();
-		System.out.println("Hola" + d1.getId());
 		assertThat(d1).isNotNull();
 	}
 
