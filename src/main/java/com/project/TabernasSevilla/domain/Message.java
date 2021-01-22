@@ -1,5 +1,6 @@
 package com.project.TabernasSevilla.domain;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
@@ -23,14 +24,14 @@ public class Message extends BaseEntity {
 
 	// relations
 	@ManyToOne(fetch=FetchType.LAZY)
-	private Actor recipient;
-	@ManyToOne(fetch=FetchType.EAGER)
-	private MessageBox container;
+	private Actor actor;
+	@ManyToOne(fetch=FetchType.LAZY, optional=true)
+	private RestaurantOrder order;
 	// attributes
-	@NotBlank
-	private String title;
-	@Past
 	@NotNull
-	private LocalDateTime deliveryDate;
-	private String body;
+	private Instant deliveryDate;
+	
+	private Instant readDate;
+	@NotBlank
+	private String message;
 }

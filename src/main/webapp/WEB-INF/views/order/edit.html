@@ -96,7 +96,7 @@
 							<!-- TYPE -->
 							<div class="wrapper row">
 								<select name="type" id="type" form="orderForm">
-									<option th:each="typeStr : ${order.getOnlineTypes()}"
+									<option th:each="typeStr : ${order.onlineTypes}"
 										th:value="${typeStr}" th:utext="${typeStr}" />
 								</select>
 								<ul>
