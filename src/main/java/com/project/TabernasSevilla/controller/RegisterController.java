@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.project.TabernasSevilla.forms.RegisterForm;
 import com.project.TabernasSevilla.service.ActorService;
@@ -72,5 +73,11 @@ public class RegisterController {
 		model.addAttribute(regForm);
 		model.addAttribute("message", message);
 		return "register";
+	}
+	
+	@GetMapping("/check-key")
+	public @ResponseBody String checkKey(@RequestParam("key") String key) {
+		String response = this.regKeyService.checkKey(key).toString();
+		return response;
 	}
 }
