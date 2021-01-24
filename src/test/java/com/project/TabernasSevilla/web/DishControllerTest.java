@@ -26,10 +26,19 @@ import com.project.TabernasSevilla.service.DishService;
 import com.project.TabernasSevilla.service.EstablishmentService;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.mockito.BDDMockito.given;
+
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 //@RunWith(SpringRunner.class)
 //@WebAppConfiguration
@@ -39,6 +48,8 @@ import java.util.List;
 	includeFilters = {@ComponentScan.Filter(Service.class), @ComponentScan.Filter(Repository.class) })
 //@MockBean(JpaMetamodelMappingContext.class) //para que evite buscar la database
 public class DishControllerTest {
+	
+	private static final int TEST_DISH_ID = 1;
 
 	@Autowired
 	private DishController dishController;
@@ -114,6 +125,7 @@ public class DishControllerTest {
 				null);
 
 		d.setId(1);
+		System.out.println("%%%%%%%%%%%% la id del plato "+d.getId());
 		List<Dish> ls = new ArrayList<Dish>();
 		ls.add(d);
 
@@ -128,6 +140,8 @@ public class DishControllerTest {
 		est.setDish(ls);
 		establishmentRepository.save(est);
 		System.out.println("############ todos los establecimientos: " + establishmentService.findAll());
+		
+		given(this.dishService.findById(TEST_DISH_ID)).willReturn(Optional.of(new Dish())); //importantisimo
 	}
 
 	@WithMockUser(value = "spring")
@@ -135,5 +149,12 @@ public class DishControllerTest {
 	void httpResponse() throws Exception {
 		mockMvc.perform(get("/dishes")).andExpect(status().isOk());
 	}
+	
+	@WithMockUser(value = "spring")
+	@Test
+	void dishList() throws Exception {
+		mockMvc.perform(get("/dishes/"+TEST_DISH_ID)).andExpect(status().isOk()).andExpect(model().attributeExists("dish"));
+	}
+	
 
 }
