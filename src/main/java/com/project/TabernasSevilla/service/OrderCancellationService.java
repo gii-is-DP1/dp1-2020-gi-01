@@ -16,9 +16,15 @@ import com.project.TabernasSevilla.repository.OrderCancellationRepository;
 @Transactional
 public class OrderCancellationService {
 
-	@Autowired
+ 
 	private OrderCancellationRepository orderCancellationRepo;
 	
+	@Autowired
+	public OrderCancellationService(OrderCancellationRepository orderCancellationRepo) {
+		super();
+		this.orderCancellationRepo = orderCancellationRepo;
+	}
+
 	public Optional<OrderCancellation> findById(int id) {
 		return this.orderCancellationRepo.findById(id);
 	}

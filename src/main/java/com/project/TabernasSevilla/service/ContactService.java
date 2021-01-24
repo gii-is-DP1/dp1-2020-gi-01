@@ -16,9 +16,15 @@ import com.project.TabernasSevilla.repository.CurriculumRepository;
 //job application / curriculum service
 public class ContactService {
 	
-	@Autowired
+ 
 	private CurriculumRepository cvRepo;
 	
+	@Autowired
+	public ContactService(CurriculumRepository cvRepo) {
+		super();
+		this.cvRepo = cvRepo;
+	}
+
 	public Curriculum findById(final int id) { //hmmm no hay id en jobapplication o si...
 		return cvRepo.findById(id);
 	}

@@ -9,6 +9,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -32,8 +33,10 @@ import java.util.List;
 
 //@RunWith(SpringRunner.class)
 //@WebAppConfiguration
-@WebMvcTest(controllers = DishController.class, excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class), excludeAutoConfiguration = SecurityConfiguration.class, includeFilters = {
-		@ComponentScan.Filter(Service.class) })
+@WebMvcTest(controllers = DishController.class, 
+	excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class), 
+	excludeAutoConfiguration = SecurityConfiguration.class, 
+	includeFilters = {@ComponentScan.Filter(Service.class), @ComponentScan.Filter(Repository.class) })
 //@MockBean(JpaMetamodelMappingContext.class) //para que evite buscar la database
 public class DishControllerTest {
 
@@ -117,14 +120,14 @@ public class DishControllerTest {
 		Establishment est = new Establishment();
 		est.setId(1);
 		est.setTitle("prueba");
-		est.setAddress("calle my deaths");
+		est.setAddress("calle ");
 		est.setCapacity(10);
 		est.setCurrentCapacity(10);
 		est.setOpeningHours("24/7");
 		est.setScore(2);
 		est.setDish(ls);
 		establishmentRepository.save(est);
-		System.out.println("############ todos los establecimientos uwu: " + establishmentService.findAll());
+		System.out.println("############ todos los establecimientos: " + establishmentService.findAll());
 	}
 
 	@WithMockUser(value = "spring")

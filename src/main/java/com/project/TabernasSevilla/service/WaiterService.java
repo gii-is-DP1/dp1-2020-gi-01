@@ -18,11 +18,18 @@ import com.project.TabernasSevilla.security.UserService;
 @Transactional
 public class WaiterService {
 
-	@Autowired
+ 
 	private WaiterRepository waiterRepo;
-	@Autowired
+ 
 	private UserService userService;
 	
+	@Autowired
+	public WaiterService(WaiterRepository waiterRepo, UserService userService) {
+		super();
+		this.waiterRepo = waiterRepo;
+		this.userService = userService;
+	}
+
 	public Waiter create() {
 		Waiter res = new Waiter();
 		return res;

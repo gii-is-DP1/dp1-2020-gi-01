@@ -23,15 +23,25 @@ import com.project.TabernasSevilla.security.UserService;
 @Transactional
 public class OrderService {
 
-	@Autowired
+ 
 	private OrderRepository orderRepo;
-	@Autowired
+ 
 	private OrderLogService orderLogService;
-	@Autowired
+ 
 	private ActorService actorService;
-	@Autowired
+ 
 	private UserService userService;
 	
+	@Autowired
+	public OrderService(OrderRepository orderRepo, OrderLogService orderLogService, ActorService actorService,
+			UserService userService) {
+		super();
+		this.orderRepo = orderRepo;
+		this.orderLogService = orderLogService;
+		this.actorService = actorService;
+		this.userService = userService;
+	}
+
 	// CRUD METHODS FOR ORDER
 	public Optional<RestaurantOrder> findById(int id) {
 		return this.orderRepo.findById(id);

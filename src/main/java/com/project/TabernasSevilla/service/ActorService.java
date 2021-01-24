@@ -19,23 +19,39 @@ import com.project.TabernasSevilla.security.UserService;
 @Transactional
 public class ActorService {
 
-	@Autowired
+ 
 	private AbstractActorRepository<Actor> actorRepo;
-	@Autowired
+ 
 	private RegKeyService regKeyService;
-	@Autowired
+ 
 	private CustomerService customerService;
-	@Autowired
+ 
 	private ManagerService managerService;
-	@Autowired
+ 
 	private AdminService adminService;
-	@Autowired
+ 
 	private CookService cookService;
-	@Autowired
+ 
 	private WaiterService waiterService;
-	@Autowired
+ 
 	private UserService userService;
 	
+	
+	@Autowired
+	public ActorService(AbstractActorRepository<Actor> actorRepo, RegKeyService regKeyService,
+			CustomerService customerService, ManagerService managerService, AdminService adminService,
+			CookService cookService, WaiterService waiterService, UserService userService) {
+		super();
+		this.actorRepo = actorRepo;
+		this.regKeyService = regKeyService;
+		this.customerService = customerService;
+		this.managerService = managerService;
+		this.adminService = adminService;
+		this.cookService = cookService;
+		this.waiterService = waiterService;
+		this.userService = userService;
+	}
+
 	public ActorService() {
 		super();
 	}

@@ -16,11 +16,18 @@ import com.project.TabernasSevilla.repository.ReviewRepository;
 @Service
 @Transactional
 public class DishService {
-	@Autowired
+ 
 	private DishRepository dishRepository;
 	
-	@Autowired
+ 
 	private ReviewRepository reviewRepository;
+	
+	@Autowired
+	public DishService(DishRepository dishRepository, ReviewRepository reviewRepository) {
+		super();
+		this.dishRepository = dishRepository;
+		this.reviewRepository = reviewRepository;
+	}
 
 	public int count() throws DataAccessException {
 		return (int) dishRepository.count();

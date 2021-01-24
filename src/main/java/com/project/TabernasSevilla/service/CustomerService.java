@@ -16,14 +16,23 @@ import com.project.TabernasSevilla.security.UserService;
 @Transactional
 public class CustomerService {
 
-	@Autowired
+ 
 	private CustomerRepository costumerRepo;
-	@Autowired
+ 
 	private EstablishmentService establishmentService;
 	
-	@Autowired
+ 
 	private UserService userService;
 	
+	@Autowired
+	public CustomerService(CustomerRepository costumerRepo, EstablishmentService establishmentService,
+			UserService userService) {
+		super();
+		this.costumerRepo = costumerRepo;
+		this.establishmentService = establishmentService;
+		this.userService = userService;
+	}
+
 	public Customer findById(final int id) {
 		return costumerRepo.findById(id);
 	}

@@ -16,10 +16,15 @@ import com.project.TabernasSevilla.repository.OrderLogRepository;
 @Transactional
 public class OrderLogService {
 
-	@Autowired
+ 
 	private OrderLogRepository orderLogRepo;
 	
-	
+	@Autowired
+	public OrderLogService(OrderLogRepository orderLogRepo) {
+		super();
+		this.orderLogRepo = orderLogRepo;
+	}
+
 	public List<OrderLog> findByOrder (RestaurantOrder order){
 		return this.orderLogRepo.findByOrder(order.getId());
 	}

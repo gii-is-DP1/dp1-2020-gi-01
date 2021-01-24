@@ -18,11 +18,18 @@ import com.project.TabernasSevilla.security.UserService;
 @Transactional
 public class ManagerService {
 
-	@Autowired
+ 
 	private ManagerRepository managerRepo;
-	@Autowired
+ 
 	private UserService userService;
 	
+	@Autowired
+	public ManagerService(ManagerRepository managerRepo, UserService userService) {
+		super();
+		this.managerRepo = managerRepo;
+		this.userService = userService;
+	}
+
 	public Manager create() {
 		Manager res = new Manager();
 		return res;

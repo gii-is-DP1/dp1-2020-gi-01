@@ -18,11 +18,18 @@ import com.project.TabernasSevilla.security.UserService;
 @Transactional
 public class AdminService {
 
-	@Autowired
+ 
 	private AdminRepository adminRepo;
-	@Autowired
+ 
 	private UserService userService;
 	
+	@Autowired
+	public AdminService(AdminRepository adminRepo, UserService userService) {
+		super();
+		this.adminRepo = adminRepo;
+		this.userService = userService;
+	}
+
 	public Admin create() {
 		Admin res = new Admin();
 		return res;

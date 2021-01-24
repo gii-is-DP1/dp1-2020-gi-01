@@ -20,13 +20,22 @@ import com.project.TabernasSevilla.repository.BookingRepository;
 @Transactional
 public class BookingService {
 	
-	@Autowired
+ 
 	private BookingRepository bookingRepo;
-	@Autowired
+ 
 	private ActorService actorService;
-	@Autowired
+ 
 	private TableService tableService;
 	
+	
+	@Autowired
+	public BookingService(BookingRepository bookingRepo, ActorService actorService, TableService tableService) {
+		super();
+		this.bookingRepo = bookingRepo;
+		this.actorService = actorService;
+		this.tableService = tableService;
+	}
+
 	//CRUD
 	
 	public Optional<Booking> findById(final int id) {

@@ -27,17 +27,27 @@ import com.project.TabernasSevilla.service.DishService;
 @RequestMapping("/dishes")
 public class DishController extends AbstractController {
 
-	@Autowired
+ 
 	private DishService dishService;
 
-	@Autowired
+ 
 	private ActorService actorService;
 
-	@Autowired
+ 
 	private ReviewRepository repoReview;
 
-	@Autowired
+ 
 	private ReviewRepository reviewRepo;
+	
+	@Autowired
+	public DishController(DishService dishService, ActorService actorService, ReviewRepository repoReview,
+			ReviewRepository reviewRepo) {
+		super();
+		this.dishService = dishService;
+		this.actorService = actorService;
+		this.repoReview = repoReview;
+		this.reviewRepo = reviewRepo;
+	}
 
 	@GetMapping(path = "/{dishId}")
 	public String showDishInfo(@PathVariable("dishId") int dishId, Model model) {
