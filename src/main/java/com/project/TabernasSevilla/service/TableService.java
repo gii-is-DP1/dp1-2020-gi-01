@@ -26,7 +26,6 @@ public class TableService {
 		super();
 		this.tableRepo = tableRepo;
 	}
-
 	//CRUD
 		public RestaurantTable create() {
 			RestaurantTable res = new RestaurantTable();

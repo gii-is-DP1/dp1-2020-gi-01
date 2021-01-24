@@ -27,12 +27,9 @@
 						</div>
 						
 						<div class="input-group form-group" id="enter-key" style="display:none; ">
-							<input type="text" class="form-control" placeholder="registration key" minlength="4" maxlength="32"
-								name="key" th:field="*{key}" style="width:100%;">
-							<ul>
-								<li th:each="err : ${#fields.errors('key')}"
-									th:text="${err}" />
-							</ul>
+							<input type="text" data-toggle="tooltip" data-placement="top" title="Employee registration key" class="form-control" placeholder="registration key" minlength="4" maxlength="32"
+								name="key" id="reg-key" th:field="*{key}" style="width:100%;">
+							<span id="reg-key-msg"></span>
 						</div>
 						<!-- USERNAME -->
 						<div class="input-group form-group">
@@ -118,6 +115,7 @@
 			</div>
 		</div>
 	</div>
+	
 	<script th:src="@{/js/register.js}"></script>
 </body>
 </html>
