@@ -9,7 +9,7 @@ $(document).ready(function() {
                 type : "GET",
  
                 success : function(response) {
-                	if(response==true){
+                	if(response=='true'){
                 		$('#reg-key-msg').text('Welcome to the crew!');
                 	}else{
                 		$('#reg-key-msg').text('Invalid key!');

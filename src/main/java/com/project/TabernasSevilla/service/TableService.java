@@ -98,9 +98,20 @@ public class TableService {
 	public RestaurantTable quickCreate(Establishment est, int seating) {
 		RestaurantTable table = this.create();
 		table.setEstablishment(est);
+		table.setNumber(generateNumber(est));
 		table.setSeating(seating);
+		table.setOccupied(0);
 		RestaurantTable saved = this.save(table);
 		return saved;
+	}
+	
+	public Integer generateNumber(Establishment est) {
+		Integer num = this.tableRepo.findBiggestTableNumber(est.getId());
+		if(num != null) {
+			return num+1;
+		}else {
+			return 1;
+		}
 	}
 	
 	public List<RestaurantTable> findByEstablishment(Establishment establishment){

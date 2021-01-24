@@ -20,5 +20,8 @@ public interface TableRepository extends JpaRepository<RestaurantTable,Integer>{
 	
 	@Query("SELECT t FROM RestaurantTable t WHERE t.establishment.id = ?1 AND t.booking != NULL")
 	public List<RestaurantTable> findBookedByEstablishment(int establishmentId);
+	
+	@Query("SELECT t.number FROM RestaurantTable t WHERE t.establishment.id = ?1 AND t.number= (SELECT MAX(t2.number) FROM RestaurantTable t2 WHERE t.establishment.id = ?1)")
+	public Integer findBiggestTableNumber(int est);
 
 }
