@@ -29,23 +29,17 @@ public class DishController extends AbstractController {
 
  
 	private DishService dishService;
-
  
 	private ActorService actorService;
-
- 
-	private ReviewRepository repoReview;
-
  
 	private ReviewRepository reviewRepo;
 	
 	@Autowired
-	public DishController(DishService dishService, ActorService actorService, ReviewRepository repoReview,
+	public DishController(DishService dishService, ActorService actorService,
 			ReviewRepository reviewRepo) {
 		super();
 		this.dishService = dishService;
 		this.actorService = actorService;
-		this.repoReview = repoReview;
 		this.reviewRepo = reviewRepo;
 	}
 
@@ -118,7 +112,7 @@ public class DishController extends AbstractController {
 
 			return "redirect:/dishes/" + dishId;
 		} else {
-			repoReview.save(review);
+			reviewRepo.save(review);
 			dishService.save(dish);
 
 			// model.addAttribute("message", "Dish successfully saved");

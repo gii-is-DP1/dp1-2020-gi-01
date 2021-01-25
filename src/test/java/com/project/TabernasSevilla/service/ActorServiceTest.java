@@ -18,7 +18,7 @@ class ActorServiceTest{
 //	Actor principal = this.actorService.getPrincipal();
 //	assertThat(principal).isNotNull();
 //	}
-	
+//	
 //	@Test
 //	public void testGetAuthority() {
 //		this.actorService.getAuthority(actor);

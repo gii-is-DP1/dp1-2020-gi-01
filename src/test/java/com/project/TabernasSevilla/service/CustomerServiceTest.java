@@ -23,19 +23,23 @@ public class CustomerServiceTest {
 	protected CustomerService customerService;
 
 	@Autowired
-	protected CustomerRepository customerRepository;
-
-	@Autowired
-	protected UserService userService;
+	protected EstablishmentService establishmentService;
+	
 
 	@Test
 	public void testSetPreferredEstablishment() {
 		Customer cust = new Customer();
 		Establishment est = new Establishment();
-		est.setId(10);
-		cust = this.customerService.setPreferredEstablishment(10);
-//		Customer saved = this.customerService.save(cust);
-		assertThat(cust.getFavEstablishment().getId());
+		est.setTitle("prueba");
+		est.setAddress("calle ");
+		est.setCapacity(10);
+		est.setCurrentCapacity(10);
+		est.setOpeningHours("24/7");
+		est.setScore(2);
+		Establishment estSaved = this.establishmentService.save(est);
+		cust = this.customerService.setPreferredEstablishment(estSaved.getId(), "guaito1");
+		Customer saved = this.customerService.save(cust);
+		assertThat(saved.getFavEstablishment().getId() == estSaved.getId());
 	}
 
 	@Test

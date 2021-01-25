@@ -46,8 +46,8 @@ public class CustomerService {
 		return this.costumerRepo.save(customer);
 	}
 	
-	public Customer setPreferredEstablishment(int establishmentId) {
-		Customer cust = this.costumerRepo.findActorByUser(this.userService.getPrincipal().getUsername());
+	public Customer setPreferredEstablishment(int establishmentId, String username) {
+		Customer cust = this.costumerRepo.findActorByUser(username);
 		cust.setFavEstablishment(this.establishmentService.findById(establishmentId));
 		 Customer saved = this.save(cust);
 		 return saved;		
