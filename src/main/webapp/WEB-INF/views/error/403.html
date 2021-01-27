@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+<title>Forbidden!</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<th:block th:include="fragments/common :: head"></th:block>
+</head>
+<body
+	th:with="httpStatus=${T(org.springframework.http.HttpStatus).valueOf(#response.status)}">
+
+	<header th:include="fragments/common :: navbar"></header>
+<div class="page-wrap d-flex flex-row align-items-center" >
+    <div class="container-xl p-3 my-3 bg-dark text-white rounded">
+        <div class="row justify-content-center">
+            <div class="col-md-12 text-center">
+                <span class="display-1 d-block">Forbidden 403</span>
+                <div class="mb-4 lead">You are not allowed to see the page you are looking for, we are sorry.</div>
+                <br>
+                <div class="mb-4 lead">If you think it is an error, please write us to support@tabernassevilla.es</div>         
+                <h2><a class="badge badge-light" th:href="@{/}">Take me home <i class="fa fa-home"
+							aria-hidden="true"></i></a></h2>
+            </div>
+    </div>
+</div>
+</div>
+
+		
+	<footer th:replace="fragments/common :: footer"></footer>
+</body>
+</html>
