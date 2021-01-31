@@ -56,6 +56,10 @@ public class ActorService {
 		super();
 	}
 	
+	public Actor save(Actor actor) {
+		return this.actorRepo.save(actor);
+	}
+	
 	public Actor findById(final int id) {
 		return actorRepo.findById(id);
 	}
