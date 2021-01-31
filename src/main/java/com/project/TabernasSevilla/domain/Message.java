@@ -10,6 +10,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 
+import org.hibernate.validator.constraints.URL;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,8 +27,6 @@ public class Message extends BaseEntity {
 	// relations
 	@ManyToOne(fetch=FetchType.LAZY)
 	private Actor actor;
-	@ManyToOne(fetch=FetchType.LAZY, optional=true)
-	private RestaurantOrder order;
 	// attributes
 	@NotNull
 	private Instant deliveryDate;
@@ -34,4 +34,6 @@ public class Message extends BaseEntity {
 	private Instant readDate;
 	@NotBlank
 	private String message;
+	@URL
+	private String url;
 }

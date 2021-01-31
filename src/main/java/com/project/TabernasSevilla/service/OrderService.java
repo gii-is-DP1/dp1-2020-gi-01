@@ -32,14 +32,17 @@ public class OrderService {
  
 	private UserService userService;
 	
+	private MessageService msgService;
+	
 	@Autowired
-	public OrderService(OrderRepository orderRepo, OrderLogService orderLogService, ActorService actorService,
+	public OrderService(OrderRepository orderRepo, OrderLogService orderLogService, ActorService actorService, MessageService msgService,
 			UserService userService) {
 		super();
 		this.orderRepo = orderRepo;
 		this.orderLogService = orderLogService;
 		this.actorService = actorService;
 		this.userService = userService;
+		this.msgService = msgService;
 	}
 
 	// CRUD METHODS FOR ORDER
@@ -196,6 +199,8 @@ public class OrderService {
 		Assert.isTrue(this.userService.principalIsEmployee(),"Unsuficiant authority");
 		order.setStatus(status);
 		RestaurantOrder saved = this.save(order);
+		//send order update
+		this.msgService.sendOrderUpdate(saved);
 		this.orderLogService.log(saved, saved.getStatus());
 		return saved;
 	}

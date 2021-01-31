@@ -24,11 +24,11 @@ import lombok.Setter;
 @AllArgsConstructor
 public class RestaurantOrder extends BaseEntity {
 
-	@ManyToOne(optional=false,fetch=FetchType.LAZY)
+	@ManyToOne(optional=false,fetch=FetchType.EAGER)
 	private Actor actor;
 	@ManyToOne(optional=false,fetch=FetchType.EAGER)
 	private Establishment establishment;
-	@ManyToOne(optional=true,fetch=FetchType.EAGER)
+	@ManyToOne(optional=true,fetch=FetchType.LAZY)
 	private RestaurantTable table;
 	
 	
@@ -39,7 +39,7 @@ public class RestaurantOrder extends BaseEntity {
 			+ RestaurantOrder.EAT_IN + "$")
 	private String type;
 
-	@ManyToMany
+	@ManyToMany(fetch=FetchType.EAGER)
 	private List<Dish> dish;
 
 	private String address;
