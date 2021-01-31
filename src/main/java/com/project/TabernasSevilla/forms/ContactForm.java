@@ -2,6 +2,7 @@ package com.project.TabernasSevilla.forms;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import lombok.Getter;
@@ -21,10 +22,12 @@ public class ContactForm {
 	//lo comento porque siempre daba error
 	private String fullName;
 	
+	@NotNull
 	@NotEmpty(message = "The field must be correctly filled in") 
 	@Email(message = "Please enter a valid email address.")
 	private String email;
 	
+	@NotNull
 	private String cv;
 
 }

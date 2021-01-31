@@ -1,6 +1,7 @@
 package com.project.TabernasSevilla.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,14 +31,17 @@ public class ContactServiceTest {
 	assertThat(saved).isNotNull();
 	}
 	
-//	@Test
-//	public void testingBlankRegisterandSave() {
-//	ContactForm c = new ContactForm();	
-//	c.setCv("pdf");
-//	c.setEmail("");
-//	c.setFullName("");
-////	assertThrows(NullPointerException.class, ()->{
-//		Curriculum regis = this.contactService.register(c);
-//		Curriculum saved = this.contactService.save(regis);
-//	}
+	@Test
+	public void testingBlankRegisterandSave() {
+	ContactForm c = new ContactForm();	
+	c.setCv(null);
+	c.setEmail(null);
+	c.setFullName(null);
+	//DEBERÍA SALTAR EXCEPTION Y NO SALTA
+	assertThrows(NullPointerException.class, ()->{
+		Curriculum regis = this.contactService.register(c);
+		Curriculum saved = this.contactService.save(regis);
+	});
+	}
+	
 }
