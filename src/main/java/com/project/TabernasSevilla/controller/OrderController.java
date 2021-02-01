@@ -1,6 +1,7 @@
 package com.project.TabernasSevilla.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -241,6 +242,29 @@ public class OrderController {
 					e.getMessage());
 		}
 
+	}
+	
+	@GetMapping(value = "/repeat/{id}")
+	public String repeat(Model model, @PathVariable("id") int orderId) {
+		
+		//borro los platos que hay en el order draft y le meto los platos del order que quiero repetir
+		Optional<RestaurantOrder> pastOrder = this.orderService.findById(orderId);
+		List<Dish> ls = pastOrder.get().getDish();
+		Integer establishmentId = pastOrder.get().getEstablishment().getId();
+		
+		RestaurantOrder order = this.orderService.findDraftByPrincipal();
+		Establishment est = this.estService.findById(establishmentId);
+		if (order == null) { //si no hay order draft, se crea uno
+			order = this.orderService.initialize(est);
+		} else {
+			order.setEstablishment(est);
+		}
+		//aqui podria borrar antes los platos del draft, pero a lo mejor el cliente quiere conservarlos
+		for(Dish dish: ls) {
+			this.orderService.addDish(order, dish);
+		}
+		
+		return "redirect:/order/";
 	}
 
 	// AUX
