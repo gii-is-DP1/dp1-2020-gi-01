@@ -27,25 +27,25 @@ class BookingServiceTest{
 	
 	@Autowired
 	private EstablishmentService estService;
-//
-//	@Test
-//	public void testingRegisterandSave() {
-//		Booking b = new Booking();	
-//		Establishment est = new Establishment();
-//		est.setCapacity(100);
-//		est.setCurrentCapacity(10);
-//		Establishment saved = this.estService.save(est);
-//		b.setActor(new Admin());
-//		b.setContactPhone("655778899");
-//		b.setEstablishment(est);
-//		b.setNotes("Comida de navidad");
-//		b.setPlacementDate(Instant.now());
-////		b.setReservationDate(Instant.now().plus(Duration.ofDays(20)));
-//		b.setSeating(4);
-//		Booking regis = this.bookingService.register(b);
-////		Booking saved = this.bookingService.save(regis);
-////		assertThat(saved).isNotNull();
-//	}
+
+	@Test
+	public void testingRegisterandSave() {
+		Booking b = new Booking();	
+		Establishment est = new Establishment();
+		est.setCapacity(100);
+		est.setCurrentCapacity(10);
+		Establishment saved = this.estService.save(est);
+		b.setActor(new Admin());
+		b.setContactPhone("655778899");
+		b.setEstablishment(saved);
+		b.setNotes("Comida de navidad");
+		b.setPlacementDate(Instant.now());
+		b.setReservationDate(Instant.now().plus(Duration.ofDays(2)));
+		b.setSeating(4);
+		Booking regis = this.bookingService.register(b);
+		Booking saved1 = this.bookingService.save(regis);
+		assertThat(saved1).isNotNull();
+	}
 	
 	@Test
 	public void testingNullRegisterandSave() {
