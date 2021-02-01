@@ -26,47 +26,12 @@ $(document).ready(function() {
 
 function showMe (box) {
 
-    var chboxs = document.getElementById("show-emp");
-	var input = document.getElementById("reg-key");
-  /*  var vis = "none";
-    for(var i=0;i<chboxs.length;i++) { 
-        if(chboxs[i].checked){
-         vis = "block";
-            break;
-        }
+    var chbox = document.getElementById("show-emp");
+	var vis="none";
+    if(chbox.checked){
+        vis = "block";
     }
-	$('#input').addClass('invisible');
-    Creado un script mucho más sencillo y menos problemático:
-		*/
-	if(chboxs.checked){
-		
-		input.disabled = false;
-		/*if(input.classList.contains("invisible"))
-		{
-			input.classList.remove('invisible');
-			input.classList.add('visible');
-		}else 
-		{
-			input.classList.add('visible');
-		}*/
-		
-	}else
-	{
-		if(input.disabled == false)
-		{			
-			input.disabled = true;
-		}
-		
-		/*if(input.classList.contains("visible"))
-		{
-			input.classList.remove('visible');
-			input.classList.add('invisible');
-		}else 
-		{
-			input.classList.add('invisible');
-		}*/
-	}
-   /* document.getElementById(box).style.display = vis; */
+    document.getElementById(box).style.display = vis; 
 }
 
 

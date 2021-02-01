@@ -29,12 +29,11 @@
 							onclick="showMe('enter-key')"> Register as an employee
 					</div>
 
-					<div class="form-group" id="enter-key">
+					<div class="form-group" id="enter-key" style="display:none;">
 						<input type="text" class="form-control" data-toggle="tooltip"
 							title="Employee registration key"
-							placeholder="Put your registration key (only enabled for new employees)"
-							minlength="4" maxlength="32" name="key" id="reg-key"
-							th:field="*{key}" disabled>
+							placeholder="Enter registration key" name="key" id="reg-key"
+							th:field="*{key}" >
 						<!--   <span id="reg-key-msg"></span> -->
 						<small id="reg-key-msg" class="form-text text-white"></small>
 					</div>
