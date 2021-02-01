@@ -20,7 +20,7 @@
 								</div>
 								<div class="wrapper row">
 									<table class="table">
-										<thead>
+										<thead id="titles">
 											<tr>
 												<th></th>
 												<th>Restaurant</th>
@@ -72,10 +72,14 @@
 													<td><a th:href="@{/order/{id}/view(id=${order.id})}"
 														role="button" class="btn btn-secondary"
 														aria-pressed="true">View</a></td>
-													<!-- CANCEL -->
-													<td><a th:href="@{/order/cancel/{id}(id=${order.id})}"
+													<!-- CANCEL th:unless para que cuando sea preb true, no muestre el botond de cancelar-->
+													<td><a th:href="@{/order/cancel/{id}(id=${order.id})}" th:unless="${prev}"
 														role="button" class="btn btn-secondary"
-														aria-pressed="true">Cancel</a></td>
+														aria-pressed="true" >Cancel</a></td>
+														
+													<!-- REPEAT ORDER -->
+													<td><a th:href="@{/order/repeat/{id}(id=${order.id})}" th:if="${prev}" role="button" 
+														class="btn btn-secondary" aria-pressed="true">Repeat order</a>
 
 													<!-- EMPLOYEE ACTIONS -->
 													<!-- TABLE -->
@@ -129,5 +133,13 @@
 			</div>
 		</div>
 	</div>
+	<!-- ignorar el error de abajo, NO Tocar, es necesario para ocultar una cosa  -->
+	<script>
+		var prev = [[${prev}]]; 
+		console.log(prev);
+		if(prev){
+			document.getElementById("titles").style.display = "none";
+		}
+	</script>
 </body>
 </html>
