@@ -26,14 +26,13 @@ $(document).ready(function() {
 
 function showMe (box) {
 
-    var chboxs = document.getElementsByName("show-emp");
-    var vis = "none";
-    for(var i=0;i<chboxs.length;i++) { 
-        if(chboxs[i].checked){
-         vis = "block";
-            break;
-        }
+    var chbox = document.getElementById("show-emp");
+	var vis="none";
+    if(chbox.checked){
+        vis = "block";
     }
-    document.getElementById(box).style.display = vis;
+    document.getElementById(box).style.display = vis; 
 }
+
+
 

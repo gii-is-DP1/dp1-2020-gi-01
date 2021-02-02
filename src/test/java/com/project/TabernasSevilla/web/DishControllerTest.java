@@ -51,8 +51,8 @@ public class DishControllerTest {
 	
 	private static final int TEST_DISH_ID = 1;
 
-	@Autowired
-	private DishController dishController;
+	//@Autowired
+	//private DishController dishController;
 
 	@MockBean
 	private UserService userService;

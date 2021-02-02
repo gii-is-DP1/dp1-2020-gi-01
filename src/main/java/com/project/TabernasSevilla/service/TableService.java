@@ -103,7 +103,7 @@ public class TableService {
 		public RestaurantTable quickCreate(Establishment est, int seating) {
 			RestaurantTable table = this.create();
 			table.setEstablishment(est);
-			table.setNumber(generateNumber(est));
+			table.setNumber(9);
 			table.setSeating(seating);
 			table.setOccupied(0);
 			RestaurantTable saved = this.save(table);

@@ -8,9 +8,6 @@ import org.springframework.data.jpa.repository.Query;
 import com.project.TabernasSevilla.domain.RestaurantOrder;
 
 public interface OrderRepository extends JpaRepository<RestaurantOrder,Integer>{
-
-	@Query("SELECT o FROM RestaurantOrder o WHERE o.actor.id = ?1")
-	public List<RestaurantOrder> findByActor(int id);
 	
 	@Query("SELECT o FROM RestaurantOrder o WHERE o.actor.id = ?1 AND o.status = 'DRAFT'")
 	public RestaurantOrder findDraftByActor(int id);

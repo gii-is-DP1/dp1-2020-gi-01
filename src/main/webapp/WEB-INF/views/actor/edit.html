@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+<meta charset="ISO-8859-1">
+<head>
+<th:block th:include="fragments/common :: head(title='Location')"></th:block>
+</head>
+<body>
+	<th:block th:include="fragments/common :: navbar"></th:block>
+	<div class="container">
+		<div class="card">
+			<div class="container-fliud">
+				<div class="wrapper row">
+					<div class="details col" style="padding: 20px;">
+						<form role="form" th:action="@{/actor/save}" th:method="post"
+							th:object="${actor}" id="actorForm">
+							<input type="hidden" name="user" th:field="*{username}"> <input
+								type="hidden" name="id" th:field="*{id}"> 
+
+							<div class="input-group form-group">
+								<span>Name</span> <input type="text"
+									class="form-control" placeholder="Name"
+									name="name" th:field="*{name}" th:value="*{surname}">
+								<ul>
+									<li th:each="err : ${#fields.errors('name')}"
+										th:text="${err}" />
+								</ul>
+							</div>
+							
+							<div class="input-group form-group">
+								<span>Surname</span> <input type="text"
+									class="form-control" placeholder="Surname"
+									name="name" th:field="*{surname}" th:value="*{surname}">
+								<ul>
+									<li th:each="err : ${#fields.errors('surname')}"
+										th:text="${err}" />
+								</ul>
+							</div>
+							
+							<div class="input-group form-group">
+								<span>Avatar</span> <input type="text"
+									class="form-control" placeholder="Avatar"
+									name="avatar" th:field="*{avatar}" th:value="*{avatar}">
+								<ul>
+									<li th:each="err : ${#fields.errors('avatar')}"
+										th:text="${err}" />
+								</ul>
+							</div>
+							
+							<div class="input-group form-group">
+								<span>E-mail</span> <input type="text"
+									class="form-control" placeholder="Surname"
+									name="name" th:field="*{email}" th:value="*{email}">
+								<ul>
+									<li th:each="err : ${#fields.errors('email')}"
+										th:text="${err}" />
+								</ul>
+							</div>
+							
+							<div class="input-group form-group">
+								<span>Phone number</span> <input type="text"
+									class="form-control" placeholder="Phone number"
+									name="name" th:field="*{phoneNumber}" th:value="*{phoneNumber}">
+								<ul>
+									<li th:each="err : ${#fields.errors('phoneNumber')}"
+										th:text="${err}" />
+								</ul>
+							</div>
+							<div>
+								<span th:text="${message}"></span>
+							</div>
+							
+							<div class="form-group">
+							<input type="submit" value="Save"
+								class="btn btn-secondary">
+						</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

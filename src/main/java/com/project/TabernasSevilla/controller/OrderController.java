@@ -1,6 +1,7 @@
 package com.project.TabernasSevilla.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,6 +19,7 @@ import com.project.TabernasSevilla.domain.OrderLog;
 import com.project.TabernasSevilla.domain.RestaurantOrder;
 import com.project.TabernasSevilla.domain.RestaurantTable;
 import com.project.TabernasSevilla.security.UserService;
+import com.project.TabernasSevilla.service.ActorService;
 import com.project.TabernasSevilla.service.DishService;
 import com.project.TabernasSevilla.service.EstablishmentService;
 import com.project.TabernasSevilla.service.OrderCancellationService;
@@ -43,6 +45,9 @@ public class OrderController {
 	private TableService tableService;
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private ActorService actorService;
 
 	// create
 	@GetMapping("/est/{id}")
@@ -216,7 +221,7 @@ public class OrderController {
 	@GetMapping(value = "/{id}/save")
 	public String save(Model model, @PathVariable("id") int orderId) {
 		RestaurantOrder order = this.orderService.findById(orderId).get();
-		Assert.isTrue(this.orderService.checkOwnership(order), "Cannot save this order");
+		Assert.isTrue(this.orderService.checkOwnership(order, this.actorService.getPrincipal().getId()), "Cannot save this order");
 		this.orderService.contextualSave(order);
 		return "redirect:/order/open";
 	}
@@ -241,6 +246,29 @@ public class OrderController {
 					e.getMessage());
 		}
 
+	}
+	
+	@GetMapping(value = "/repeat/{id}")
+	public String repeat(Model model, @PathVariable("id") int orderId) {
+		
+		//borro los platos que hay en el order draft y le meto los platos del order que quiero repetir
+		Optional<RestaurantOrder> pastOrder = this.orderService.findById(orderId);
+		List<Dish> ls = pastOrder.get().getDish();
+		Integer establishmentId = pastOrder.get().getEstablishment().getId();
+		
+		RestaurantOrder order = this.orderService.findDraftByPrincipal();
+		Establishment est = this.estService.findById(establishmentId);
+		if (order == null) { //si no hay order draft, se crea uno
+			order = this.orderService.initialize(est);
+		} else {
+			order.setEstablishment(est);
+		}
+		//aqui podria borrar antes los platos del draft, pero a lo mejor el cliente quiere conservarlos
+		for(Dish dish: ls) {
+			this.orderService.addDish(order, dish);
+		}
+		
+		return "redirect:/order/";
 	}
 
 	// AUX
