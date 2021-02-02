@@ -39,9 +39,9 @@ class BookingServiceTest {
 		b.setPlacementDate(Instant.now());
 		b.setReservationDate(Instant.now().plus(Duration.ofDays(2)));
 		b.setSeating(4);
-		Booking regis = this.bookingService.register(b);
+		Booking regis = this.bookingService.register(b, this.adminService.findAll().get(0));
 		Booking saved1 = this.bookingService.save(regis);
-		assertThat(saved1).isNotNull();
+		assertThat(saved1.getContactPhone()).isEqualTo(b.getContactPhone());
 	}
 
 	@Test
@@ -56,7 +56,7 @@ class BookingServiceTest {
 		b.setSeating(4);
 //		Las fechas no pueden ser null
 		assertThrows(NullPointerException.class, () -> {
-			Booking regis = this.bookingService.register(b);
+			Booking regis = this.bookingService.register(b, this.adminService.findAll().get(0));
 			Booking saved = this.bookingService.save(regis);
 		});
 	}
@@ -73,7 +73,7 @@ class BookingServiceTest {
 		b.setSeating(4);
 //		No puedo reservar con menos de dos horas de antelación
 		assertThrows(IllegalArgumentException.class, () -> {
-			Booking regis = this.bookingService.register(b);
+			Booking regis = this.bookingService.register(b, this.adminService.findAll().get(0));
 			Booking saved = this.bookingService.save(regis);
 		});
 	}

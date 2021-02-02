@@ -17,6 +17,7 @@ import com.project.TabernasSevilla.domain.Dish;
 import com.project.TabernasSevilla.domain.Establishment;
 import com.project.TabernasSevilla.domain.RestaurantOrder;
 import com.project.TabernasSevilla.repository.OrderRepository;
+import com.project.TabernasSevilla.security.User;
 import com.project.TabernasSevilla.security.UserService;
 
 @Service
@@ -133,8 +134,8 @@ public class OrderService {
 		return saved;
 	}
 	
-	public Boolean checkOwnership(RestaurantOrder order) {
-		return order.getActor().getId() == this.actorService.getPrincipal().getId();
+	public Boolean checkOwnership(RestaurantOrder order, int id) {
+		return order.getActor().getId() == id;
 	}
 	
 	public RestaurantOrder contextualSave(RestaurantOrder order) {

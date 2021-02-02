@@ -11,10 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import com.project.TabernasSevilla.domain.Actor;
 import com.project.TabernasSevilla.domain.Booking;
 import com.project.TabernasSevilla.domain.Establishment;
 import com.project.TabernasSevilla.domain.RestaurantTable;
 import com.project.TabernasSevilla.repository.BookingRepository;
+import com.project.TabernasSevilla.security.User;
 
 @Service
 @Transactional
@@ -91,12 +93,12 @@ public class BookingService {
 		return res;
 	}
 	
-	public Booking register(Booking booking) {
+	public Booking register(Booking booking, Actor actor) {
 		Instant free = this.tableService.estimateFreeTableInstant(booking.getEstablishment());
 		Instant min = Instant.now().plus(2,ChronoUnit.HOURS);
 		Assert.isTrue(free.compareTo(booking.getReservationDate())<0,"Cannot book for this time: restaurant is too busy");
 		Assert.isTrue(min.compareTo(booking.getReservationDate())<0,"Cannot book for this time: booking notice too short");
-		booking.setActor(this.actorService.getPrincipal());
+		booking.setActor(actor);
 		booking.setPlacementDate(Instant.now());
 		Booking saved = this.save(booking);
 		return saved;

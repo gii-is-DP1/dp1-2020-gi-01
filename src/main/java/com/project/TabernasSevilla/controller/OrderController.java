@@ -19,6 +19,7 @@ import com.project.TabernasSevilla.domain.OrderLog;
 import com.project.TabernasSevilla.domain.RestaurantOrder;
 import com.project.TabernasSevilla.domain.RestaurantTable;
 import com.project.TabernasSevilla.security.UserService;
+import com.project.TabernasSevilla.service.ActorService;
 import com.project.TabernasSevilla.service.DishService;
 import com.project.TabernasSevilla.service.EstablishmentService;
 import com.project.TabernasSevilla.service.OrderCancellationService;
@@ -44,6 +45,9 @@ public class OrderController {
 	private TableService tableService;
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private ActorService actorService;
 
 	// create
 	@GetMapping("/est/{id}")
@@ -217,7 +221,7 @@ public class OrderController {
 	@GetMapping(value = "/{id}/save")
 	public String save(Model model, @PathVariable("id") int orderId) {
 		RestaurantOrder order = this.orderService.findById(orderId).get();
-		Assert.isTrue(this.orderService.checkOwnership(order), "Cannot save this order");
+		Assert.isTrue(this.orderService.checkOwnership(order, this.actorService.getPrincipal().getId()), "Cannot save this order");
 		this.orderService.contextualSave(order);
 		return "redirect:/order/open";
 	}
