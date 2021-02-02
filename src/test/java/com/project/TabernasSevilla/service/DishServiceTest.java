@@ -14,21 +14,32 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.stereotype.Service;
 
+import com.project.TabernasSevilla.domain.Actor;
 import com.project.TabernasSevilla.domain.Allergen;
+import com.project.TabernasSevilla.domain.Customer;
 import com.project.TabernasSevilla.domain.Dish;
+import com.project.TabernasSevilla.domain.Review;
 import com.project.TabernasSevilla.repository.AllergenRepository;
 import com.project.TabernasSevilla.repository.DishRepository;
+import com.project.TabernasSevilla.repository.ReviewRepository;
 
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
 class DishServiceTest {
 	@Autowired
 	public DishService dishService;
+	
+	@Autowired
+	public CustomerService custService;
+	
 	@Autowired
 	public DishRepository dishRepo;
 	
 	@Autowired
 	public AllergenRepository repositoryAllergen;
+	
+	@Autowired
+	public ReviewRepository reviewRepo;
 
 	@WithMockUser(value = "spring")
 	@Test
@@ -69,5 +80,26 @@ class DishServiceTest {
 		d1 = this.dishService.findById(dish.getId()).get();
 		assertThat(d1).isNotNull();
 	}
-
+	
+//	TEST DE LA CUSTOM QUERY DE REVIEWREPOSITORY
+	@Test
+	public void shouldFindReviewByDish() {
+		Dish dish = new Dish(); 
+		dish.setDescription("Que rico");
+		dish.setPicture("https://www.casaviva.es/media/catalog/product/cache/1/thumbnail/9df78eab33525d08d6e5fb8d27136e95/2/0/2011420.jpg");
+		dish.setScore(2.0);
+		dish.setName("Burger");
+		dish.setPrice(5.0);
+		dish.setIsVisible(true);
+		Dish d1 = this.dishService.save(dish);
+		Review r = new Review();
+		r.setDish(d1);
+		r.setRating(3d);
+		r.setComment("To mu rico");
+		r.setActor(this.custService.findById(2));
+		this.reviewRepo.save(r);
+		
+	List<Review> lista =  this.reviewRepo.findByDish(d1.getId());
+	assertThat(lista.get(0).getComment()).isEqualTo("To mu rico");
+	}
 }

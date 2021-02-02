@@ -27,8 +27,8 @@ public class ContactServiceTest {
 	form.setEmail("alonso@us.es");
 	form.setFullName("Alonso");
 	Curriculum regis = this.contactService.register(form);
-	Curriculum saved = this.contactService.save(regis);
-	assertThat(saved).isNotNull();
+	this.contactService.save(regis);
+	assertThat(regis).isNotNull();
 	}
 	
 	@Test
