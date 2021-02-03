@@ -19,7 +19,7 @@ public class Curriculum extends BaseEntity {
 	@NotBlank
 	@Email
 	private String email;
-	
+
 	private String cv;
 
 }

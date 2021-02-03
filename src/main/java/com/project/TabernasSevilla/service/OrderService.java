@@ -17,6 +17,7 @@ import com.project.TabernasSevilla.domain.Dish;
 import com.project.TabernasSevilla.domain.Establishment;
 import com.project.TabernasSevilla.domain.RestaurantOrder;
 import com.project.TabernasSevilla.repository.OrderRepository;
+import com.project.TabernasSevilla.security.User;
 import com.project.TabernasSevilla.security.UserService;
 
 @Service
@@ -111,13 +112,11 @@ public class OrderService {
 	}
 	
 	
-	public List<RestaurantOrder> findActiveByPrincipal(){
-		Actor actor = this.actorService.getPrincipal();
+	public List<RestaurantOrder> findActiveByPrincipal(Actor actor){
 		return this.orderRepo.findActiveByActor(actor.getId());
 	}
 	
-	public List<RestaurantOrder> findInactiveByPrincipal(){
-		Actor actor = this.actorService.getPrincipal();
+	public List<RestaurantOrder> findInactiveByPrincipal(Actor actor){
 		return this.orderRepo.findInactiveByActor(actor.getId());
 	}
 	
@@ -133,8 +132,8 @@ public class OrderService {
 		return saved;
 	}
 	
-	public Boolean checkOwnership(RestaurantOrder order) {
-		return order.getActor().getId() == this.actorService.getPrincipal().getId();
+	public Boolean checkOwnership(RestaurantOrder order, int id) {
+		return order.getActor().getId() == id;
 	}
 	
 	public RestaurantOrder contextualSave(RestaurantOrder order) {
@@ -192,8 +191,8 @@ public class OrderService {
 	}
 	
 	//TODO: better way to handle this
-	public RestaurantOrder updateStatus(RestaurantOrder order, String status) {
-		Assert.isTrue(this.userService.principalIsEmployee(),"Unsuficiant authority");
+	public RestaurantOrder updateStatus(RestaurantOrder order, String status, Boolean isEmployee) {
+		Assert.isTrue(isEmployee,"Unsuficiant authority");
 		order.setStatus(status);
 		RestaurantOrder saved = this.save(order);
 		this.orderLogService.log(saved, saved.getStatus());

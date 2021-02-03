@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.project.TabernasSevilla.domain.Booking;
 import com.project.TabernasSevilla.domain.Establishment;
+import com.project.TabernasSevilla.security.UserService;
+import com.project.TabernasSevilla.service.ActorService;
 import com.project.TabernasSevilla.service.BookingService;
 import com.project.TabernasSevilla.service.EstablishmentService;
 
@@ -25,8 +27,12 @@ public class BookingController {
 
 	@Autowired
 	private BookingService bookService;
+	
 	@Autowired
 	private EstablishmentService establishmentService;
+	
+	@Autowired
+	private ActorService actorService;
 
 	@RequestMapping(value = "/init/{id}", method = RequestMethod.GET)
 	public String createBooking(@PathVariable("id") int establishmentId, Model model) {
@@ -55,7 +61,7 @@ public class BookingController {
 			return this.createBookingEditModel(booking, model);
 		} else {
 			try {
-				this.bookService.register(booking);
+				this.bookService.register(booking,  this.actorService.getPrincipal());
 				return "redirect:/index";
 			} catch (final Exception e) {
 				return this.createBookingEditModel(booking, model, e.getMessage());
