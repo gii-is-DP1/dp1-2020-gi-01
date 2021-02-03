@@ -45,7 +45,7 @@ public class MessageService {
 	public Message sendOrderUpdate(RestaurantOrder order) {
 		Message msg = create();
 		msg.setActor(order.getActor());
-		msg.setOrder(order);
+		msg.setUrl("/order/"+order.getId()+"/view");
 		msg.setMessage("Your order has been updated: "+order.getStatus());
 		msg.setDeliveryDate(Instant.now());
 		return save(msg);

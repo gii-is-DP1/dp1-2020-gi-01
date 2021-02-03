@@ -12,7 +12,7 @@ public class WebSocketBroadcastController {
 
 	@GetMapping("/stomp-broadcast")
 	public String getWebSocketBroadcast() {
-		return "stomp-broadcast";
+		return "stomp/stomp-broadcast.html";
 	}
 
 	@MessageMapping("/broadcast")
