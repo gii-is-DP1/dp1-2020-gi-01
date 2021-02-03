@@ -112,13 +112,11 @@ public class OrderService {
 	}
 	
 	
-	public List<RestaurantOrder> findActiveByPrincipal(){
-		Actor actor = this.actorService.getPrincipal();
+	public List<RestaurantOrder> findActiveByPrincipal(Actor actor){
 		return this.orderRepo.findActiveByActor(actor.getId());
 	}
 	
-	public List<RestaurantOrder> findInactiveByPrincipal(){
-		Actor actor = this.actorService.getPrincipal();
+	public List<RestaurantOrder> findInactiveByPrincipal(Actor actor){
 		return this.orderRepo.findInactiveByActor(actor.getId());
 	}
 	
@@ -193,8 +191,8 @@ public class OrderService {
 	}
 	
 	//TODO: better way to handle this
-	public RestaurantOrder updateStatus(RestaurantOrder order, String status) {
-		Assert.isTrue(this.userService.principalIsEmployee(),"Unsuficiant authority");
+	public RestaurantOrder updateStatus(RestaurantOrder order, String status, Boolean isEmployee) {
+		Assert.isTrue(isEmployee,"Unsuficiant authority");
 		order.setStatus(status);
 		RestaurantOrder saved = this.save(order);
 		this.orderLogService.log(saved, saved.getStatus());

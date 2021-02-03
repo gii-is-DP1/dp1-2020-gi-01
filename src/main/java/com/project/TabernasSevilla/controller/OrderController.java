@@ -97,7 +97,7 @@ public class OrderController {
 				this.orderService.save(order);
 			}
 			if (status != null && !status.isBlank()) {
-				this.orderService.updateStatus(order, status);
+				this.orderService.updateStatus(order, status, this.userService.principalIsEmployee());
 			}
 		} catch (Throwable t) {
 			model.addAttribute("message", t.getMessage());
@@ -195,7 +195,7 @@ public class OrderController {
 
 	@GetMapping("/closed")
 	public String listInactive(Model model) {
-		List<RestaurantOrder> orders = this.orderService.findInactiveByPrincipal();
+		List<RestaurantOrder> orders = this.orderService.findInactiveByPrincipal(this.actorService.getPrincipal());
 		model.addAttribute("orders", orders);
 		model.addAttribute("prev", true);
 		return "order/list";
@@ -203,7 +203,7 @@ public class OrderController {
 
 	@GetMapping("/open")
 	public String listActive(Model model) {
-		List<RestaurantOrder> orders = this.orderService.findActiveByPrincipal();
+		List<RestaurantOrder> orders = this.orderService.findActiveByPrincipal(this.actorService.getPrincipal());
 		model.addAttribute("orders", orders);
 		return "order/list";
 	}

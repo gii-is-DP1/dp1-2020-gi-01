@@ -38,6 +38,6 @@ class CookServiceTest{
 		form.setAcceptTerms(true);
 		assertThrows(ConstraintViolationException.class, ()->{
 			Cook regis = this.cookService.register(form);
-			Cook saved = this.cookService.save(regis);});		
+			});		
 	}
 }

@@ -35,7 +35,7 @@ public class ContactService {
 	}
 	
 	public Curriculum save(Curriculum joba) {
-		return this.cvRepo.save(joba);
+		return this.cvRepo.saveAndFlush(joba);
 	}
 	
 	public Curriculum register(final ContactForm form) {
