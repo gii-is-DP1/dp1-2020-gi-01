@@ -66,10 +66,17 @@
 					</a>
 					</li>
 					<li class="nav-item dropdown" sec:authorize="isAuthenticated()">
-						<!-- display username --> <a sec:authentication="name"
+						<!-- display username --> 
+						<a sec:authentication="name"
 						class="nav-link dropdown-toggle" role="button"
 						data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-					</a>
+						</a>
+						<!--Display profile picture No funciona porque getPrincipal coge User, y user no tiene get Avatar 
+						
+						<img th:src="${#authentication.getPrincipal().getAvatar()}" class="img-fluid"
+							style="border-radius: 50%; padding: 80px;" />
+					     -->
+					    
 						<div class="dropdown-menu dropdown-menu-right">
 							<!-- link to profile -->
 							<a class="dropdown-item" th:href="@{/actor/profile}">Profile</a> <a
