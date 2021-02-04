@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.transaction.Transactional;
 
@@ -137,13 +139,32 @@ public class OrderService {
 	}
 	
 	public RestaurantOrder contextualSave(RestaurantOrder order) {
+		
+		//no puedes pedir más de 20 items en un pedido
+		Integer numeroDishes = order.getDish().size();
+		System.out.println("=============== numero paltos: " + numeroDishes);
+		Assert.isTrue(!(numeroDishes>20), "You can't order more than 20 items! Items ordered: " +numeroDishes );
+		
+		
+		//no puedes tener mas de 2 pedidos en activo
+		Integer n2 = 0;
+		for(RestaurantOrder o: orderRepo.findActiveByActor(order.getActor().getId()) ) {
+			n2++;
+		}
+		Assert.isTrue(!(n2>1), "You can't have more than 2 active orders. Please wait until your order's states are closed"); //hay que poner uno menos del que realmente queremos ok?
+		
 		switch(order.getType()) {
 		case RestaurantOrder.EAT_IN:
 			Assert.isTrue(this.userService.principalHasAnyAuthority(Arrays.asList("WAITER","COOK","MANAGER","ADMIN")),"Cannot save type of order: not an employee");
 			return this.openOrder(order);
+			
+			
 		case RestaurantOrder.DELIVERY:
+			
+			//no puedes dejar la direccion vacía si pides para delivery
 			Assert.isTrue(!order.getAddress().isBlank() && order.getAddress()!=null,"Order needs an address for delivery");
-			return this.placeOrder(order);
+			
+
 		default:
 			return this.placeOrder(order);
 		}

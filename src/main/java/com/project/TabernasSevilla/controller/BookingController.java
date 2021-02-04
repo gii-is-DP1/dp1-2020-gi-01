@@ -1,5 +1,7 @@
 package com.project.TabernasSevilla.controller;
 
+import java.time.Instant;
+import java.time.ZoneId;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -20,6 +22,7 @@ import com.project.TabernasSevilla.security.UserService;
 import com.project.TabernasSevilla.service.ActorService;
 import com.project.TabernasSevilla.service.BookingService;
 import com.project.TabernasSevilla.service.EstablishmentService;
+import com.project.TabernasSevilla.service.TableService;
 
 @Controller
 @RequestMapping("/booking")
@@ -30,6 +33,9 @@ public class BookingController {
 	
 	@Autowired
 	private EstablishmentService establishmentService;
+	
+	@Autowired
+	private TableService tableService;
 	
 	@Autowired
 	private ActorService actorService;
@@ -59,7 +65,8 @@ public class BookingController {
 		if (binding.hasErrors()) {
 			model.addAttribute("booking", booking);
 			return this.createBookingEditModel(booking, model);
-		} else {
+		}
+		else {
 			try {
 				this.bookService.register(booking,  this.actorService.getPrincipal());
 				return "redirect:/index";

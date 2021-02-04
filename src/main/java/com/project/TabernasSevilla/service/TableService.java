@@ -46,7 +46,8 @@ public class TableService {
 		
 		//extra
 		public Long getOccupancyAtRestaurant(Establishment est) {
-			return this.tableRepo.countOccupiedByEstablishment(est.getId());
+			//return this.tableRepo.countOccupiedByEstablishment(est.getId());
+			return (long) (est.getCapacity()-est.getCurrentCapacity()); //la ocupación de un establishment es la capacidad total menos la actual
 		}
 		
 		public Long countFreeTables(Establishment est) {

@@ -222,8 +222,12 @@ public class OrderController {
 	public String save(Model model, @PathVariable("id") int orderId) {
 		RestaurantOrder order = this.orderService.findById(orderId).get();
 		Assert.isTrue(this.orderService.checkOwnership(order, this.actorService.getPrincipal().getId()), "Cannot save this order");
-		this.orderService.contextualSave(order);
-		return "redirect:/order/open";
+		try {
+			this.orderService.contextualSave(order);
+			return "redirect:/order/open";
+		} catch (final Exception e) {
+			return createRegisterEditModel(order, order.getEstablishment(), this.dishService.findAll(), model, e.getMessage());
+		}
 	}
 
 	@GetMapping(value = "/checkout")
