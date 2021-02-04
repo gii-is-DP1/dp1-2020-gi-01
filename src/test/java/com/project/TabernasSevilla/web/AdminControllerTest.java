@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.project.TabernasSevilla.configuration.SecurityConfiguration;
+import com.project.TabernasSevilla.controller.AdminController;
 import com.project.TabernasSevilla.controller.DishController;
 import com.project.TabernasSevilla.domain.Admin;
 import com.project.TabernasSevilla.domain.Dish;
@@ -52,7 +53,7 @@ import java.util.Set;
 
 //@RunWith(SpringRunner.class)
 //@WebAppConfiguration
-@WebMvcTest(controllers = DishController.class, 
+@WebMvcTest(controllers = AdminController.class, 
 	excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class), 
 	excludeAutoConfiguration = SecurityConfiguration.class, 
 	includeFilters = {@ComponentScan.Filter(Service.class), @ComponentScan.Filter(Repository.class) })
@@ -132,18 +133,16 @@ public class AdminControllerTest {
 
 	@BeforeEach
 	void setup() {
-		Admin admin = new Admin();
-		admin.setAvatar("https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.abc.es%2Fplay%2Fcine%2Fnoticias%2Fabci-comienza-rodaje-secuela-avatar-estrenara-once-anos-despues-cinta-original-201709281033_noticia.html&psig=AOvVaw0cgfB36sMnAaXHIO1Fj6uA&ust=1612521722925000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCKCI8dSF0O4CFQAAAAAdAAAAABAD");
-		admin.setEmail("admin@us.es");
-		admin.setId(1);
-		admin.setName("Adrian");
-		admin.setPhoneNumber("655338909");
-		admin.setSurname("Perez");
-		adminRepository.save(admin);		
+//		Admin admin = new Admin();
+//		admin.setAvatar("https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.abc.es%2Fplay%2Fcine%2Fnoticias%2Fabci-comienza-rodaje-secuela-avatar-estrenara-once-anos-despues-cinta-original-201709281033_noticia.html&psig=AOvVaw0cgfB36sMnAaXHIO1Fj6uA&ust=1612521722925000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCKCI8dSF0O4CFQAAAAAdAAAAABAD");
+//		admin.setEmail("admin@us.es");
+//		admin.setId(1);
+//		admin.setName("Adrian");
+//		admin.setPhoneNumber("655338909");
+//		admin.setSurname("Perez");
+//		adminRepository.save(admin);		
 	}
 	
-	
-	//obtain the information of one dish
 	@WithMockUser(value = "spring")
 	@Test
 	void testControlPanel() throws Exception {
@@ -156,37 +155,22 @@ public class AdminControllerTest {
 		mockMvc.perform(get("/admin/employees/key")).andExpect(status().isOk()).andExpect(view().name("admin/employees/keys"));
 	}
 	
+	@WithMockUser(value = "spring")
+	@Test
+	void testCreateManagerKey() throws Exception {
+		mockMvc.perform(get("/admin/employees/key/manager")).andExpect(status().isOk()).andExpect(view().name("admin/employees/key"));
+	}
 	
-//	createManagerKey
-//	@ExceptionHandler
-//	@WithMockUser(value = "spring") 
-//	@Test
-//	void createDishSuccess() throws Exception{
-//		//Primero debo mockear un user con la autoridad ADMIN, porque la anotacion de arriba no me funciona
-//		
-//		User mockUser = new User();
-//		Set<Authority> ls = new HashSet<>();
-//		ls.add(new Authority("ADMIN"));
-//		mockUser.setAuthorities(ls);
-//		mockUser.setUsername("mockito");
-//		given(this.userService.getPrincipal()).willReturn(mockUser);
-//		
-//		System.out.println("=========>"+this.userService.getPrincipal().getUsername());
-//		System.out.println("=========>"+this.userService.getPrincipal().getAuthorities());
-//		
-//		mockMvc.perform(post("/dishes/save")
-//							.with(csrf())
-//							.param("name", "Patatas fritas")
-//							.param("description", "Muy ricas")
-//							.param("picture", "https://static.wikia.nocookie.net/fishmans/images/f/f9/Uchunippon_front.png/revision/latest/scale-to-width-down/150?cb=20200116094151")
-//							.param("price", "30.0")
-//							.param("seccion", "ENTRANTES")
-//							.param("allergens", "1")
-//							.param("isVisible", "true")
-//							.param("save", "Save Dish"))
-//						.andExpect(status().is3xxRedirection())
-//						.andExpect(view().name("redirect:/dishes"));
-//	}
-//	
+	@WithMockUser(value = "spring")
+	@Test
+	void testCreateCookKey() throws Exception {
+		mockMvc.perform(get("/admin/employees/key/cook")).andExpect(status().isOk()).andExpect(view().name("admin/employees/key"));
+	}
+	
+	@WithMockUser(value = "spring")
+	@Test
+	void testCreateWaiterKey() throws Exception {
+		mockMvc.perform(get("/admin//employees/key/waiter")).andExpect(status().isOk()).andExpect(view().name("admin/employees/key"));
+	}
 	
 }
