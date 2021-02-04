@@ -9,16 +9,18 @@
 <body>
 	<th:block th:include="fragments/common :: navbar"></th:block>
 	<div class="container">
-		<div class="card">
-			<div class="container-fliud">
+		<div class="card" style="padding:20px;">
+			<div class="container">
 				<div class="wrapper row">
-					<div class="preview col">
-						<div class="wrapper row">
+					<div class="col">
+						<div class="row">
 							<span><b> Unallocated reservations </b></span>
 						</div>
 						<div
 							th:replace="booking/list :: list-booking(bookings=${bookings})"></div>
-						<div class="wrapper row">
+						<div class="row" style="border-bottom: 3px #e8e8e8 solid; margin:5px;">
+						</div>
+						<div class="row">
 							<div class="preview col-md-6">
 								<div>
 									<span th:inline="text"> <b>Restaurant capacity:</b>
@@ -41,7 +43,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="wrapper row">
+						<div class="row">
 							<table class="table">
 								<thead>
 									<tr>
@@ -88,7 +90,7 @@
 												th:if="${table.hourSeated == null}">Seat</a></td>
 											<td>
 												<form th:id="form + ${table.id}" method="get"
-													th:action="@{/table/{id}/update(id=${table.id})}">
+													th:action="@{/table/{id}/modify(id=${table.id})}">
 													<input type="submit" value="save" />
 												</form>
 											</td>
