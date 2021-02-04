@@ -56,7 +56,7 @@ import java.util.Set;
 	excludeAutoConfiguration = SecurityConfiguration.class, 
 	includeFilters = {@ComponentScan.Filter(Service.class), @ComponentScan.Filter(Repository.class) })
 //@MockBean(JpaMetamodelMappingContext.class) //para que evite buscar la database
-public class DishControllerTest {
+public class RegisterControllerTest {
 	
 	private static final int TEST_DISH_ID = 1;
 
