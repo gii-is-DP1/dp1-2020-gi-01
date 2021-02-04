@@ -39,8 +39,7 @@ class BookingServiceTest {
 		b.setPlacementDate(Instant.now());
 		b.setReservationDate(Instant.now().plus(Duration.ofDays(2)));
 		b.setSeating(4);
-		Booking regis = this.bookingService.register(b, this.adminService.findAll().get(0));
-		Booking saved1 = this.bookingService.save(regis);
+		Booking saved1 = this.bookingService.register(b, this.adminService.findAll().get(0));
 		assertThat(saved1.getContactPhone()).isEqualTo(b.getContactPhone());
 	}
 

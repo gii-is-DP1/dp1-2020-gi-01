@@ -174,50 +174,10 @@ public class EstablishmentControllerTest {
 //		return "establishment/view";
 //	}
 	
-	//obtain the list of all dishes
 	@WithMockUser(value = "spring")
 	@Test
-	void httpResponse() throws Exception {
-		mockMvc.perform(get("/dishes")).andExpect(status().isOk());
+	void testViewLocation() throws Exception {
+		mockMvc.perform(get("/location/view?id={ownerId}",1)).andExpect(status().isOk()).andExpect(view().name("establishment/view"));
 	}
-	
-	//obtain the information of one dish
-	@WithMockUser(value = "spring")
-	@Test
-	void dishList() throws Exception {
-		mockMvc.perform(get("/dishes/"+TEST_DISH_ID)).andExpect(status().isOk()).andExpect(model().attributeExists("dish"));
-	}
-	
-	//create new dish
-	@ExceptionHandler
-	@WithMockUser(value = "spring", roles = "ADMIN") 
-	@Test
-	void createDishSuccess() throws Exception{
-		//Primero debo mockear un user con la autoridad ADMIN, porque la anotacion de arriba no me funciona
-		
-		User mockUser = new User();
-		Set<Authority> ls = new HashSet<>();
-		ls.add(new Authority("ADMIN"));
-		mockUser.setAuthorities(ls);
-		mockUser.setUsername("mockito");
-		given(this.userService.getPrincipal()).willReturn(mockUser);
-		
-		System.out.println("=========>"+this.userService.getPrincipal().getUsername());
-		System.out.println("=========>"+this.userService.getPrincipal().getAuthorities());
-		
-		mockMvc.perform(post("/dishes/save")
-							.with(csrf())
-							.param("name", "Patatas fritas")
-							.param("description", "Muy ricas")
-							.param("picture", "https://static.wikia.nocookie.net/fishmans/images/f/f9/Uchunippon_front.png/revision/latest/scale-to-width-down/150?cb=20200116094151")
-							.param("price", "30.0")
-							.param("seccion", "ENTRANTES")
-							.param("allergens", "1")
-							.param("isVisible", "true")
-							.param("save", "Save Dish"))
-						.andExpect(status().is3xxRedirection())
-						.andExpect(view().name("redirect:/dishes"));
-	}
-	
 	
 }

@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.project.TabernasSevilla.configuration.SecurityConfiguration;
 import com.project.TabernasSevilla.controller.BookingController;
 import com.project.TabernasSevilla.controller.DishController;
+import com.project.TabernasSevilla.domain.Admin;
 import com.project.TabernasSevilla.domain.Booking;
 import com.project.TabernasSevilla.domain.Dish;
 import com.project.TabernasSevilla.domain.Establishment;
@@ -35,6 +36,8 @@ import com.project.TabernasSevilla.security.AuthorityService;
 import com.project.TabernasSevilla.security.User;
 import com.project.TabernasSevilla.security.UserService;
 import com.project.TabernasSevilla.service.ActorService;
+import com.project.TabernasSevilla.service.AdminService;
+import com.project.TabernasSevilla.service.BookingService;
 import com.project.TabernasSevilla.service.DishService;
 import com.project.TabernasSevilla.service.EstablishmentService;
 
@@ -52,6 +55,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -79,12 +84,18 @@ public class BookingControllerTest {
 
 	@MockBean
 	private ActorService actorService;
+	
+	@MockBean
+	private AdminService adminService;
 
 	@MockBean
 	private DishService dishService;
 
 	@MockBean
 	private EstablishmentService establishmentService;
+	
+	@MockBean
+	private BookingService bookingService;
 	
 	@MockBean
 	private AuthorityService authService;
@@ -143,31 +154,26 @@ public class BookingControllerTest {
 	@BeforeEach
 	void setup() { // inicializar establishment y dish
 		
-		Dish d = new Dish("Mi plato", "Mi descripción",
-				"https://international-experience.es/wp-content/uploads/2019/08/comidas-mundo.jpg", 20.0, 4.0, Seccion.CARNES, true,
-				null);
-
-		d.setId(1);
-		System.out.println("%%%%%%%%%%%% la id del plato "+d.getId());
-		List<Dish> ls = new ArrayList<Dish>();
-		ls.add(d);
-
-		Establishment est = new Establishment();
-		est.setId(1);
-		est.setTitle("prueba");
-		est.setAddress("calle ");
-		est.setCapacity(10);
-		est.setCurrentCapacity(10);
-		est.setOpeningHours("24/7");
-		est.setScore(2);
-		est.setDish(ls);
-		establishmentRepository.save(est);
-		System.out.println("############ todos los establecimientos: " + establishmentService.findAll());
-		
-		given(this.dishService.findById(TEST_DISH_ID)).willReturn(Optional.of(new Dish())); //importantisimo
+		Booking b = new Booking();
+		b.setActor(new Admin());
+		b.setId(1);
+		b.setContactPhone("655778899");
+		b.setEstablishment(this.establishmentService.findById(1));
+		b.setNotes("Comida de navidad");
+		b.setPlacementDate(Instant.now());
+		b.setReservationDate(Instant.now().plus(Duration.ofDays(2)));
+		b.setSeating(4);
+		Booking saved1 = this.bookingService.register(b, new Admin());
+//		
+//		given(this.dishService.findById(TEST_DISH_ID)).willReturn(Optional.of(new Dish())); //importantisimo
 		
 	}
 	
+	@WithMockUser(value = "spring")
+	@Test
+	void testCreateBooking() throws Exception {
+		mockMvc.perform(get("/booking/init/{id}", 1)).andExpect(status().isOk()).andExpect(view().name("/booking/edit"));
+	}
 //	@RequestMapping(value = "/init/{id}", method = RequestMethod.GET)
 //	public String createBooking(@PathVariable("id") int establishmentId, Model model) {
 //		Establishment est = this.establishmentService.findById(establishmentId);

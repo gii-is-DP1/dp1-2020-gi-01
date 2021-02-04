@@ -18,12 +18,12 @@ public class IndexController {
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String getLoginPage(@RequestParam(value = "error", required = false) boolean error, Model model) {
 
-		if (error == true) {
-			// Assign an error message
-			model.addAttribute("error", "You have entered an invalid username or password!");
-		} else {
-			model.addAttribute("error", "");
-		}
+//		if (error == true) {
+//			// Assign an error message
+//			model.addAttribute("error", "You have entered an invalid username or password!");
+//		} else {
+//			model.addAttribute("error", "");
+//		}
 		return "login";
 	}
 

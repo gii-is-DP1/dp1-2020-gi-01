@@ -39,7 +39,6 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.doReturn;
 
-
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -56,17 +55,15 @@ import java.util.Set;
 
 //@RunWith(SpringRunner.class)
 //@WebAppConfiguration
-@WebMvcTest(controllers = IndexController.class, 
-	excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class), 
-	excludeAutoConfiguration = SecurityConfiguration.class, 
-	includeFilters = {@ComponentScan.Filter(Service.class), @ComponentScan.Filter(Repository.class) })
+@WebMvcTest(controllers = IndexController.class, excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class), excludeAutoConfiguration = SecurityConfiguration.class, includeFilters = {
+		@ComponentScan.Filter(Service.class), @ComponentScan.Filter(Repository.class) })
 //@MockBean(JpaMetamodelMappingContext.class) //para que evite buscar la database
 public class IndexControllerTest {
-	
+
 	private static final int TEST_DISH_ID = 1;
 
-	//@Autowired
-	//private DishController dishController;
+	// @Autowired
+	// private DishController dishController;
 
 	@MockBean
 	private UserService userService;
@@ -79,7 +76,7 @@ public class IndexControllerTest {
 
 	@MockBean
 	private EstablishmentService establishmentService;
-	
+
 	@MockBean
 	private AuthorityService authService;
 
@@ -136,7 +133,7 @@ public class IndexControllerTest {
 
 	@BeforeEach
 	void setup() { // inicializar establishment y dish
-		
+
 //		Dish d = new Dish("Mi plato", "Mi descripción",
 //				"https://international-experience.es/wp-content/uploads/2019/08/comidas-mundo.jpg", 20.0, 4.0, Seccion.CARNES, true,
 //				null);
@@ -161,42 +158,23 @@ public class IndexControllerTest {
 //		given(this.dishService.findById(TEST_DISH_ID)).willReturn(Optional.of(new Dish())); //importantisimo
 //		
 	}
+
 	@WithMockUser(value = "spring")
 	@Test
 	void testMainView() throws Exception {
 		mockMvc.perform(get("/index")).andExpect(status().isOk()).andExpect(view().name("index"));
 	}
-	
+
 	@WithMockUser(value = "spring")
 	@Test
 	void testGetLoginPage() throws Exception {
 		mockMvc.perform(get("/login")).andExpect(status().isOk()).andExpect(view().name("login"));
 	}
-	
+
 	@WithMockUser(value = "spring")
 	@Test
 	void testLoginError() throws Exception {
 		mockMvc.perform(get("/login-error")).andExpect(status().isOk()).andExpect(view().name("login_error"));
 	}
-	
 
-//	@RequestMapping(value = "/login", method = RequestMethod.GET)
-//	public String getLoginPage(@RequestParam(value = "error", required = false) boolean error, Model model) {
-//
-//		if (error == true) {
-//			// Assign an error message
-//			model.addAttribute("error", "You have entered an invalid username or password!");
-//		} else {
-//			model.addAttribute("error", "");
-//		}
-//		return "login";
-//	}
-//
-//	@RequestMapping(value = "/login-error")
-//	public String loginError(Model model) {
-//		model.addAttribute("loginError", true);
-//		return "login_error";
-//	}
-	
-	
 }
