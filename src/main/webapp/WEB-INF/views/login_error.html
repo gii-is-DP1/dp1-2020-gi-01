@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<th:block th:include="header :: head(title='Error')"></th:block>
+<title>Error page</title>
 </head>
 <body
 	th:with="httpStatus=${T(org.springframework.http.HttpStatus).valueOf(#response.status)}">

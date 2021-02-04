@@ -142,7 +142,6 @@ public class EstablishmentControllerTest {
 				null);
 
 		d.setId(1);
-		System.out.println("%%%%%%%%%%%% la id del plato "+d.getId());
 		List<Dish> ls = new ArrayList<Dish>();
 		ls.add(d);
 
@@ -154,11 +153,9 @@ public class EstablishmentControllerTest {
 		est.setCurrentCapacity(10);
 		est.setOpeningHours("24/7");
 		est.setScore(2);
-		est.setDish(ls);
-		establishmentRepository.save(est);
-		System.out.println("############ todos los establecimientos: " + establishmentService.findAll());
+		est.setDish(ls);;
 		
-		given(this.dishService.findById(TEST_DISH_ID)).willReturn(Optional.of(new Dish())); //importantisimo
+		given(this.establishmentService.findById(1)).willReturn(est); //importantisimo
 		
 	}
 	
@@ -177,7 +174,7 @@ public class EstablishmentControllerTest {
 	@WithMockUser(value = "spring")
 	@Test
 	void testViewLocation() throws Exception {
-		mockMvc.perform(get("/location/view?id={ownerId}",1)).andExpect(status().isOk()).andExpect(view().name("establishment/view"));
+		mockMvc.perform(get("/location/view?id={id}",1)).andExpect(status().isOk()).andExpect(view().name("establishment/view"));
 	}
 	
 }

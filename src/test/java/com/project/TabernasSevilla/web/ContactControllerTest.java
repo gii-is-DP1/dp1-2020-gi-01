@@ -166,47 +166,19 @@ public class ContactControllerTest {
 		
 	}
 	
-//	@RequestMapping(value="/init", method=RequestMethod.GET)
-//	 public String createJoba(Model model) {
-//		final ContactForm confor = new ContactForm();
-//		model.addAttribute("contactForm", confor);
-//			return "contact";
-//	    }
-//	
-//	@RequestMapping(value="/save",method = RequestMethod.POST)
-//	public String saveJoba(@ModelAttribute @Valid final ContactForm confor, final BindingResult binding, Model model) {
-//		if(binding.hasErrors()) {
-//			model.addAttribute("contactForm", confor);
-//			return this.createJobaEditModel(confor, model);
-//		}else {
-//			try {
-//				this.conSer.register(confor);
-//				return "redirect:/index";
-//			}catch(final Exception e) {
-//				return this.createJobaEditModel(confor, model, e.getMessage());
-//			}
-//		}
-//	}
 	
 	//obtain the list of all dishes
 	@WithMockUser(value = "spring")
 	@Test
-	void httpResponse() throws Exception {
-		mockMvc.perform(get("/dishes")).andExpect(status().isOk());
-	}
-	
-	//obtain the information of one dish
-	@WithMockUser(value = "spring")
-	@Test
-	void dishList() throws Exception {
-		mockMvc.perform(get("/dishes/"+TEST_DISH_ID)).andExpect(status().isOk()).andExpect(model().attributeExists("dish"));
+	void testCreateJoba() throws Exception {
+		mockMvc.perform(get("/contact/init")).andExpect(status().isOk()).andExpect(view().name("contact"));
 	}
 	
 	//create new dish
 	@ExceptionHandler
 	@WithMockUser(value = "spring", roles = "ADMIN") 
 	@Test
-	void createDishSuccess() throws Exception{
+	void testSaveJoba() throws Exception{
 		//Primero debo mockear un user con la autoridad ADMIN, porque la anotacion de arriba no me funciona
 		
 		User mockUser = new User();
@@ -219,7 +191,7 @@ public class ContactControllerTest {
 		System.out.println("=========>"+this.userService.getPrincipal().getUsername());
 		System.out.println("=========>"+this.userService.getPrincipal().getAuthorities());
 		
-		mockMvc.perform(post("/dishes/save")
+		mockMvc.perform(post("/contact/save")
 							.with(csrf())
 							.param("name", "Patatas fritas")
 							.param("description", "Muy ricas")
@@ -230,7 +202,7 @@ public class ContactControllerTest {
 							.param("isVisible", "true")
 							.param("save", "Save Dish"))
 						.andExpect(status().is3xxRedirection())
-						.andExpect(view().name("redirect:/dishes"));
+						.andExpect(view().name("redirect:/contact"));
 	}
 	
 	

@@ -60,11 +60,6 @@ import java.util.Set;
 //@MockBean(JpaMetamodelMappingContext.class) //para que evite buscar la database
 public class IndexControllerTest {
 
-	private static final int TEST_DISH_ID = 1;
-
-	// @Autowired
-	// private DishController dishController;
-
 	@MockBean
 	private UserService userService;
 
@@ -131,33 +126,6 @@ public class IndexControllerTest {
 	@Autowired
 	private MockMvc mockMvc;
 
-	@BeforeEach
-	void setup() { // inicializar establishment y dish
-
-//		Dish d = new Dish("Mi plato", "Mi descripción",
-//				"https://international-experience.es/wp-content/uploads/2019/08/comidas-mundo.jpg", 20.0, 4.0, Seccion.CARNES, true,
-//				null);
-//
-//		d.setId(1);
-//		System.out.println("%%%%%%%%%%%% la id del plato "+d.getId());
-//		List<Dish> ls = new ArrayList<Dish>();
-//		ls.add(d);
-//
-//		Establishment est = new Establishment();
-//		est.setId(1);
-//		est.setTitle("prueba");
-//		est.setAddress("calle ");
-//		est.setCapacity(10);
-//		est.setCurrentCapacity(10);
-//		est.setOpeningHours("24/7");
-//		est.setScore(2);
-//		est.setDish(ls);
-//		establishmentRepository.save(est);
-//		System.out.println("############ todos los establecimientos: " + establishmentService.findAll());
-//		
-//		given(this.dishService.findById(TEST_DISH_ID)).willReturn(Optional.of(new Dish())); //importantisimo
-//		
-	}
 
 	@WithMockUser(value = "spring")
 	@Test

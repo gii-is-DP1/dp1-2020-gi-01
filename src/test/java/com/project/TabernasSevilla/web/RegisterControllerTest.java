@@ -169,80 +169,34 @@ public class RegisterControllerTest {
 		
 	}
 	
-//	@RequestMapping(value = "/init", method = RequestMethod.GET)
-//	public String createCustomer(@RequestParam(required = false) String key, Model model) {
-//		final RegisterForm regForm = new RegisterForm();
-//		if (key != null) {
-//			if (this.regKeyService.checkKey(key)) {
-//				regForm.setKey(key);
-//			} else {
-//				regForm.setKey("");
-//			}
-//		}
-//		model.addAttribute("registerForm", regForm);
-//		return "register";
-//	}
-//
-//	// TODO: validation in view
-//	@RequestMapping(value = "/save", method = RequestMethod.POST)
-//	public String saveUser(@ModelAttribute @Valid final RegisterForm regForm, final BindingResult binding,
-//			Model model) {
-//		if (binding.hasErrors()) {
-//			model.addAttribute("registerForm", regForm);
-//			return this.createRegisterEditModel(regForm, model);
-//		} else {
-//			try {
-//				this.actorService.register(regForm);
-//				return "redirect:/login";
-//			} catch (final Exception e) {
-//				return this.createRegisterEditModel(regForm, model, e.getMessage());
-//			}
-//		}
-//	}
-//
-//	// go to employee enter regkey view
-//	// TODO: enter regkey view
-//	@GetMapping("/employees")
-//	public String employeeRegister() {
-//		return "employee/key";
-//	}
-//
-//	// AUX
-//	protected String createRegisterEditModel(final RegisterForm regForm, Model model) {
-//		return this.createRegisterEditModel(regForm, model, null);
-//	}
-//
-//	protected String createRegisterEditModel(final RegisterForm regForm, Model model, String message) {
-//		model.addAttribute(regForm);
-//		model.addAttribute("message", message);
-//		return "register";
-//	}
-//	
-//	@GetMapping("/check-key")
-//	public @ResponseBody String checkKey(@RequestParam("key") String key) {
-//		String response = this.regKeyService.checkKey(key).toString();
-//		return response;
-//	}
+	@WithMockUser(value = "spring")
+	@Test
+	void testCreateCustomer() throws Exception {
+		mockMvc.perform(get("/register/init")).andExpect(status().isOk()).andExpect(view().name("register"));
+	}
+
+	@WithMockUser(value = "spring")
+	@Test
+	void testEmployeeRegister() throws Exception {
+		mockMvc.perform(get("/register/employees")).andExpect(status().isOk()).andExpect(view().name("admin/employees/key"));
+	}
+
+
 	
 	//obtain the list of all dishes
 	@WithMockUser(value = "spring")
 	@Test
-	void httpResponse() throws Exception {
-		mockMvc.perform(get("/dishes")).andExpect(status().isOk());
+	void testCheckKey() throws Exception {
+		mockMvc.perform(get("/register/check-key")).andExpect(status().isOk());
 	}
 	
-	//obtain the information of one dish
-	@WithMockUser(value = "spring")
-	@Test
-	void dishList() throws Exception {
-		mockMvc.perform(get("/dishes/"+TEST_DISH_ID)).andExpect(status().isOk()).andExpect(model().attributeExists("dish"));
-	}
+
 	
 	//create new dish
 	@ExceptionHandler
 	@WithMockUser(value = "spring", roles = "ADMIN") 
 	@Test
-	void createDishSuccess() throws Exception{
+	void testSaveUser() throws Exception{
 		//Primero debo mockear un user con la autoridad ADMIN, porque la anotacion de arriba no me funciona
 		
 		User mockUser = new User();
@@ -266,7 +220,7 @@ public class RegisterControllerTest {
 							.param("isVisible", "true")
 							.param("save", "Save Dish"))
 						.andExpect(status().is3xxRedirection())
-						.andExpect(view().name("redirect:/dishes"));
+						.andExpect(view().name("redirect:/login"));
 	}
 	
 	

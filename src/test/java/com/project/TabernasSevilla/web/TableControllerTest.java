@@ -158,44 +158,31 @@ public class TableControllerTest {
 		est.setOpeningHours("24/7");
 		est.setScore(2);
 		est.setDish(ls);
-		establishmentRepository.save(est);
-		System.out.println("############ todos los establecimientos: " + establishmentService.findAll());
+		given(this.establishmentService.findById(1)).willReturn(est); //importantisimo
+//		given(this.tableService.findById(1)).willReturn(est);
 		
-		given(this.dishService.findById(TEST_DISH_ID)).willReturn(Optional.of(new Dish())); //importantisimo
 		
 	}
 	
-//	@GetMapping("/establishment/{id}")
-//	public String manageTables(@PathVariable("id") int establishmentId, Model model) {
-//		Establishment est = this.establishmentService.findById(establishmentId);
-//		List<RestaurantTable> tables = this.tableService.findByEstablishment(est);
-//		for(RestaurantTable t: tables) {
-//			t.getBooking();
-//		}
-//		Long occupied = this.tableService.getOccupancyAtRestaurant(est);
-//		Long freeTables = this.tableService.countFreeTables(est);
-//		String estimate = this.tableService.estimateFreeTable(est);
-//		List<Booking> bookings = this.bookingService.findUnallocatedByEstablishment(est);
-//		model.addAttribute("bookings", bookings);
-//		model.addAttribute("estimate", estimate);
-//		model.addAttribute("totalTables", tables.size());
-//		model.addAttribute("freeTables", freeTables);
-//		model.addAttribute("freeTables", freeTables);
-//		model.addAttribute("occupied", occupied);
-//		model.addAttribute("establishment", est);
-//		model.addAttribute("tables", tables);
-//		return "table/list";
-//	}
-//
-//	// create table
-//	@GetMapping("/establishment/{id}/add")
-//	public String addTable(@PathVariable("id") int establishmentId, Model model) {
-//		Establishment est = this.establishmentService.findById(establishmentId);
-//		this.tableService.quickCreate(est, 1);
-//
-//		return "redirect:/table/establishment/" + establishmentId ;
-//	}
-//
+	@WithMockUser(value = "spring")
+	@Test
+	void testManageTables() throws Exception {
+		mockMvc.perform(get("/table/establishment/{id}", 1)).andExpect(status().isOk()).andExpect(view().name("table/list"));
+	}
+	
+	@WithMockUser(value = "spring")
+	@Test
+	void testCreateTables() throws Exception {
+		mockMvc.perform(get("/table/establishment/{id}/add", 1)).andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/table/establishment/1"));
+	}
+	
+	@WithMockUser(value = "spring")
+	@Test
+	void testDeleteTable() throws Exception {
+		mockMvc.perform(get("/table/establishment/{tableId}/delete", 1)).andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/table/establishment/1"));
+	}
+
+
 //	// delete table
 //	@GetMapping("/{tableId}/delete")
 //	public String deleteTable(@PathVariable("tableId") int tableId, Model model) {
@@ -248,19 +235,6 @@ public class TableControllerTest {
 //		return "redirect:/table/establishment/" + est.getId() ;
 //	}
 	
-	//obtain the list of all dishes
-	@WithMockUser(value = "spring")
-	@Test
-	void httpResponse() throws Exception {
-		mockMvc.perform(get("/dishes")).andExpect(status().isOk());
-	}
-	
-	//obtain the information of one dish
-	@WithMockUser(value = "spring")
-	@Test
-	void dishList() throws Exception {
-		mockMvc.perform(get("/dishes/"+TEST_DISH_ID)).andExpect(status().isOk()).andExpect(model().attributeExists("dish"));
-	}
 	
 	//create new dish
 	@ExceptionHandler

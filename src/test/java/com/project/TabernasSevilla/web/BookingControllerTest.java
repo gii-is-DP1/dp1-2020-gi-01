@@ -46,7 +46,6 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.doReturn;
 
-
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -67,24 +66,22 @@ import javax.validation.Valid;
 
 //@RunWith(SpringRunner.class)
 //@WebAppConfiguration
-@WebMvcTest(controllers = BookingController.class, 
-	excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class), 
-	excludeAutoConfiguration = SecurityConfiguration.class, 
-	includeFilters = {@ComponentScan.Filter(Service.class), @ComponentScan.Filter(Repository.class) })
+@WebMvcTest(controllers = BookingController.class, excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class), excludeAutoConfiguration = SecurityConfiguration.class, includeFilters = {
+		@ComponentScan.Filter(Service.class), @ComponentScan.Filter(Repository.class) })
 //@MockBean(JpaMetamodelMappingContext.class) //para que evite buscar la database
 public class BookingControllerTest {
-	
+
 	private static final int TEST_DISH_ID = 1;
 
-	//@Autowired
-	//private DishController dishController;
+	// @Autowired
+	// private DishController dishController;
 
 	@MockBean
 	private UserService userService;
 
 	@MockBean
 	private ActorService actorService;
-	
+
 	@MockBean
 	private AdminService adminService;
 
@@ -93,10 +90,10 @@ public class BookingControllerTest {
 
 	@MockBean
 	private EstablishmentService establishmentService;
-	
+
 	@MockBean
 	private BookingService bookingService;
-	
+
 	@MockBean
 	private AuthorityService authService;
 
@@ -153,114 +150,77 @@ public class BookingControllerTest {
 
 	@BeforeEach
 	void setup() { // inicializar establishment y dish
-		
+
 		Booking b = new Booking();
 		b.setActor(new Admin());
 		b.setId(1);
 		b.setContactPhone("655778899");
-		b.setEstablishment(this.establishmentService.findById(1));
+		b.setEstablishment(new Establishment());
 		b.setNotes("Comida de navidad");
 		b.setPlacementDate(Instant.now());
 		b.setReservationDate(Instant.now().plus(Duration.ofDays(2)));
 		b.setSeating(4);
-		Booking saved1 = this.bookingService.register(b, new Admin());
-//		
-//		given(this.dishService.findById(TEST_DISH_ID)).willReturn(Optional.of(new Dish())); //importantisimo
-		
+		this.bookingService.register(b, new Admin());
+
+		Establishment est = new Establishment();
+		est.setTitle("prueba");
+		est.setAddress("calle ");
+		est.setCapacity(10);
+		est.setCurrentCapacity(10);
+		est.setOpeningHours("24/7");
+		est.setScore(2);
+		est.setId(1);
+		this.establishmentService.save(est);
+		given(this.establishmentService.findById(1)).willReturn(est); //importantisimo
+
 	}
-	
+
 	@WithMockUser(value = "spring")
 	@Test
 	void testCreateBooking() throws Exception {
-		mockMvc.perform(get("/booking/init/{id}", 1)).andExpect(status().isOk()).andExpect(view().name("/booking/edit"));
+		mockMvc.perform(get("/booking/init/{id}", 1)).andExpect(status().isOk())
+				.andExpect(view().name("/booking/edit"));
 	}
-//	@RequestMapping(value = "/init/{id}", method = RequestMethod.GET)
-//	public String createBooking(@PathVariable("id") int establishmentId, Model model) {
-//		Establishment est = this.establishmentService.findById(establishmentId);
-//		Booking booking = this.bookService.initialize(est);
-//		
-//	
-//		model.addAttribute("establishment", booking.getEstablishment());
-//		model.addAttribute("booking", booking);
-//		return "booking/edit";
-//	}
-//	
-//	@RequestMapping("/")
-//	public String list(Model model) {
-//		List<Booking> bookings = this.bookService.findByPrincipalActor();
-//		model.addAttribute("bookings", bookings);
-//		return "booking/list";
-//	}
-//
-//	@RequestMapping(value = "/save", method = RequestMethod.POST)
-//	public String saveBooking(@ModelAttribute @Valid final Booking booking, final BindingResult binding,
-//			Model model) {
-//
-//		if (binding.hasErrors()) {
-//			model.addAttribute("booking", booking);
-//			return this.createBookingEditModel(booking, model);
-//		} else {
-//			try {
-//				this.bookService.register(booking,  this.actorService.getPrincipal());
-//				return "redirect:/index";
-//			} catch (final Exception e) {
-//				return this.createBookingEditModel(booking, model, e.getMessage());
-//			}
-//		}
-//	}
-//	
-//	@GetMapping("/{id}/delete")
-//	public String delete(@PathVariable("id") int bookingId, Model model) {
-//		Booking booking = this.bookService.findById(bookingId).get();
-//		model.addAttribute("establishment", booking.getEstablishment());
-//		this.bookService.delete(booking);
-//		return "booking/deleted";
-//	}
-	
-	//obtain the list of all dishes
+
 	@WithMockUser(value = "spring")
 	@Test
-	void httpResponse() throws Exception {
-		mockMvc.perform(get("/dishes")).andExpect(status().isOk());
+	void testList() throws Exception {
+		mockMvc.perform(get("/booking/")).andExpect(status().isOk()).andExpect(view().name("booking/list"));
 	}
-	
-	//obtain the information of one dish
+
 	@WithMockUser(value = "spring")
 	@Test
-	void dishList() throws Exception {
-		mockMvc.perform(get("/dishes/"+TEST_DISH_ID)).andExpect(status().isOk()).andExpect(model().attributeExists("dish"));
+	void testDelete() throws Exception {
+		mockMvc.perform(get("/booking/{id}/delete", 1)).andExpect(status().isOk())
+				.andExpect(view().name("booking/delete"));
 	}
-	
-	//create new dish
+
 	@ExceptionHandler
-	@WithMockUser(value = "spring", roles = "ADMIN") 
+	@WithMockUser(value = "spring", roles = "ADMIN")
 	@Test
-	void createDishSuccess() throws Exception{
-		//Primero debo mockear un user con la autoridad ADMIN, porque la anotacion de arriba no me funciona
-		
+	void testSaveBooking() throws Exception {
+		// Primero debo mockear un user con la autoridad ADMIN, porque la anotacion de
+		// arriba no me funciona
+
 		User mockUser = new User();
 		Set<Authority> ls = new HashSet<>();
 		ls.add(new Authority("ADMIN"));
 		mockUser.setAuthorities(ls);
 		mockUser.setUsername("mockito");
 		given(this.userService.getPrincipal()).willReturn(mockUser);
-		
-		System.out.println("=========>"+this.userService.getPrincipal().getUsername());
-		System.out.println("=========>"+this.userService.getPrincipal().getAuthorities());
-		
-		mockMvc.perform(post("/dishes/save")
-							.with(csrf())
-							.param("name", "Patatas fritas")
-							.param("description", "Muy ricas")
-							.param("picture", "https://static.wikia.nocookie.net/fishmans/images/f/f9/Uchunippon_front.png/revision/latest/scale-to-width-down/150?cb=20200116094151")
-							.param("price", "30.0")
-							.param("seccion", "ENTRANTES")
-							.param("allergens", "1")
-							.param("isVisible", "true")
-							.param("save", "Save Dish"))
-						.andExpect(status().is3xxRedirection())
-						.andExpect(view().name("redirect:/dishes"));
+
+		mockMvc.perform(post("/booking/save").with(csrf())
+				.param("establishment", "1")
+				.param("actor", "mo")
+				.param("placementDate",
+						"2021-01-01")
+				.param("reservationDate", "2021-01-01")
+				.param("seating", "2")
+				.param("contactPhone", "677889900")
+				.param("notes", "Que rico"))
+				.andExpect(status().is3xxRedirection())
+				.andExpect(view().name("redirect:/index"));
 	}
-	
-	
+
+
 }

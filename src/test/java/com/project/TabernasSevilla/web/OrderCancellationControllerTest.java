@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.project.TabernasSevilla.configuration.SecurityConfiguration;
 import com.project.TabernasSevilla.controller.DishController;
 import com.project.TabernasSevilla.controller.OrderCancellationController;
+import com.project.TabernasSevilla.domain.Admin;
 import com.project.TabernasSevilla.domain.Dish;
 import com.project.TabernasSevilla.domain.Establishment;
 import com.project.TabernasSevilla.domain.OrderCancellation;
@@ -37,8 +38,10 @@ import com.project.TabernasSevilla.security.AuthorityService;
 import com.project.TabernasSevilla.security.User;
 import com.project.TabernasSevilla.security.UserService;
 import com.project.TabernasSevilla.service.ActorService;
+import com.project.TabernasSevilla.service.AdminService;
 import com.project.TabernasSevilla.service.DishService;
 import com.project.TabernasSevilla.service.EstablishmentService;
+import com.project.TabernasSevilla.service.OrderService;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.mockito.BDDMockito.given;
@@ -79,9 +82,15 @@ public class OrderCancellationControllerTest {
 
 	@MockBean
 	private UserService userService;
+	
+	@MockBean
+	private OrderService orderService;
 
 	@MockBean
 	private ActorService actorService;
+	
+	@MockBean
+	private AdminService adminService;
 
 	@MockBean
 	private DishService dishService;
@@ -144,52 +153,32 @@ public class OrderCancellationControllerTest {
 	private MockMvc mockMvc;
 
 	@BeforeEach
-	void setup() { // inicializar establishment y dish
-		
-		Dish d = new Dish("Mi plato", "Mi descripción",
-				"https://international-experience.es/wp-content/uploads/2019/08/comidas-mundo.jpg", 20.0, 4.0, Seccion.CARNES, true,
-				null);
-
-		d.setId(1);
-		System.out.println("%%%%%%%%%%%% la id del plato "+d.getId());
-		List<Dish> ls = new ArrayList<Dish>();
-		ls.add(d);
-
-		Establishment est = new Establishment();
-		est.setId(1);
-		est.setTitle("prueba");
-		est.setAddress("calle ");
-		est.setCapacity(10);
-		est.setCurrentCapacity(10);
-		est.setOpeningHours("24/7");
-		est.setScore(2);
-		est.setDish(ls);
-		establishmentRepository.save(est);
-		System.out.println("############ todos los establecimientos: " + establishmentService.findAll());
-		
-		given(this.dishService.findById(TEST_DISH_ID)).willReturn(Optional.of(new Dish())); //importantisimo
+	void setup() { 
+		RestaurantOrder order = new RestaurantOrder();
+		order.setAddress("Calle Calamar");
+		order.setEstablishment(this.establishmentService.findById(1));
+		order.setDish(new ArrayList<Dish>());
+		order.setActor(new Admin());
+		order.setType(RestaurantOrder.DELIVERY);
+		order.setStatus(RestaurantOrder.OPEN);
+		given(this.orderService.findById(1)).willReturn(Optional.of(order)); //importantisimo
 		
 	}
 	
-	@GetMapping("/view/{id}")
-	public String view(Model model, @PathVariable("id") int orderId) {
-		return "order/cancel/view";
+	@WithMockUser(value = "spring")
+	@Test
+	void testView() throws Exception {
+		mockMvc.perform(get("/order/cancel/view/{id}", 1)).andExpect(status().isOk()).andExpect(view().name("order/cancel/view"));
 	}
 	
-//	@GetMapping("/{id}")
-//	public String edit(Model model, @PathVariable("id") int orderId) {
-//		RestaurantOrder order = this.orderService.findById(orderId).get();
-//		model.addAttribute("order",order);
-//		OrderCancellation cancel = this.orderCancellationService.initialize(order);
-//		if(order.getActor().getId()==this.actorService.getPrincipal().getId()) {	
-//			cancel.setReason("User cancellation");
-//		}else {
-//			Assert.isTrue(this.userService.principalHasAnyAuthority(Arrays.asList("ADMIN","MANAGER","COOK","WAITER")),"Cannot cancel order");
-//			model.addAttribute("cancel",cancel);
-//		}
-//		model.addAttribute("cancel",cancel);
-//		return "order/cancel/edit";
-//	}
+	@WithMockUser(value = "spring")
+	@Test
+	void testEdit() throws Exception {
+		mockMvc.perform(get("/order/cancel/{id}", 1)).andExpect(status().isOk()).andExpect(view().name("order/cancel/edit"));
+	}
+	
+
+
 //	
 //	@RequestMapping(value = "/save", method = RequestMethod.POST)
 //	public String saveBooking(@ModelAttribute @Valid final OrderCancellation orderCancellation, final BindingResult binding,
@@ -211,24 +200,14 @@ public class OrderCancellationControllerTest {
 //	}
 	
 	//obtain the list of all dishes
-	@WithMockUser(value = "spring")
-	@Test
-	void httpResponse() throws Exception {
-		mockMvc.perform(get("/dishes")).andExpect(status().isOk());
-	}
+
 	
-	//obtain the information of one dish
-	@WithMockUser(value = "spring")
-	@Test
-	void dishList() throws Exception {
-		mockMvc.perform(get("/dishes/"+TEST_DISH_ID)).andExpect(status().isOk()).andExpect(model().attributeExists("dish"));
-	}
 	
 	//create new dish
 	@ExceptionHandler
 	@WithMockUser(value = "spring", roles = "ADMIN") 
 	@Test
-	void createDishSuccess() throws Exception{
+	void testSaveBooking() throws Exception{
 		//Primero debo mockear un user con la autoridad ADMIN, porque la anotacion de arriba no me funciona
 		
 		User mockUser = new User();
@@ -241,7 +220,7 @@ public class OrderCancellationControllerTest {
 		System.out.println("=========>"+this.userService.getPrincipal().getUsername());
 		System.out.println("=========>"+this.userService.getPrincipal().getAuthorities());
 		
-		mockMvc.perform(post("/dishes/save")
+		mockMvc.perform(post("/order/cancel/save")
 							.with(csrf())
 							.param("name", "Patatas fritas")
 							.param("description", "Muy ricas")
@@ -251,8 +230,8 @@ public class OrderCancellationControllerTest {
 							.param("allergens", "1")
 							.param("isVisible", "true")
 							.param("save", "Save Dish"))
-						.andExpect(status().is3xxRedirection());
-//						.andExpect(view().name("redirect:/dishes"));
+						.andExpect(status().is3xxRedirection())
+						.andExpect(view().name("redirect:/index"));
 	}
 	
 	
