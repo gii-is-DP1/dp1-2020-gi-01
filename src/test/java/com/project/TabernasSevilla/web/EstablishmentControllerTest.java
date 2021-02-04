@@ -12,10 +12,15 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.ui.Model;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.project.TabernasSevilla.configuration.SecurityConfiguration;
 import com.project.TabernasSevilla.controller.DishController;
+import com.project.TabernasSevilla.controller.EstablishmentController;
 import com.project.TabernasSevilla.domain.Dish;
 import com.project.TabernasSevilla.domain.Establishment;
 import com.project.TabernasSevilla.domain.Seccion;
@@ -51,7 +56,7 @@ import java.util.Set;
 
 //@RunWith(SpringRunner.class)
 //@WebAppConfiguration
-@WebMvcTest(controllers = DishController.class, 
+@WebMvcTest(controllers = EstablishmentController.class, 
 	excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class), 
 	excludeAutoConfiguration = SecurityConfiguration.class, 
 	includeFilters = {@ComponentScan.Filter(Service.class), @ComponentScan.Filter(Repository.class) })
@@ -156,6 +161,18 @@ public class EstablishmentControllerTest {
 		given(this.dishService.findById(TEST_DISH_ID)).willReturn(Optional.of(new Dish())); //importantisimo
 		
 	}
+	
+//	@GetMapping("/view")
+//	public String viewLocation (@RequestParam(required=true) final Integer id, Model model) {
+//		Establishment est = this.establishmentService.findById(id);
+//		Assert.notNull(est,"Establishment could not be found");
+//		Long occupied = this.tableService.getOccupancyAtRestaurant(est);
+//		String estimate = this.tableService.estimateFreeTable(est);
+//		model.addAttribute("establishment",est);
+//		model.addAttribute("occupied",occupied);
+//		model.addAttribute("estimate",estimate);
+//		return "establishment/view";
+//	}
 	
 	//obtain the list of all dishes
 	@WithMockUser(value = "spring")

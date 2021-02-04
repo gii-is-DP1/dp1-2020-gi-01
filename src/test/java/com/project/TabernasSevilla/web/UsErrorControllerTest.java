@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.project.TabernasSevilla.configuration.SecurityConfiguration;
 import com.project.TabernasSevilla.controller.DishController;
+import com.project.TabernasSevilla.controller.UsErrorController;
 import com.project.TabernasSevilla.domain.Dish;
 import com.project.TabernasSevilla.domain.Establishment;
 import com.project.TabernasSevilla.domain.Seccion;
@@ -51,7 +52,7 @@ import java.util.Set;
 
 //@RunWith(SpringRunner.class)
 //@WebAppConfiguration
-@WebMvcTest(controllers = DishController.class, 
+@WebMvcTest(controllers = UsErrorController.class, 
 	excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class), 
 	excludeAutoConfiguration = SecurityConfiguration.class, 
 	includeFilters = {@ComponentScan.Filter(Service.class), @ComponentScan.Filter(Repository.class) })

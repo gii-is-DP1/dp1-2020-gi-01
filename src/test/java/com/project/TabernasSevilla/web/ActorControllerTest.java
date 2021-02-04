@@ -12,13 +12,20 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import com.project.TabernasSevilla.configuration.SecurityConfiguration;
 import com.project.TabernasSevilla.controller.DishController;
+import com.project.TabernasSevilla.domain.Actor;
 import com.project.TabernasSevilla.domain.Dish;
 import com.project.TabernasSevilla.domain.Establishment;
 import com.project.TabernasSevilla.domain.Seccion;
+import com.project.TabernasSevilla.forms.ActorForm;
 import com.project.TabernasSevilla.repository.*;
 import com.project.TabernasSevilla.security.Authority;
 import com.project.TabernasSevilla.security.AuthorityRepository;
@@ -48,6 +55,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+
+import javax.validation.Valid;
 
 //@RunWith(SpringRunner.class)
 //@WebAppConfiguration
@@ -156,6 +165,36 @@ public class ActorControllerTest {
 		given(this.dishService.findById(TEST_DISH_ID)).willReturn(Optional.of(new Dish())); //importantisimo
 		
 	}
+	
+//	@GetMapping("/profile")
+//	public String profile(Model model) {
+//		model.addAttribute("actor", actorService.getPrincipal());
+//		return "actor/view";
+//	}
+//	
+//	@GetMapping("/edit")
+//	public String edit(Model model) {
+//		return createEditModel(model);
+//	}
+//	
+//	@PostMapping("/save")
+//	public String save(Model model, @ModelAttribute @Valid final ActorForm form, BindingResult binding) {
+//		if (binding.hasErrors()) {
+//			model.addAttribute("actor",form);
+//			return "actor/edit";
+//		} else {
+//			try {
+//				Actor actor = this.actorService.parseForm(form);
+//				this.actorService.save(actor);
+//				return "redirect:profile";
+//			} catch (final Exception e) {
+//				return this.createEditModel(model, e.getMessage());
+//			}
+//		}
+//	}
+	
+	
+	
 	
 	//obtain the list of all dishes
 	@WithMockUser(value = "spring")

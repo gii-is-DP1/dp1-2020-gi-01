@@ -12,10 +12,19 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.project.TabernasSevilla.configuration.SecurityConfiguration;
+import com.project.TabernasSevilla.controller.BookingController;
 import com.project.TabernasSevilla.controller.DishController;
+import com.project.TabernasSevilla.domain.Booking;
 import com.project.TabernasSevilla.domain.Dish;
 import com.project.TabernasSevilla.domain.Establishment;
 import com.project.TabernasSevilla.domain.Seccion;
@@ -49,9 +58,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import javax.validation.Valid;
+
 //@RunWith(SpringRunner.class)
 //@WebAppConfiguration
-@WebMvcTest(controllers = DishController.class, 
+@WebMvcTest(controllers = BookingController.class, 
 	excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class), 
 	excludeAutoConfiguration = SecurityConfiguration.class, 
 	includeFilters = {@ComponentScan.Filter(Service.class), @ComponentScan.Filter(Repository.class) })
@@ -156,6 +167,49 @@ public class BookingControllerTest {
 		given(this.dishService.findById(TEST_DISH_ID)).willReturn(Optional.of(new Dish())); //importantisimo
 		
 	}
+	
+//	@RequestMapping(value = "/init/{id}", method = RequestMethod.GET)
+//	public String createBooking(@PathVariable("id") int establishmentId, Model model) {
+//		Establishment est = this.establishmentService.findById(establishmentId);
+//		Booking booking = this.bookService.initialize(est);
+//		
+//	
+//		model.addAttribute("establishment", booking.getEstablishment());
+//		model.addAttribute("booking", booking);
+//		return "booking/edit";
+//	}
+//	
+//	@RequestMapping("/")
+//	public String list(Model model) {
+//		List<Booking> bookings = this.bookService.findByPrincipalActor();
+//		model.addAttribute("bookings", bookings);
+//		return "booking/list";
+//	}
+//
+//	@RequestMapping(value = "/save", method = RequestMethod.POST)
+//	public String saveBooking(@ModelAttribute @Valid final Booking booking, final BindingResult binding,
+//			Model model) {
+//
+//		if (binding.hasErrors()) {
+//			model.addAttribute("booking", booking);
+//			return this.createBookingEditModel(booking, model);
+//		} else {
+//			try {
+//				this.bookService.register(booking,  this.actorService.getPrincipal());
+//				return "redirect:/index";
+//			} catch (final Exception e) {
+//				return this.createBookingEditModel(booking, model, e.getMessage());
+//			}
+//		}
+//	}
+//	
+//	@GetMapping("/{id}/delete")
+//	public String delete(@PathVariable("id") int bookingId, Model model) {
+//		Booking booking = this.bookService.findById(bookingId).get();
+//		model.addAttribute("establishment", booking.getEstablishment());
+//		this.bookService.delete(booking);
+//		return "booking/deleted";
+//	}
 	
 	//obtain the list of all dishes
 	@WithMockUser(value = "spring")

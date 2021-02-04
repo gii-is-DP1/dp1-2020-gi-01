@@ -12,12 +12,19 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.project.TabernasSevilla.configuration.SecurityConfiguration;
 import com.project.TabernasSevilla.controller.DishController;
+import com.project.TabernasSevilla.controller.TableController;
+import com.project.TabernasSevilla.domain.Booking;
 import com.project.TabernasSevilla.domain.Dish;
 import com.project.TabernasSevilla.domain.Establishment;
+import com.project.TabernasSevilla.domain.RestaurantTable;
 import com.project.TabernasSevilla.domain.Seccion;
 import com.project.TabernasSevilla.repository.*;
 import com.project.TabernasSevilla.security.Authority;
@@ -43,6 +50,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -51,7 +59,7 @@ import java.util.Set;
 
 //@RunWith(SpringRunner.class)
 //@WebAppConfiguration
-@WebMvcTest(controllers = DishController.class, 
+@WebMvcTest(controllers = TableController.class, 
 	excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class), 
 	excludeAutoConfiguration = SecurityConfiguration.class, 
 	includeFilters = {@ComponentScan.Filter(Service.class), @ComponentScan.Filter(Repository.class) })
@@ -156,6 +164,89 @@ public class TableControllerTest {
 		given(this.dishService.findById(TEST_DISH_ID)).willReturn(Optional.of(new Dish())); //importantisimo
 		
 	}
+	
+//	@GetMapping("/establishment/{id}")
+//	public String manageTables(@PathVariable("id") int establishmentId, Model model) {
+//		Establishment est = this.establishmentService.findById(establishmentId);
+//		List<RestaurantTable> tables = this.tableService.findByEstablishment(est);
+//		for(RestaurantTable t: tables) {
+//			t.getBooking();
+//		}
+//		Long occupied = this.tableService.getOccupancyAtRestaurant(est);
+//		Long freeTables = this.tableService.countFreeTables(est);
+//		String estimate = this.tableService.estimateFreeTable(est);
+//		List<Booking> bookings = this.bookingService.findUnallocatedByEstablishment(est);
+//		model.addAttribute("bookings", bookings);
+//		model.addAttribute("estimate", estimate);
+//		model.addAttribute("totalTables", tables.size());
+//		model.addAttribute("freeTables", freeTables);
+//		model.addAttribute("freeTables", freeTables);
+//		model.addAttribute("occupied", occupied);
+//		model.addAttribute("establishment", est);
+//		model.addAttribute("tables", tables);
+//		return "table/list";
+//	}
+//
+//	// create table
+//	@GetMapping("/establishment/{id}/add")
+//	public String addTable(@PathVariable("id") int establishmentId, Model model) {
+//		Establishment est = this.establishmentService.findById(establishmentId);
+//		this.tableService.quickCreate(est, 1);
+//
+//		return "redirect:/table/establishment/" + establishmentId ;
+//	}
+//
+//	// delete table
+//	@GetMapping("/{tableId}/delete")
+//	public String deleteTable(@PathVariable("tableId") int tableId, Model model) {
+//		RestaurantTable table = this.tableService.findById(tableId);
+//		Establishment est = table.getEstablishment();
+//		this.tableService.delete(table);
+//
+//		return "redirect:/table/establishment/" + est.getId() ;
+//	}
+//
+//	// modify table
+//	@GetMapping("/{tableId}/modify")
+//	public String modifyTable(@PathVariable("tableId") int tableId, Model model,@RequestParam(required=false) Integer bookingId,@RequestParam(required=false) final Integer num,@RequestParam(required=true) final Integer cap, @RequestParam(required=false) final Integer oc) {
+//		RestaurantTable table = this.tableService.findById(tableId);
+//		table.setSeating(cap);
+//		if(oc !=null) {
+//			table.setOccupied(oc);
+//		}
+//		if(num!=null) {
+//			table.setNumber(num);
+//		}
+//		if(bookingId!=null) {
+//			Booking booking = this.bookingService.findById(bookingId).get();
+//			table.setBooking(booking);
+//		}else {
+//			table.setBooking(null);
+//		}
+//		this.tableService.save(table);
+//		Establishment est = table.getEstablishment();
+//
+//		return "redirect:/table/establishment/" + est.getId() ;
+//	}
+//	
+//	@GetMapping("/{id}/seat")
+//	public String seatTable(Model model, @PathVariable("id") int tableId) {
+//		RestaurantTable table = this.tableService.findById(tableId);
+//		table.setHourSeated(Instant.now());
+//		this.tableService.save(table);
+//		Establishment est = table.getEstablishment();
+//		return "redirect:/table/establishment/" + est.getId() ;
+//	}
+//	
+//	@GetMapping("/{id}/unseat")
+//	public String unseatTable(Model model, @PathVariable("id") int tableId) {
+//		RestaurantTable table = this.tableService.findById(tableId);
+//		table.setHourSeated(null);
+//		table.setOccupied(0);
+//		this.tableService.save(table);
+//		Establishment est = table.getEstablishment();
+//		return "redirect:/table/establishment/" + est.getId() ;
+//	}
 	
 	//obtain the list of all dishes
 	@WithMockUser(value = "spring")

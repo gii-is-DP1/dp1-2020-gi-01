@@ -12,13 +12,23 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.project.TabernasSevilla.configuration.SecurityConfiguration;
 import com.project.TabernasSevilla.controller.DishController;
+import com.project.TabernasSevilla.controller.RegisterController;
 import com.project.TabernasSevilla.domain.Dish;
 import com.project.TabernasSevilla.domain.Establishment;
 import com.project.TabernasSevilla.domain.Seccion;
+import com.project.TabernasSevilla.forms.RegisterForm;
 import com.project.TabernasSevilla.repository.*;
 import com.project.TabernasSevilla.security.Authority;
 import com.project.TabernasSevilla.security.AuthorityRepository;
@@ -49,9 +59,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import javax.validation.Valid;
+
 //@RunWith(SpringRunner.class)
 //@WebAppConfiguration
-@WebMvcTest(controllers = DishController.class, 
+@WebMvcTest(controllers = RegisterController.class, 
 	excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class), 
 	excludeAutoConfiguration = SecurityConfiguration.class, 
 	includeFilters = {@ComponentScan.Filter(Service.class), @ComponentScan.Filter(Repository.class) })
@@ -156,6 +168,61 @@ public class RegisterControllerTest {
 		given(this.dishService.findById(TEST_DISH_ID)).willReturn(Optional.of(new Dish())); //importantisimo
 		
 	}
+	
+//	@RequestMapping(value = "/init", method = RequestMethod.GET)
+//	public String createCustomer(@RequestParam(required = false) String key, Model model) {
+//		final RegisterForm regForm = new RegisterForm();
+//		if (key != null) {
+//			if (this.regKeyService.checkKey(key)) {
+//				regForm.setKey(key);
+//			} else {
+//				regForm.setKey("");
+//			}
+//		}
+//		model.addAttribute("registerForm", regForm);
+//		return "register";
+//	}
+//
+//	// TODO: validation in view
+//	@RequestMapping(value = "/save", method = RequestMethod.POST)
+//	public String saveUser(@ModelAttribute @Valid final RegisterForm regForm, final BindingResult binding,
+//			Model model) {
+//		if (binding.hasErrors()) {
+//			model.addAttribute("registerForm", regForm);
+//			return this.createRegisterEditModel(regForm, model);
+//		} else {
+//			try {
+//				this.actorService.register(regForm);
+//				return "redirect:/login";
+//			} catch (final Exception e) {
+//				return this.createRegisterEditModel(regForm, model, e.getMessage());
+//			}
+//		}
+//	}
+//
+//	// go to employee enter regkey view
+//	// TODO: enter regkey view
+//	@GetMapping("/employees")
+//	public String employeeRegister() {
+//		return "employee/key";
+//	}
+//
+//	// AUX
+//	protected String createRegisterEditModel(final RegisterForm regForm, Model model) {
+//		return this.createRegisterEditModel(regForm, model, null);
+//	}
+//
+//	protected String createRegisterEditModel(final RegisterForm regForm, Model model, String message) {
+//		model.addAttribute(regForm);
+//		model.addAttribute("message", message);
+//		return "register";
+//	}
+//	
+//	@GetMapping("/check-key")
+//	public @ResponseBody String checkKey(@RequestParam("key") String key) {
+//		String response = this.regKeyService.checkKey(key).toString();
+//		return response;
+//	}
 	
 	//obtain the list of all dishes
 	@WithMockUser(value = "spring")

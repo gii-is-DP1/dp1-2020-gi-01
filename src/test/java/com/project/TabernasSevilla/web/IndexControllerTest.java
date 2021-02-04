@@ -12,10 +12,15 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.project.TabernasSevilla.configuration.SecurityConfiguration;
 import com.project.TabernasSevilla.controller.DishController;
+import com.project.TabernasSevilla.controller.IndexController;
 import com.project.TabernasSevilla.domain.Dish;
 import com.project.TabernasSevilla.domain.Establishment;
 import com.project.TabernasSevilla.domain.Seccion;
@@ -51,7 +56,7 @@ import java.util.Set;
 
 //@RunWith(SpringRunner.class)
 //@WebAppConfiguration
-@WebMvcTest(controllers = DishController.class, 
+@WebMvcTest(controllers = IndexController.class, 
 	excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class), 
 	excludeAutoConfiguration = SecurityConfiguration.class, 
 	includeFilters = {@ComponentScan.Filter(Service.class), @ComponentScan.Filter(Repository.class) })
@@ -132,75 +137,66 @@ public class IndexControllerTest {
 	@BeforeEach
 	void setup() { // inicializar establishment y dish
 		
-		Dish d = new Dish("Mi plato", "Mi descripción",
-				"https://international-experience.es/wp-content/uploads/2019/08/comidas-mundo.jpg", 20.0, 4.0, Seccion.CARNES, true,
-				null);
-
-		d.setId(1);
-		System.out.println("%%%%%%%%%%%% la id del plato "+d.getId());
-		List<Dish> ls = new ArrayList<Dish>();
-		ls.add(d);
-
-		Establishment est = new Establishment();
-		est.setId(1);
-		est.setTitle("prueba");
-		est.setAddress("calle ");
-		est.setCapacity(10);
-		est.setCurrentCapacity(10);
-		est.setOpeningHours("24/7");
-		est.setScore(2);
-		est.setDish(ls);
-		establishmentRepository.save(est);
-		System.out.println("############ todos los establecimientos: " + establishmentService.findAll());
-		
-		given(this.dishService.findById(TEST_DISH_ID)).willReturn(Optional.of(new Dish())); //importantisimo
-		
+//		Dish d = new Dish("Mi plato", "Mi descripción",
+//				"https://international-experience.es/wp-content/uploads/2019/08/comidas-mundo.jpg", 20.0, 4.0, Seccion.CARNES, true,
+//				null);
+//
+//		d.setId(1);
+//		System.out.println("%%%%%%%%%%%% la id del plato "+d.getId());
+//		List<Dish> ls = new ArrayList<Dish>();
+//		ls.add(d);
+//
+//		Establishment est = new Establishment();
+//		est.setId(1);
+//		est.setTitle("prueba");
+//		est.setAddress("calle ");
+//		est.setCapacity(10);
+//		est.setCurrentCapacity(10);
+//		est.setOpeningHours("24/7");
+//		est.setScore(2);
+//		est.setDish(ls);
+//		establishmentRepository.save(est);
+//		System.out.println("############ todos los establecimientos: " + establishmentService.findAll());
+//		
+//		given(this.dishService.findById(TEST_DISH_ID)).willReturn(Optional.of(new Dish())); //importantisimo
+//		
 	}
-	
-	//obtain the list of all dishes
 	@WithMockUser(value = "spring")
 	@Test
-	void httpResponse() throws Exception {
-		mockMvc.perform(get("/dishes")).andExpect(status().isOk());
+	void testMainView() throws Exception {
+		mockMvc.perform(get("/index")).andExpect(status().isOk()).andExpect(view().name("index"));
 	}
 	
-	//obtain the information of one dish
 	@WithMockUser(value = "spring")
 	@Test
-	void dishList() throws Exception {
-		mockMvc.perform(get("/dishes/"+TEST_DISH_ID)).andExpect(status().isOk()).andExpect(model().attributeExists("dish"));
+	void testGetLoginPage() throws Exception {
+		mockMvc.perform(get("/login")).andExpect(status().isOk()).andExpect(view().name("login"));
 	}
 	
-	//create new dish
-	@ExceptionHandler
-	@WithMockUser(value = "spring", roles = "ADMIN") 
+	@WithMockUser(value = "spring")
 	@Test
-	void createDishSuccess() throws Exception{
-		//Primero debo mockear un user con la autoridad ADMIN, porque la anotacion de arriba no me funciona
-		
-		User mockUser = new User();
-		Set<Authority> ls = new HashSet<>();
-		ls.add(new Authority("ADMIN"));
-		mockUser.setAuthorities(ls);
-		mockUser.setUsername("mockito");
-		given(this.userService.getPrincipal()).willReturn(mockUser);
-		
-		System.out.println("=========>"+this.userService.getPrincipal().getUsername());
-		System.out.println("=========>"+this.userService.getPrincipal().getAuthorities());
-		
-		mockMvc.perform(post("/dishes/save")
-							.with(csrf())
-							.param("name", "Patatas fritas")
-							.param("description", "Muy ricas")
-							.param("picture", "https://static.wikia.nocookie.net/fishmans/images/f/f9/Uchunippon_front.png/revision/latest/scale-to-width-down/150?cb=20200116094151")
-							.param("price", "30.0")
-							.param("seccion", "ENTRANTES")
-							.param("allergens", "1")
-							.param("isVisible", "true")
-							.param("save", "Save Dish"))
-						.andExpect(status().is3xxRedirection())
-						.andExpect(view().name("redirect:/dishes"));
+	void testLoginError() throws Exception {
+		mockMvc.perform(get("/login-error")).andExpect(status().isOk()).andExpect(view().name("login_error"));
 	}
+	
+
+//	@RequestMapping(value = "/login", method = RequestMethod.GET)
+//	public String getLoginPage(@RequestParam(value = "error", required = false) boolean error, Model model) {
+//
+//		if (error == true) {
+//			// Assign an error message
+//			model.addAttribute("error", "You have entered an invalid username or password!");
+//		} else {
+//			model.addAttribute("error", "");
+//		}
+//		return "login";
+//	}
+//
+//	@RequestMapping(value = "/login-error")
+//	public String loginError(Model model) {
+//		model.addAttribute("loginError", true);
+//		return "login_error";
+//	}
 	
 	
 }

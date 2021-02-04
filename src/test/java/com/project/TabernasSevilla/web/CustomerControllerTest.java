@@ -12,9 +12,13 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.project.TabernasSevilla.configuration.SecurityConfiguration;
+import com.project.TabernasSevilla.controller.CustomerController;
 import com.project.TabernasSevilla.controller.DishController;
 import com.project.TabernasSevilla.domain.Dish;
 import com.project.TabernasSevilla.domain.Establishment;
@@ -51,7 +55,7 @@ import java.util.Set;
 
 //@RunWith(SpringRunner.class)
 //@WebAppConfiguration
-@WebMvcTest(controllers = DishController.class, 
+@WebMvcTest(controllers = CustomerController.class, 
 	excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class), 
 	excludeAutoConfiguration = SecurityConfiguration.class, 
 	includeFilters = {@ComponentScan.Filter(Service.class), @ComponentScan.Filter(Repository.class) })
@@ -156,6 +160,13 @@ public class CustomerControllerTest {
 		given(this.dishService.findById(TEST_DISH_ID)).willReturn(Optional.of(new Dish())); //importantisimo
 		
 	}
+	
+//	@GetMapping("/setPreferred")
+//	public String viewLocation (@RequestParam(required=true) final Integer id, Model model) {
+//		this.customerService.setPreferredEstablishment(id, this.userService.getPrincipal().getUsername());
+//
+//		return "redirect:/location/view?id="+Integer.toString(id);
+//	}
 	
 	//obtain the list of all dishes
 	@WithMockUser(value = "spring")
