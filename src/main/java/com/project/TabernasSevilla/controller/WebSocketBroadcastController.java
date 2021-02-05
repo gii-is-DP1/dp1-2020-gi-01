@@ -5,7 +5,7 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import com.project.TabernasSevilla.domain.Message;
+import com.project.TabernasSevilla.domain.ChatMessage;
 
 @Controller
 public class WebSocketBroadcastController {
@@ -14,11 +14,13 @@ public class WebSocketBroadcastController {
 	public String getWebSocketBroadcast() {
 		return "stomp/stomp-broadcast.html";
 	}
+	
+
 
 	@MessageMapping("/broadcast")
 	@SendTo("/topic/messages")
-	public Message send(Message message) {
-		return new Message(message.getActor(), message.getDeliveryDate(), message.getReadDate(), message.getMessage(),
-				message.getUrl());
+	public ChatMessage test(ChatMessage chatMessage) {
+		return new ChatMessage(chatMessage.getFrom(),chatMessage.getText(),"ALL");
 	}
+	
 }
