@@ -2,6 +2,8 @@ package com.project.TabernasSevilla.web;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -30,6 +32,8 @@ import com.project.TabernasSevilla.domain.Booking;
 import com.project.TabernasSevilla.domain.Dish;
 import com.project.TabernasSevilla.domain.Establishment;
 import com.project.TabernasSevilla.domain.Seccion;
+import com.project.TabernasSevilla.forms.ActorForm;
+import com.project.TabernasSevilla.forms.RegisterForm;
 import com.project.TabernasSevilla.repository.*;
 import com.project.TabernasSevilla.security.Authority;
 import com.project.TabernasSevilla.security.AuthorityRepository;
@@ -76,7 +80,10 @@ public class BookingControllerTest {
 
 	// @Autowired
 	// private DishController dishController;
-
+	
+	@Mock
+	Actor actor;
+	
 	@MockBean
 	private UserService userService;
 
@@ -100,6 +107,9 @@ public class BookingControllerTest {
 
 	@MockBean
 	private ReviewRepository reviewRepository;
+	
+	@MockBean
+	private AbstractActorRepository<Actor> actorRepository;
 
 	@MockBean
 	private AuthorityRepository authRepository;
@@ -201,29 +211,20 @@ public class BookingControllerTest {
 	@WithMockUser(value = "spring", roles = "ADMIN")
 	@Test
 	void testSaveBooking() throws Exception {
-		// Primero debo mockear un user con la autoridad ADMIN, porque la anotacion de
-		// arriba no me funciona
-
-		User mockUser = new User();
-		Set<Authority> ls = new HashSet<>();
-		ls.add(new Authority("ADMIN"));
-		mockUser.setAuthorities(ls);
-		mockUser.setUsername("mockito");
-		given(this.userService.getPrincipal()).willReturn(mockUser);
-
+		
+		given(this.actorService.getPrincipal()).willReturn(actor); //he tenido que hacer todo esto porque actor no se puede construir con new Actor()
+		
 		mockMvc.perform(post("/booking/save").with(csrf())
-				.param("establishment", "1")
+				//.param("establishment", "1")
 				.param("actor", "mockUser")
 				.param("placementDate",
-						"2021-02-08")
+						"2021-02-08T14:56:00Z")
 				.param("reservationDate", "2021-02-08T21:56:00Z")
 				.param("seating", "2")
 				.param("contactPhone", "677889900")
-				.param("notes", "Que rico")
-				.param("establishment.title", "Arenal"))
-				.andExpect(model().attributeHasNoErrors("placementDate"))
-				.andExpect(status().isOk())
-				.andExpect(view().name("booking/edit"));
+				.param("notes", "Que rico"))
+				.andExpect(status().is3xxRedirection())
+				.andExpect(view().name("redirect:/index"));
 	}
 
 

@@ -142,30 +142,8 @@ public class RegisterControllerTest {
 	private MockMvc mockMvc;
 
 	@BeforeEach
-	void setup() { // inicializar establishment y dish
+	void setup() { 
 		
-		Dish d = new Dish("Mi plato", "Mi descripción",
-				"https://international-experience.es/wp-content/uploads/2019/08/comidas-mundo.jpg", 20.0, 4.0, Seccion.CARNES, true,
-				null);
-
-		d.setId(1);
-		System.out.println("%%%%%%%%%%%% la id del plato "+d.getId());
-		List<Dish> ls = new ArrayList<Dish>();
-		ls.add(d);
-
-		Establishment est = new Establishment();
-		est.setId(1);
-		est.setTitle("prueba");
-		est.setAddress("calle ");
-		est.setCapacity(10);
-		est.setCurrentCapacity(10);
-		est.setOpeningHours("24/7");
-		est.setScore(2);
-		est.setDish(ls);
-		establishmentRepository.save(est);
-		System.out.println("############ todos los establecimientos: " + establishmentService.findAll());
-		
-		given(this.dishService.findById(TEST_DISH_ID)).willReturn(Optional.of(new Dish())); //importantisimo
 		
 	}
 	
@@ -183,7 +161,7 @@ public class RegisterControllerTest {
 
 
 	
-	//obtain the list of all dishes
+
 	@WithMockUser(value = "spring")
 	@Test
 	void testCheckKey() throws Exception {
@@ -192,9 +170,9 @@ public class RegisterControllerTest {
 	
 
 	
-	//create new dish
+
 	@ExceptionHandler
-	@WithMockUser(value = "spring", roles = "ADMIN") 
+	@WithMockUser(value = "spring") 
 	@Test
 	void testSaveUser() throws Exception{
 		//Primero debo mockear un user con la autoridad ADMIN, porque la anotacion de arriba no me funciona
@@ -209,15 +187,14 @@ public class RegisterControllerTest {
 		mockMvc.perform(post("/register/save")
 							.with(csrf())
 							.param("username", "Patatas fritas")
-							.param("password", "Muy ricas")
-							.param("id", "https://static.wikia.nocookie.net/fishmans/images/f/f9/Uchunippon_front.png/revision/latest/scale-to-width-down/150?cb=20200116094151")
-							.param("name", "30.0")
-							.param("form.surname", "ENTRANTES")
-							.param("form.email", "1")
-							.param("form.avatar", "true")
-							.param("save", "Save Dish"))
+							.param("password", "1234567") 
+							.param("form.name", "El Pepe")
+							.param("acceptTerms", "true")
+							.param("form.surname", "Cabrales")
+							.param("form.email", "elpepecabrales@gmail.com")
+							.param("form.phoneNumber", "765132956"))
 						.andExpect(status().is3xxRedirection())
-						.andExpect(view().name("redirect:/login"));
+						.andExpect(view().name("redirect:/login")); // y expect que el nombre de usuario que aparece en login sea el del usuario?
 	}
 	
 	
