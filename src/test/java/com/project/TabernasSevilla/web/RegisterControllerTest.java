@@ -206,18 +206,15 @@ public class RegisterControllerTest {
 		mockUser.setUsername("mockito");
 		given(this.userService.getPrincipal()).willReturn(mockUser);
 		
-		System.out.println("=========>"+this.userService.getPrincipal().getUsername());
-		System.out.println("=========>"+this.userService.getPrincipal().getAuthorities());
-		
-		mockMvc.perform(post("/dishes/save")
+		mockMvc.perform(post("/register/save")
 							.with(csrf())
-							.param("name", "Patatas fritas")
-							.param("description", "Muy ricas")
-							.param("picture", "https://static.wikia.nocookie.net/fishmans/images/f/f9/Uchunippon_front.png/revision/latest/scale-to-width-down/150?cb=20200116094151")
-							.param("price", "30.0")
-							.param("seccion", "ENTRANTES")
-							.param("allergens", "1")
-							.param("isVisible", "true")
+							.param("username", "Patatas fritas")
+							.param("password", "Muy ricas")
+							.param("id", "https://static.wikia.nocookie.net/fishmans/images/f/f9/Uchunippon_front.png/revision/latest/scale-to-width-down/150?cb=20200116094151")
+							.param("name", "30.0")
+							.param("form.surname", "ENTRANTES")
+							.param("form.email", "1")
+							.param("form.avatar", "true")
 							.param("save", "Save Dish"))
 						.andExpect(status().is3xxRedirection())
 						.andExpect(view().name("redirect:/login"));

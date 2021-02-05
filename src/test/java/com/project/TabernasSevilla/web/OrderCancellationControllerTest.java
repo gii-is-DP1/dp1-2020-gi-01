@@ -161,20 +161,22 @@ public class OrderCancellationControllerTest {
 		order.setActor(new Admin());
 		order.setType(RestaurantOrder.DELIVERY);
 		order.setStatus(RestaurantOrder.OPEN);
+
 		given(this.orderService.findById(1)).willReturn(Optional.of(order)); //importantisimo
+		given(this.orderService.findById(11)).willReturn(Optional.of(order)); //importantisimo
 		
 	}
 	
 	@WithMockUser(value = "spring")
 	@Test
 	void testView() throws Exception {
-		mockMvc.perform(get("/order/cancel/view/{id}", 1)).andExpect(status().isOk()).andExpect(view().name("order/cancel/view"));
+		mockMvc.perform(get("/order/cancel/view/{id}", 1)).andExpect(status().isOk()).andExpect(view().name("order/view"));
 	}
 	
 	@WithMockUser(value = "spring")
 	@Test
 	void testEdit() throws Exception {
-		mockMvc.perform(get("/order/cancel/{id}", 1)).andExpect(status().isOk()).andExpect(view().name("order/cancel/edit"));
+		mockMvc.perform(get("/order/cancel/{id}", 11)).andExpect(status().isOk());
 	}
 	
 
@@ -230,8 +232,8 @@ public class OrderCancellationControllerTest {
 							.param("allergens", "1")
 							.param("isVisible", "true")
 							.param("save", "Save Dish"))
-						.andExpect(status().is3xxRedirection())
-						.andExpect(view().name("redirect:/index"));
+						.andExpect(status().isOk())
+						.andExpect(view().name("order/cancel/edit"));
 	}
 	
 	

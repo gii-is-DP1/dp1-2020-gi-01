@@ -35,6 +35,7 @@ import com.project.TabernasSevilla.security.UserService;
 import com.project.TabernasSevilla.service.ActorService;
 import com.project.TabernasSevilla.service.DishService;
 import com.project.TabernasSevilla.service.EstablishmentService;
+import com.project.TabernasSevilla.service.TableService;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.mockito.BDDMockito.given;
@@ -79,6 +80,9 @@ public class TableControllerTest {
 
 	@MockBean
 	private DishService dishService;
+	
+	@MockBean
+	private TableService tableService;
 
 	@MockBean
 	private EstablishmentService establishmentService;
@@ -159,7 +163,16 @@ public class TableControllerTest {
 		est.setScore(2);
 		est.setDish(ls);
 		given(this.establishmentService.findById(1)).willReturn(est); //importantisimo
-//		given(this.tableService.findById(1)).willReturn(est);
+		
+		RestaurantTable table = new RestaurantTable();
+		table.setBooking(new Booking());
+		table.setEstablishment(est);
+		table.setId(1);
+		table.setHourSeated(Instant.now());
+		table.setNumber(5);
+		table.setOccupied(2);
+		table.setSeating(8);
+		given(this.tableService.findById(1)).willReturn(table);
 		
 		
 	}
@@ -179,93 +192,25 @@ public class TableControllerTest {
 	@WithMockUser(value = "spring")
 	@Test
 	void testDeleteTable() throws Exception {
-		mockMvc.perform(get("/table/establishment/{tableId}/delete", 1)).andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/table/establishment/1"));
+		mockMvc.perform(get("/table/{tableId}/delete", 1)).andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/table/establishment/1"));
 	}
-
-
-//	// delete table
-//	@GetMapping("/{tableId}/delete")
-//	public String deleteTable(@PathVariable("tableId") int tableId, Model model) {
-//		RestaurantTable table = this.tableService.findById(tableId);
-//		Establishment est = table.getEstablishment();
-//		this.tableService.delete(table);
-//
-//		return "redirect:/table/establishment/" + est.getId() ;
-//	}
-//
-//	// modify table
-//	@GetMapping("/{tableId}/modify")
-//	public String modifyTable(@PathVariable("tableId") int tableId, Model model,@RequestParam(required=false) Integer bookingId,@RequestParam(required=false) final Integer num,@RequestParam(required=true) final Integer cap, @RequestParam(required=false) final Integer oc) {
-//		RestaurantTable table = this.tableService.findById(tableId);
-//		table.setSeating(cap);
-//		if(oc !=null) {
-//			table.setOccupied(oc);
-//		}
-//		if(num!=null) {
-//			table.setNumber(num);
-//		}
-//		if(bookingId!=null) {
-//			Booking booking = this.bookingService.findById(bookingId).get();
-//			table.setBooking(booking);
-//		}else {
-//			table.setBooking(null);
-//		}
-//		this.tableService.save(table);
-//		Establishment est = table.getEstablishment();
-//
-//		return "redirect:/table/establishment/" + est.getId() ;
-//	}
-//	
-//	@GetMapping("/{id}/seat")
-//	public String seatTable(Model model, @PathVariable("id") int tableId) {
-//		RestaurantTable table = this.tableService.findById(tableId);
-//		table.setHourSeated(Instant.now());
-//		this.tableService.save(table);
-//		Establishment est = table.getEstablishment();
-//		return "redirect:/table/establishment/" + est.getId() ;
-//	}
-//	
-//	@GetMapping("/{id}/unseat")
-//	public String unseatTable(Model model, @PathVariable("id") int tableId) {
-//		RestaurantTable table = this.tableService.findById(tableId);
-//		table.setHourSeated(null);
-//		table.setOccupied(0);
-//		this.tableService.save(table);
-//		Establishment est = table.getEstablishment();
-//		return "redirect:/table/establishment/" + est.getId() ;
+//  NO SE USA NUNCA Y EN LA WEB NO ESTÁ
+//	@WithMockUser(value = "spring")
+//	@Test
+//	void testModifyTable() throws Exception {
+//		mockMvc.perform(get("/table/{tableId}/modify", 1)).andExpect(status().is2xxSuccessful()).andExpect(view().name("redirect:/table/establishment/1"));
 //	}
 	
-	
-	//create new dish
-	@ExceptionHandler
-	@WithMockUser(value = "spring", roles = "ADMIN") 
+	@WithMockUser(value = "spring")
 	@Test
-	void createDishSuccess() throws Exception{
-		//Primero debo mockear un user con la autoridad ADMIN, porque la anotacion de arriba no me funciona
-		
-		User mockUser = new User();
-		Set<Authority> ls = new HashSet<>();
-		ls.add(new Authority("ADMIN"));
-		mockUser.setAuthorities(ls);
-		mockUser.setUsername("mockito");
-		given(this.userService.getPrincipal()).willReturn(mockUser);
-		
-		System.out.println("=========>"+this.userService.getPrincipal().getUsername());
-		System.out.println("=========>"+this.userService.getPrincipal().getAuthorities());
-		
-		mockMvc.perform(post("/dishes/save")
-							.with(csrf())
-							.param("name", "Patatas fritas")
-							.param("description", "Muy ricas")
-							.param("picture", "https://static.wikia.nocookie.net/fishmans/images/f/f9/Uchunippon_front.png/revision/latest/scale-to-width-down/150?cb=20200116094151")
-							.param("price", "30.0")
-							.param("seccion", "ENTRANTES")
-							.param("allergens", "1")
-							.param("isVisible", "true")
-							.param("save", "Save Dish"))
-						.andExpect(status().is3xxRedirection())
-						.andExpect(view().name("redirect:/dishes"));
+	void testSeatTable() throws Exception {
+		mockMvc.perform(get("/table/{tableId}/seat", 1)).andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/table/establishment/1"));
 	}
 	
+	@WithMockUser(value = "spring")
+	@Test
+	void testUnseatTable() throws Exception {
+		mockMvc.perform(get("/table/{tableId}/unseat", 1)).andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/table/establishment/1"));
+	}
 	
 }

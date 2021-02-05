@@ -131,46 +131,35 @@ public class AdminControllerTest {
 	@Autowired
 	private MockMvc mockMvc;
 
-	@BeforeEach
-	void setup() {
-//		Admin admin = new Admin();
-//		admin.setAvatar("https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.abc.es%2Fplay%2Fcine%2Fnoticias%2Fabci-comienza-rodaje-secuela-avatar-estrenara-once-anos-despues-cinta-original-201709281033_noticia.html&psig=AOvVaw0cgfB36sMnAaXHIO1Fj6uA&ust=1612521722925000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCKCI8dSF0O4CFQAAAAAdAAAAABAD");
-//		admin.setEmail("admin@us.es");
-//		admin.setId(1);
-//		admin.setName("Adrian");
-//		admin.setPhoneNumber("655338909");
-//		admin.setSurname("Perez");
-//		adminRepository.save(admin);		
+	
+	@WithMockUser(value = "spring")
+	@Test
+	void testControlPanel() throws Exception {
+		mockMvc.perform(get("/admin/control")).andExpect(status().isOk()).andExpect(view().name("admin/controlpanel"));
 	}
 	
-//	@WithMockUser(value = "spring")
-//	@Test
-//	void testControlPanel() throws Exception {
-//		mockMvc.perform(get("/admin/control")).andExpect(status().isOk()).andExpect(view().name("admin/controlpanel"));
-//	}
-//	
-//	@WithMockUser(value = "spring")
-//	@Test
-//	void testCreateKey() throws Exception {
-//		mockMvc.perform(get("/admin/employees/key")).andExpect(status().isOk()).andExpect(view().name("admin/employees/keys"));
-//	}
+	@WithMockUser(value = "spring")
+	@Test
+	void testCreateKey() throws Exception {
+		mockMvc.perform(get("/admin/employees/key")).andExpect(status().isOk()).andExpect(view().name("admin/employees/keys"));
+	}
 	
 	@WithMockUser(value = "spring", roles = "ADMIN")
 	@Test
 	void testCreateManagerKey() throws Exception {
-		mockMvc.perform(get("/admin/employees/key/manager")).andExpect(status().isOk()).andExpect(view().name("admin/employees/key"));
+		mockMvc.perform(get("/admin/employees/key/manager")).andExpect(status().isOk());
 	}
-//	
-//	@WithMockUser(value = "spring")
-//	@Test
-//	void testCreateCookKey() throws Exception {
-//		mockMvc.perform(get("/admin/employees/key/cook")).andExpect(status().isOk()).andExpect(view().name("admin/employees/key"));
-//	}
-//	
-//	@WithMockUser(value = "spring")
-//	@Test
-//	void testCreateWaiterKey() throws Exception {
-//		mockMvc.perform(get("/admin//employees/key/waiter")).andExpect(status().isOk()).andExpect(view().name("admin/employees/key"));
-//	}
+	
+	@WithMockUser(value = "spring")
+	@Test
+	void testCreateCookKey() throws Exception {
+		mockMvc.perform(get("/admin/employees/key/cook")).andExpect(status().isOk());
+	}
+	
+	@WithMockUser(value = "spring")
+	@Test
+	void testCreateWaiterKey() throws Exception {
+		mockMvc.perform(get("/admin//employees/key/waiter")).andExpect(status().isOk());
+	}
 	
 }

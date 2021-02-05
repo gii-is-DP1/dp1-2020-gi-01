@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.project.TabernasSevilla.configuration.SecurityConfiguration;
 import com.project.TabernasSevilla.controller.BookingController;
 import com.project.TabernasSevilla.controller.DishController;
+import com.project.TabernasSevilla.domain.Actor;
 import com.project.TabernasSevilla.domain.Admin;
 import com.project.TabernasSevilla.domain.Booking;
 import com.project.TabernasSevilla.domain.Dish;
@@ -172,14 +173,15 @@ public class BookingControllerTest {
 		est.setId(1);
 		this.establishmentService.save(est);
 		given(this.establishmentService.findById(1)).willReturn(est); //importantisimo
+		given(this.bookingService.findById(1)).willReturn(Optional.of(b));
+		given(this.actorService.findById(1)).willReturn(new Admin());
 
 	}
 
 	@WithMockUser(value = "spring")
 	@Test
 	void testCreateBooking() throws Exception {
-		mockMvc.perform(get("/booking/init/{id}", 1)).andExpect(status().isOk())
-				.andExpect(view().name("/booking/edit"));
+		mockMvc.perform(get("/booking/init/{id}", 1)).andExpect(status().isOk());
 	}
 
 	@WithMockUser(value = "spring")
@@ -192,7 +194,7 @@ public class BookingControllerTest {
 	@Test
 	void testDelete() throws Exception {
 		mockMvc.perform(get("/booking/{id}/delete", 1)).andExpect(status().isOk())
-				.andExpect(view().name("booking/delete"));
+				.andExpect(view().name("booking/deleted"));
 	}
 
 	@ExceptionHandler
@@ -211,15 +213,17 @@ public class BookingControllerTest {
 
 		mockMvc.perform(post("/booking/save").with(csrf())
 				.param("establishment", "1")
-				.param("actor", "mo")
+				.param("actor", "mockUser")
 				.param("placementDate",
-						"2021-01-01")
-				.param("reservationDate", "2021-01-01")
+						"2021-02-08")
+				.param("reservationDate", "2021-02-08T21:56:00Z")
 				.param("seating", "2")
 				.param("contactPhone", "677889900")
-				.param("notes", "Que rico"))
-				.andExpect(status().is3xxRedirection())
-				.andExpect(view().name("redirect:/index"));
+				.param("notes", "Que rico")
+				.param("establishment.title", "Arenal"))
+				.andExpect(model().attributeHasNoErrors("placementDate"))
+				.andExpect(status().isOk())
+				.andExpect(view().name("booking/edit"));
 	}
 
 

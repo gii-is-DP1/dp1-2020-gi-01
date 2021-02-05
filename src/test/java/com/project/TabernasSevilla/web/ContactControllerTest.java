@@ -41,7 +41,6 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.doReturn;
 
-
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -60,17 +59,15 @@ import javax.validation.Valid;
 
 //@RunWith(SpringRunner.class)
 //@WebAppConfiguration
-@WebMvcTest(controllers = ContactController.class, 
-	excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class), 
-	excludeAutoConfiguration = SecurityConfiguration.class, 
-	includeFilters = {@ComponentScan.Filter(Service.class), @ComponentScan.Filter(Repository.class) })
+@WebMvcTest(controllers = ContactController.class, excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class), excludeAutoConfiguration = SecurityConfiguration.class, includeFilters = {
+		@ComponentScan.Filter(Service.class), @ComponentScan.Filter(Repository.class) })
 //@MockBean(JpaMetamodelMappingContext.class) //para que evite buscar la database
 public class ContactControllerTest {
-	
+
 	private static final int TEST_DISH_ID = 1;
 
-	//@Autowired
-	//private DishController dishController;
+	// @Autowired
+	// private DishController dishController;
 
 	@MockBean
 	private UserService userService;
@@ -83,7 +80,7 @@ public class ContactControllerTest {
 
 	@MockBean
 	private EstablishmentService establishmentService;
-	
+
 	@MockBean
 	private AuthorityService authService;
 
@@ -138,72 +135,37 @@ public class ContactControllerTest {
 	@Autowired
 	private MockMvc mockMvc;
 
-	@BeforeEach
-	void setup() { // inicializar establishment y dish
-		
-		Dish d = new Dish("Mi plato", "Mi descripción",
-				"https://international-experience.es/wp-content/uploads/2019/08/comidas-mundo.jpg", 20.0, 4.0, Seccion.CARNES, true,
-				null);
 
-		d.setId(1);
-		System.out.println("%%%%%%%%%%%% la id del plato "+d.getId());
-		List<Dish> ls = new ArrayList<Dish>();
-		ls.add(d);
 
-		Establishment est = new Establishment();
-		est.setId(1);
-		est.setTitle("prueba");
-		est.setAddress("calle ");
-		est.setCapacity(10);
-		est.setCurrentCapacity(10);
-		est.setOpeningHours("24/7");
-		est.setScore(2);
-		est.setDish(ls);
-		establishmentRepository.save(est);
-		System.out.println("############ todos los establecimientos: " + establishmentService.findAll());
-		
-		given(this.dishService.findById(TEST_DISH_ID)).willReturn(Optional.of(new Dish())); //importantisimo
-		
-	}
-	
-	
-	//obtain the list of all dishes
+	// obtain the list of all dishes
 	@WithMockUser(value = "spring")
 	@Test
 	void testCreateJoba() throws Exception {
 		mockMvc.perform(get("/contact/init")).andExpect(status().isOk()).andExpect(view().name("contact"));
 	}
-	
-	//create new dish
+
+	// create new dish
 	@ExceptionHandler
-	@WithMockUser(value = "spring", roles = "ADMIN") 
+	@WithMockUser(value = "spring", roles = "ADMIN")
 	@Test
-	void testSaveJoba() throws Exception{
-		//Primero debo mockear un user con la autoridad ADMIN, porque la anotacion de arriba no me funciona
-		
+	void testSaveJoba() throws Exception {
+		// Primero debo mockear un user con la autoridad ADMIN, porque la anotacion de
+		// arriba no me funciona
+
 		User mockUser = new User();
 		Set<Authority> ls = new HashSet<>();
 		ls.add(new Authority("ADMIN"));
 		mockUser.setAuthorities(ls);
 		mockUser.setUsername("mockito");
 		given(this.userService.getPrincipal()).willReturn(mockUser);
-		
-		System.out.println("=========>"+this.userService.getPrincipal().getUsername());
-		System.out.println("=========>"+this.userService.getPrincipal().getAuthorities());
-		
-		mockMvc.perform(post("/contact/save")
-							.with(csrf())
-							.param("name", "Patatas fritas")
-							.param("description", "Muy ricas")
-							.param("picture", "https://static.wikia.nocookie.net/fishmans/images/f/f9/Uchunippon_front.png/revision/latest/scale-to-width-down/150?cb=20200116094151")
-							.param("price", "30.0")
-							.param("seccion", "ENTRANTES")
-							.param("allergens", "1")
-							.param("isVisible", "true")
-							.param("save", "Save Dish"))
-						.andExpect(status().is3xxRedirection())
-						.andExpect(view().name("redirect:/contact"));
+
+		System.out.println("=========>" + this.userService.getPrincipal().getUsername());
+		System.out.println("=========>" + this.userService.getPrincipal().getAuthorities());
+
+		mockMvc.perform(post("/contact/save").with(csrf()).param("fullName", "Adrian Perez")
+				.param("email", "adrian@us.es").param("cv",
+						"https://static.wikia.nocookie.net/fishmans/images/f/f9/Uchunippon_front.png/revision/latest/scale-to-width-down/150?cb=20200116094151"))
+				.andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/index"));
 	}
-	
-	
+
 }
