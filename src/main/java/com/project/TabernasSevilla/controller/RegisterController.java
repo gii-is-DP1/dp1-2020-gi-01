@@ -61,7 +61,7 @@ public class RegisterController {
 	// TODO: enter regkey view
 	@GetMapping("/employees")
 	public String employeeRegister() {
-		return "employee/key";
+		return "admin/employees/key";
 	}
 
 	// AUX

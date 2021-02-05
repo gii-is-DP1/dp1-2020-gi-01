@@ -129,30 +129,65 @@ class OrderServiceTest {
 		order.setType(RestaurantOrder.DELIVERY);
 		order.setStatus(RestaurantOrder.OPEN);
 		this.orderService.save(order);
-		RestaurantOrder updated = this.orderService.updateStatus(order, RestaurantOrder.DELIVERED);
-		assertThat(updated).isNull();
+		//Pongo true para hacer efectivo que tenga autoridad
+		RestaurantOrder updated = this.orderService.updateStatus(order, RestaurantOrder.DELIVERED, true);
+		assertThat(updated).isNotNull();
+	}	
+	
+	@Test
+	public void shouldFindActiveByEstablishment() {
+		RestaurantOrder order = new RestaurantOrder();
+		order.setAddress("Calle Calamar");
+		order.setEstablishment(this.estService.findById(1));
+		order.setDish(new ArrayList<Dish>());
+		order.setActor(this.adminService.findAll().get(0));
+		order.setType(RestaurantOrder.DELIVERY);
+		order.setStatus(RestaurantOrder.OPEN);
+		this.orderService.save(order);
+		List<RestaurantOrder> list = this.orderService.findActiveByEstablishment(this.estService.findById(1));
+		assertThat(list.get(0)).isEqualTo(order);
 	}
 	
-//	public RestaurantOrder findDraftByActor(Actor actor){
-//		
-//	}
-//	
-//	public List<RestaurantOrder> findActiveByEstablishment(Establishment est){
-//		return this.orderRepo.findActiveByEstablishment(est.getId());
-//	}
-//	
-//	public List<RestaurantOrder> findInactiveByEstablishment(Establishment est){
-//		return this.orderRepo.findInactiveByEstablishment(est.getId());
-//	}
-//	
-//	
-//	public List<RestaurantOrder> findActiveByPrincipal(){
-//		Actor actor = this.actorService.getPrincipal();
-//		return this.orderRepo.findActiveByActor(actor.getId());
-//	}
-//	
-//	public List<RestaurantOrder> findInactiveByPrincipal(){
-//		Actor actor = this.actorService.getPrincipal();
-//		return this.orderRepo.findInactiveByActor(actor.getId());
-//	}
+	@Test
+	public void shouldFindInactiveByEstablishment() {
+		RestaurantOrder order = new RestaurantOrder();
+		order.setAddress("Calle Calamar");
+		order.setEstablishment(this.estService.findById(1));
+		order.setDish(new ArrayList<Dish>());
+		order.setActor(this.adminService.findAll().get(0));
+		order.setType(RestaurantOrder.DELIVERY);
+		order.setStatus(RestaurantOrder.CLOSED);
+		this.orderService.save(order);
+		List<RestaurantOrder> list = this.orderService.findInactiveByEstablishment(this.estService.findById(1));
+		assertThat(list.get(0)).isEqualTo(order);
+	}
+	
+	@Test
+	public void shouldFindInactiveByPrincipal() {
+		RestaurantOrder order = new RestaurantOrder();
+		order.setAddress("Calle Calamar");
+		order.setEstablishment(this.estService.findById(1));
+		order.setDish(new ArrayList<Dish>());
+		order.setActor(this.adminService.findAll().get(0));
+		order.setType(RestaurantOrder.DELIVERY);
+		order.setStatus(RestaurantOrder.CLOSED);
+		this.orderService.save(order);
+		List<RestaurantOrder> list = this.orderService.findInactiveByPrincipal(this.adminService.findAll().get(0));
+		assertThat(list.get(0)).isEqualTo(order);
+	}
+	
+	@Test
+	public void shouldFindActiveByPrincipal() {
+		RestaurantOrder order = new RestaurantOrder();
+		order.setAddress("Calle Calamar");
+		order.setEstablishment(this.estService.findById(1));
+		order.setDish(new ArrayList<Dish>());
+		order.setActor(this.adminService.findAll().get(0));
+		order.setType(RestaurantOrder.DELIVERY);
+		order.setStatus(RestaurantOrder.OPEN);
+		this.orderService.save(order);
+		List<RestaurantOrder> list = this.orderService.findActiveByPrincipal(this.adminService.findAll().get(0));
+		assertThat(list.get(0)).isEqualTo(order);
+	}
+	
 }

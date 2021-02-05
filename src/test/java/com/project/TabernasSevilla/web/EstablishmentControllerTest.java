@@ -12,10 +12,15 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.ui.Model;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.project.TabernasSevilla.configuration.SecurityConfiguration;
 import com.project.TabernasSevilla.controller.DishController;
+import com.project.TabernasSevilla.controller.EstablishmentController;
 import com.project.TabernasSevilla.domain.Dish;
 import com.project.TabernasSevilla.domain.Establishment;
 import com.project.TabernasSevilla.domain.Seccion;
@@ -51,12 +56,12 @@ import java.util.Set;
 
 //@RunWith(SpringRunner.class)
 //@WebAppConfiguration
-@WebMvcTest(controllers = DishController.class, 
+@WebMvcTest(controllers = EstablishmentController.class, 
 	excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class), 
 	excludeAutoConfiguration = SecurityConfiguration.class, 
 	includeFilters = {@ComponentScan.Filter(Service.class), @ComponentScan.Filter(Repository.class) })
 //@MockBean(JpaMetamodelMappingContext.class) //para que evite buscar la database
-public class DishControllerTest {
+public class EstablishmentControllerTest {
 	
 	private static final int TEST_DISH_ID = 1;
 
@@ -130,52 +135,46 @@ public class DishControllerTest {
 	private MockMvc mockMvc;
 
 	@BeforeEach
-	void setup() {
+	void setup() { // inicializar establishment y dish
+		
+		Dish d = new Dish("Mi plato", "Mi descripción",
+				"https://international-experience.es/wp-content/uploads/2019/08/comidas-mundo.jpg", 20.0, 4.0, Seccion.CARNES, true,
+				null);
 
-		given(this.dishService.findById(TEST_DISH_ID)).willReturn(Optional.of(new Dish())); //importantisimo
+		d.setId(1);
+		List<Dish> ls = new ArrayList<Dish>();
+		ls.add(d);
+
+		Establishment est = new Establishment();
+		est.setId(1);
+		est.setTitle("prueba");
+		est.setAddress("calle ");
+		est.setCapacity(10);
+		est.setCurrentCapacity(10);
+		est.setOpeningHours("24/7");
+		est.setScore(2);
+		est.setDish(ls);;
+		
+		given(this.establishmentService.findById(1)).willReturn(est); //importantisimo
 		
 	}
 	
-	//obtain the list of all dishes
+//	@GetMapping("/view")
+//	public String viewLocation (@RequestParam(required=true) final Integer id, Model model) {
+//		Establishment est = this.establishmentService.findById(id);
+//		Assert.notNull(est,"Establishment could not be found");
+//		Long occupied = this.tableService.getOccupancyAtRestaurant(est);
+//		String estimate = this.tableService.estimateFreeTable(est);
+//		model.addAttribute("establishment",est);
+//		model.addAttribute("occupied",occupied);
+//		model.addAttribute("estimate",estimate);
+//		return "establishment/view";
+//	}
+	
 	@WithMockUser(value = "spring")
 	@Test
-	void httpResponse() throws Exception {
-		mockMvc.perform(get("/dishes")).andExpect(status().isOk());
+	void testViewLocation() throws Exception {
+		mockMvc.perform(get("/location/view?id={id}",1)).andExpect(status().isOk()).andExpect(view().name("establishment/view"));
 	}
-	
-	//obtain the information of one dish
-	@WithMockUser(value = "spring")
-	@Test
-	void dishList() throws Exception {
-		mockMvc.perform(get("/dishes/"+TEST_DISH_ID)).andExpect(status().isOk()).andExpect(model().attributeExists("dish"));
-	}
-	
-	//create new dish
-	@ExceptionHandler
-	@WithMockUser(value = "spring", roles = "ADMIN") 
-	@Test
-	void createDishSuccess() throws Exception{
-		//Primero debo mockear un user con la autoridad ADMIN, porque la anotacion de arriba no me funciona
-		
-		User mockUser = new User();
-		Set<Authority> ls = new HashSet<>();
-		ls.add(new Authority("ADMIN"));
-		mockUser.setAuthorities(ls);
-		mockUser.setUsername("mockito");
-		given(this.userService.getPrincipal()).willReturn(mockUser);
-
-		mockMvc.perform(post("/dishes/save")
-							.with(csrf())
-							.param("name", "Patatas fritas")
-							.param("description", "Muy ricas")
-							.param("picture", "https://static.wikia.nocookie.net/fishmans/images/f/f9/Uchunippon_front.png/revision/latest/scale-to-width-down/150?cb=20200116094151")
-							.param("price", "30.0")
-							.param("seccion", "ENTRANTES")
-							.param("allergens", "1")
-							.param("isVisible", "true"))
-						.andExpect(status().is3xxRedirection())
-						.andExpect(view().name("redirect:/dishes"));
-	}
-	
 	
 }

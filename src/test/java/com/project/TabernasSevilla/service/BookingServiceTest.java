@@ -39,8 +39,7 @@ class BookingServiceTest {
 		b.setPlacementDate(Instant.now());
 		b.setReservationDate(Instant.now().plus(Duration.ofDays(2)));
 		b.setSeating(4);
-		Booking regis = this.bookingService.register(b, this.adminService.findAll().get(0));
-		Booking saved1 = this.bookingService.save(regis);
+		Booking saved1 = this.bookingService.register(b, this.adminService.findAll().get(0));
 		assertThat(saved1.getContactPhone()).isEqualTo(b.getContactPhone());
 	}
 
@@ -66,7 +65,12 @@ class BookingServiceTest {
 		Booking b = new Booking();
 		b.setActor(new Admin());
 		b.setContactPhone("655778899");
-		b.setEstablishment(new Establishment());
+		
+		Establishment est = new Establishment();
+		est.setCapacity(10);
+		est.setCurrentCapacity(10);
+		
+		b.setEstablishment(est);
 		b.setNotes("Comida de navidad");
 		b.setPlacementDate(Instant.now());
 		b.setReservationDate(Instant.now());

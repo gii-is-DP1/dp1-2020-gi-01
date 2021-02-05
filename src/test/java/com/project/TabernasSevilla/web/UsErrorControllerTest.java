@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.project.TabernasSevilla.configuration.SecurityConfiguration;
 import com.project.TabernasSevilla.controller.DishController;
+import com.project.TabernasSevilla.controller.UsErrorController;
 import com.project.TabernasSevilla.domain.Dish;
 import com.project.TabernasSevilla.domain.Establishment;
 import com.project.TabernasSevilla.domain.Seccion;
@@ -51,12 +52,12 @@ import java.util.Set;
 
 //@RunWith(SpringRunner.class)
 //@WebAppConfiguration
-@WebMvcTest(controllers = DishController.class, 
+@WebMvcTest(controllers = UsErrorController.class, 
 	excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class), 
 	excludeAutoConfiguration = SecurityConfiguration.class, 
 	includeFilters = {@ComponentScan.Filter(Service.class), @ComponentScan.Filter(Repository.class) })
 //@MockBean(JpaMetamodelMappingContext.class) //para que evite buscar la database
-public class DishControllerTest {
+public class UsErrorControllerTest {
 	
 	private static final int TEST_DISH_ID = 1;
 
@@ -130,8 +131,29 @@ public class DishControllerTest {
 	private MockMvc mockMvc;
 
 	@BeforeEach
-	void setup() {
+	void setup() { // inicializar establishment y dish
+		
+		Dish d = new Dish("Mi plato", "Mi descripción",
+				"https://international-experience.es/wp-content/uploads/2019/08/comidas-mundo.jpg", 20.0, 4.0, Seccion.CARNES, true,
+				null);
 
+		d.setId(1);
+		System.out.println("%%%%%%%%%%%% la id del plato "+d.getId());
+		List<Dish> ls = new ArrayList<Dish>();
+		ls.add(d);
+
+		Establishment est = new Establishment();
+		est.setId(1);
+		est.setTitle("prueba");
+		est.setAddress("calle ");
+		est.setCapacity(10);
+		est.setCurrentCapacity(10);
+		est.setOpeningHours("24/7");
+		est.setScore(2);
+		est.setDish(ls);
+		establishmentRepository.save(est);
+		System.out.println("############ todos los establecimientos: " + establishmentService.findAll());
+		
 		given(this.dishService.findById(TEST_DISH_ID)).willReturn(Optional.of(new Dish())); //importantisimo
 		
 	}
@@ -163,7 +185,10 @@ public class DishControllerTest {
 		mockUser.setAuthorities(ls);
 		mockUser.setUsername("mockito");
 		given(this.userService.getPrincipal()).willReturn(mockUser);
-
+		
+		System.out.println("=========>"+this.userService.getPrincipal().getUsername());
+		System.out.println("=========>"+this.userService.getPrincipal().getAuthorities());
+		
 		mockMvc.perform(post("/dishes/save")
 							.with(csrf())
 							.param("name", "Patatas fritas")
@@ -172,7 +197,8 @@ public class DishControllerTest {
 							.param("price", "30.0")
 							.param("seccion", "ENTRANTES")
 							.param("allergens", "1")
-							.param("isVisible", "true"))
+							.param("isVisible", "true")
+							.param("save", "Save Dish"))
 						.andExpect(status().is3xxRedirection())
 						.andExpect(view().name("redirect:/dishes"));
 	}

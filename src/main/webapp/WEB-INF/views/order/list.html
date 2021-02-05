@@ -20,9 +20,8 @@
 								</div>
 								<div class="wrapper row">
 									<table class="table">
-										<thead id="titles">
+										<thead id="titles" th:if=${prev==null}>
 											<tr>
-												<th></th>
 												<th>Restaurant</th>
 												<th>Date placed</th>
 												<th>Status</th>
@@ -73,7 +72,7 @@
 														role="button" class="btn btn-secondary"
 														aria-pressed="true">View</a></td>
 													<!-- CANCEL th:unless para que cuando sea preb true, no muestre el botond de cancelar-->
-													<td><a th:href="@{/order/cancel/{id}(id=${order.id})}" th:unless="${prev}"
+													<td><a th:href="@{/order/cancel/{id}(id=${order.id})}" th:unless="${prev} or ${order.status == 'PREPARING' or order.status == 'READY' or order.status == 'OUT OF DELIVERY' or order.status == 'DELIVERED'}"
 														role="button" class="btn btn-secondary"
 														aria-pressed="true" >Cancel</a></td>
 														
@@ -133,13 +132,6 @@
 			</div>
 		</div>
 	</div>
-	<!-- IGNORAR el error de abajo, NO Tocar, es necesario para ocultar una cosa  -->
-	<script>
-		var prev = [[${prev}]]; 
-		console.log(prev);
-		if(prev){
-			document.getElementById("titles").style.display = "none";
-		}
-	</script>
+
 </body>
 </html>

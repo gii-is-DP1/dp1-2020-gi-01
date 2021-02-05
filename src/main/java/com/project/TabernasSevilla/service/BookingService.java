@@ -1,6 +1,7 @@
 package com.project.TabernasSevilla.service;
 
 import java.time.Instant;
+import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
@@ -96,6 +97,11 @@ public class BookingService {
 	public Booking register(Booking booking, Actor actor) {
 		Instant free = this.tableService.estimateFreeTableInstant(booking.getEstablishment());
 		Instant min = Instant.now().plus(2,ChronoUnit.HOURS);
+		
+		//comprueba si el restaurante está lleno en el mismo día
+		Assert.isTrue(!((tableService.getOccupancyAtRestaurant((booking.getEstablishment())) == (long) booking.getEstablishment().getCapacity()) && 
+				(booking.getReservationDate().atZone(ZoneId.systemDefault()).getDayOfWeek() == Instant.now().atZone(ZoneId.systemDefault()).getDayOfWeek())), "The restaurant is currently full, sorry for the inconvenience");
+		
 		Assert.isTrue(free.compareTo(booking.getReservationDate())<0,"Cannot book for this time: restaurant is too busy");
 		Assert.isTrue(min.compareTo(booking.getReservationDate())<0,"Cannot book for this time: booking notice too short");
 		booking.setActor(actor);
