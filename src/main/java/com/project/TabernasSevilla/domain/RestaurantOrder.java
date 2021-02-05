@@ -1,7 +1,6 @@
 package com.project.TabernasSevilla.domain;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -11,7 +10,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 
 import lombok.AllArgsConstructor;
@@ -48,16 +46,13 @@ public class RestaurantOrder extends BaseEntity {
 
 	@NotNull
 	@Pattern(regexp = "^" + RestaurantOrder.OPEN + "|" + RestaurantOrder.CLOSED + "|" + RestaurantOrder.PLACED + "|" + RestaurantOrder.PREP + "|"
-			+ RestaurantOrder.READY + "|" + RestaurantOrder.STS_DELIVERY + "|" + RestaurantOrder.CANCELLED + "|" + RestaurantOrder.DRAFT+ "$")
+			+ RestaurantOrder.READY + "|" + RestaurantOrder.STS_DELIVERY + "|" + RestaurantOrder.CANCELLED + "|" + RestaurantOrder.DRAFT +  "|" + RestaurantOrder.DELIVERED + "$")
 	private String status;
 
-	public List<String> getTypes(){
-		return Arrays.asList(RestaurantOrder.TAKEAWAY,RestaurantOrder.PICKUP,RestaurantOrder.DELIVERY,RestaurantOrder.EAT_IN);
-	}
-	
-	public List<String> getOnlineTypes(){
+	public List<String> onlineTypes(){
 		return Arrays.asList(RestaurantOrder.PICKUP,RestaurantOrder.DELIVERY);
 	}
+	
 	public static final String DRAFT = "DRAFT";
 	
 	public static final String TAKEAWAY = "TAKEAWAY";
@@ -73,5 +68,8 @@ public class RestaurantOrder extends BaseEntity {
 	public static final String STS_DELIVERY = "OUT FOR DELIVERY";
 	public static final String DELIVERED = "DELIVERED";
 	public static final String CANCELLED = "CANCELLED";
+	public static final List<String> DeliveryStatus = Arrays.asList(RestaurantOrder.PLACED,RestaurantOrder.PREP,RestaurantOrder.READY,RestaurantOrder.STS_DELIVERY,RestaurantOrder.DELIVERED,RestaurantOrder.CLOSED);
+	public static final List<String> PickupStatus = Arrays.asList(RestaurantOrder.PLACED,RestaurantOrder.PREP,RestaurantOrder.READY,RestaurantOrder.CLOSED);
+	public static final List<String> EatInStatus = Arrays.asList(RestaurantOrder.OPEN,RestaurantOrder.CLOSED);
 
 }

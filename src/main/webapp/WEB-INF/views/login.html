@@ -2,48 +2,60 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <title>Login page</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <th:block th:include="fragments/common :: head"></th:block>
+<style>
+.form-group{
+	width : 50%;
+	}
+#logincont{
+ 	width : 50%;
+ 	text-align : center;
+ 	}
+
+
+</style>
 </head>
 <body>
 	<th:block th:include="fragments/common :: navbar"></th:block>
 
-	<div class="container">
-		<div class="d-flex justify-content-center h-100">
-			<div class="card">
-				<div class="card-header">
-					<h3>Customer login</h3>
-				</div>
+	<div class="container bg-dark text-white rounded h-150" id="logincont">
+		<div class="d-flex justify-content-center">
 
+			<div class="login-form">
 				<p th:if="${loginError}" class="error">Wrong user or password</p>
-				<div class="card-body">
-					<form th:action="@{/login}" method="POST">
-						<div class="input-group form-group">
+					<form th:action="@{/login}" method="POST" class="mx-auto">
+					<h2 class="display-1 m-4">Customer login</h2>
+					<br>
+						<div class="input-group form-group mx-auto" >
 							<div class="input-group-prepend">
-								<span class="input-group-text">
-									<i class="fas fa-user"></i>
+								<span class="input-group-text"> <i class="fas fa-user"></i>
 								</span>
 							</div>
-							<input type="text" class="form-control" placeholder="username"  minlength = 4 maxlength = 32 title = "username must be between 4 and 32 characters."
-								name="username">
+							<input type="text" class="form-control" placeholder="Username"
+								minlength=4 maxlength=32
+								title="username must be between 4 and 32 characters."
+								name="username" required>
 
 						</div>
-						<div class="input-group form-group">
+						<div class="input-group form-group mx-auto">
 							<div class="input-group-prepend">
-								<span class="input-group-text">
-									<i class="fas fa-key"></i>
+								<span class="input-group-text"> <i class="fas fa-key"></i>
 								</span>
 							</div>
-							<input type="password" class="form-control" 
-								placeholder="password" name="password">
+							<input type="password" class="form-control"
+								placeholder="Password" name="password" required>
 						</div>
-						<div class="form-group">
+						<div class="form-group mx-auto">
 							<input type="submit" value="Login"
-								class="btn float-right login_btn">
+								class="btn btn-light">
 						</div>
 					</form>
 				</div>
 			</div>
-		</div>
-	</div>
+			</div>
+
+	<footer th:replace="fragments/common :: footer"></footer>
 </body>
 </html>

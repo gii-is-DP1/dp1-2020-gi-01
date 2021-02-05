@@ -28,7 +28,7 @@ public class Review extends BaseEntity{
     private String comment;
  
     @Column(name = "rating", nullable = true)
-    private int rating;
+    private Double rating;
     
     /*
     @ManyToOne

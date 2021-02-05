@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.transaction.Transactional;
 
@@ -17,21 +19,32 @@ import com.project.TabernasSevilla.domain.Dish;
 import com.project.TabernasSevilla.domain.Establishment;
 import com.project.TabernasSevilla.domain.RestaurantOrder;
 import com.project.TabernasSevilla.repository.OrderRepository;
+import com.project.TabernasSevilla.security.User;
 import com.project.TabernasSevilla.security.UserService;
 
 @Service
 @Transactional
 public class OrderService {
 
-	@Autowired
+ 
 	private OrderRepository orderRepo;
-	@Autowired
+ 
 	private OrderLogService orderLogService;
-	@Autowired
+ 
 	private ActorService actorService;
-	@Autowired
+ 
 	private UserService userService;
 	
+	@Autowired
+	public OrderService(OrderRepository orderRepo, OrderLogService orderLogService, ActorService actorService,
+			UserService userService) {
+		super();
+		this.orderRepo = orderRepo;
+		this.orderLogService = orderLogService;
+		this.actorService = actorService;
+		this.userService = userService;
+	}
+
 	// CRUD METHODS FOR ORDER
 	public Optional<RestaurantOrder> findById(int id) {
 		return this.orderRepo.findById(id);
@@ -101,13 +114,11 @@ public class OrderService {
 	}
 	
 	
-	public List<RestaurantOrder> findActiveByPrincipal(){
-		Actor actor = this.actorService.getPrincipal();
+	public List<RestaurantOrder> findActiveByPrincipal(Actor actor){
 		return this.orderRepo.findActiveByActor(actor.getId());
 	}
 	
-	public List<RestaurantOrder> findInactiveByPrincipal(){
-		Actor actor = this.actorService.getPrincipal();
+	public List<RestaurantOrder> findInactiveByPrincipal(Actor actor){
 		return this.orderRepo.findInactiveByActor(actor.getId());
 	}
 	
@@ -123,18 +134,37 @@ public class OrderService {
 		return saved;
 	}
 	
-	public Boolean checkOwnership(RestaurantOrder order) {
-		return order.getActor().getId() == this.actorService.getPrincipal().getId();
+	public Boolean checkOwnership(RestaurantOrder order, int id) {
+		return order.getActor().getId() == id;
 	}
 	
 	public RestaurantOrder contextualSave(RestaurantOrder order) {
+		
+		//no puedes pedir más de 20 items en un pedido
+		Integer numeroDishes = order.getDish().size();
+		System.out.println("=============== numero paltos: " + numeroDishes);
+		Assert.isTrue(!(numeroDishes>20), "You can't order more than 20 items! Items ordered: " +numeroDishes );
+		
+		
+		//no puedes tener mas de 2 pedidos en activo
+		Integer n2 = 0;
+		for(RestaurantOrder o: orderRepo.findActiveByActor(order.getActor().getId()) ) {
+			n2++;
+		}
+		Assert.isTrue(!(n2>1), "You can't have more than 2 active orders. Please wait until your order's states are closed"); //hay que poner uno menos del que realmente queremos ok?
+		
 		switch(order.getType()) {
 		case RestaurantOrder.EAT_IN:
 			Assert.isTrue(this.userService.principalHasAnyAuthority(Arrays.asList("WAITER","COOK","MANAGER","ADMIN")),"Cannot save type of order: not an employee");
 			return this.openOrder(order);
+			
+			
 		case RestaurantOrder.DELIVERY:
+			
+			//no puedes dejar la direccion vacía si pides para delivery
 			Assert.isTrue(!order.getAddress().isBlank() && order.getAddress()!=null,"Order needs an address for delivery");
-			return this.placeOrder(order);
+			
+
 		default:
 			return this.placeOrder(order);
 		}
@@ -178,6 +208,15 @@ public class OrderService {
 		//log order cancellation
 		this.orderLogService.log(order, order.getStatus());
 		RestaurantOrder saved = this.save(order);
+		return saved;
+	}
+	
+	//TODO: better way to handle this
+	public RestaurantOrder updateStatus(RestaurantOrder order, String status, Boolean isEmployee) {
+		Assert.isTrue(isEmployee,"Unsuficiant authority");
+		order.setStatus(status);
+		RestaurantOrder saved = this.save(order);
+		this.orderLogService.log(saved, saved.getStatus());
 		return saved;
 	}
 	

@@ -1,6 +1,7 @@
 package com.project.TabernasSevilla.service;
 
 import java.time.Instant;
+import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
@@ -11,24 +12,33 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import com.project.TabernasSevilla.domain.Actor;
 import com.project.TabernasSevilla.domain.Booking;
 import com.project.TabernasSevilla.domain.Establishment;
 import com.project.TabernasSevilla.domain.RestaurantTable;
-import com.project.TabernasSevilla.forms.BookingForm;
 import com.project.TabernasSevilla.repository.BookingRepository;
-import com.project.TabernasSevilla.security.UserService;
+import com.project.TabernasSevilla.security.User;
 
 @Service
 @Transactional
 public class BookingService {
 	
-	@Autowired
+ 
 	private BookingRepository bookingRepo;
-	@Autowired
+ 
 	private ActorService actorService;
-	@Autowired
+ 
 	private TableService tableService;
 	
+	
+	@Autowired
+	public BookingService(BookingRepository bookingRepo, ActorService actorService, TableService tableService) {
+		super();
+		this.bookingRepo = bookingRepo;
+		this.actorService = actorService;
+		this.tableService = tableService;
+	}
+
 	//CRUD
 	
 	public Optional<Booking> findById(final int id) {
@@ -84,12 +94,17 @@ public class BookingService {
 		return res;
 	}
 	
-	public Booking register(Booking booking) {
+	public Booking register(Booking booking, Actor actor) {
 		Instant free = this.tableService.estimateFreeTableInstant(booking.getEstablishment());
 		Instant min = Instant.now().plus(2,ChronoUnit.HOURS);
+		
+		//comprueba si el restaurante está lleno en el mismo día
+		Assert.isTrue(!((tableService.getOccupancyAtRestaurant((booking.getEstablishment())) == (long) booking.getEstablishment().getCapacity()) && 
+				(booking.getReservationDate().atZone(ZoneId.systemDefault()).getDayOfWeek() == Instant.now().atZone(ZoneId.systemDefault()).getDayOfWeek())), "The restaurant is currently full, sorry for the inconvenience");
+		
 		Assert.isTrue(free.compareTo(booking.getReservationDate())<0,"Cannot book for this time: restaurant is too busy");
 		Assert.isTrue(min.compareTo(booking.getReservationDate())<0,"Cannot book for this time: booking notice too short");
-		booking.setActor(this.actorService.getPrincipal());
+		booking.setActor(actor);
 		booking.setPlacementDate(Instant.now());
 		Booking saved = this.save(booking);
 		return saved;

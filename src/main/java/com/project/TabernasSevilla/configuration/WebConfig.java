@@ -2,10 +2,8 @@ package com.project.TabernasSevilla.configuration;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.FormatterRegistry;
-import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import com.project.TabernasSevilla.converters.EstablishmentToStringConverter;
 import com.project.TabernasSevilla.converters.StringToInstantConverter;
 
 

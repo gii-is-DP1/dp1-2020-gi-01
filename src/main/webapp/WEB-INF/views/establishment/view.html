@@ -25,7 +25,7 @@
 						<div class="rating">
 							<div
 								th:replace="fragments/score :: stars(score=${establishment.score})"></div>
-							<span class="review-no">41 reviews</span>
+							<span class="review-no"></span>
 						</div>
 						<p class="product-description"
 							th:text="${establishment.description}"></p>
@@ -35,7 +35,7 @@
 						
 						<!-- MENU -->
 						<div class="p-1">
-							<a th:href="@{/dishes/list}" role="button" class="btn btn-secondary" aria-pressed="true">View menu</a>
+							<a th:href="@{/dishes}" role="button" class="btn btn-secondary" aria-pressed="true">View menu</a>
 						</div>
 						<!-- ORDER -->
 						<div class="p-1">
@@ -53,13 +53,15 @@
 						
 						<div>
 							<span th:inline="text">Current occupancy: [[${occupied}]]/[[${establishment.capacity}]]</span>
+
+							
 						</div>
 						<div sec:authorize="hasAnyAuthority('ADMIN','MANAGER','WAITER')">
 							<a th:href="@{/table/establishment/{id}(id=${establishment.id})}">
 
 								Manage tables and reservations</a>
 						</div>
-						<div sec:authorize="hasAnyAuthority('ADMIN','MANAGER','WAITER')">
+						<div sec:authorize="hasAnyAuthority('COOK','ADMIN','MANAGER','WAITER')">
 							<a th:href="@{/order/est/{id}/list(id=${establishment.id})}">
 
 								View orders </a>

@@ -8,11 +8,13 @@
 </head>
 <body>
 	<th:block th:include="fragments/common :: navbar"></th:block>
-	<div class="container">
-		<div class="card">
-			<div class="container-fliud">
-				<div class="wrapper row">
-					<div class="preview col-md-6">
+	
+	<div class="error" id="error" th:unless=${message==null}>
+		<span th:text="${message}"></span>
+	</div>
+			<div class="container card">
+				<div class="wrapper row ">
+					<div class="preview col-md-6" >
 						<div class="wrapper row">
 							<b>Dishes</b>
 						</div>
@@ -32,8 +34,14 @@
 										<tr>
 											<!-- IMAGE -->
 											<td>
-												<div style="width: 140px;">
-													<img class="img-thumbnail" th:src="${dish.picture}" />
+												<div th:style="'
+													width: 100px;
+													height:100px; 
+													background-image: url('+${dish.picture}+');
+													background-position: center;
+													background-size:contain;
+													background-repeat: no-repeat;'">
+													
 												</div>
 											</td>
 											<!-- NAME -->
@@ -58,7 +66,7 @@
 
 
 					</div>
-					<div class="details col-md-6">
+					<div class="details col-md-6" >
 
 						<div class="wrapper row">
 							<b>Your order</b>
@@ -86,17 +94,18 @@
 						<!-- 							</ul> -->
 
 						<!-- ESTABLISHMENT -->
-						<div class="wrapper row">
-							<a href="">[[${establishment.title}]]</a>
+						<div class="wrapper row" style="padding:5px;">
+							<span>Restaurant: </span>&nbsp;<a href="">[[${establishment.title}]]</a>
 						</div>
 						<form method="get" th:action="@{/order/checkout}" id="orderForm"
 							th:object="${order}">
 							
 							<input type="hidden" name="id" th:field="*{id}">
 							<!-- TYPE -->
-							<div class="wrapper row">
+							<div class="wrapper row" style="padding:5px;">
+							<span>Order type: </span>&nbsp;
 								<select name="type" id="type" form="orderForm">
-									<option th:each="typeStr : ${order.getOnlineTypes()}"
+									<option th:each="typeStr : ${order.onlineTypes}"
 										th:value="${typeStr}" th:utext="${typeStr}" />
 								</select>
 								<ul>
@@ -105,7 +114,8 @@
 							</div>
 
 							<!-- ADDRESS -->
-							<div class="wrapper row">
+							<div class="wrapper row" style="padding:5px;">
+								<span>Address: </span>&nbsp;
 								<input type="text" name="address" th:value="*{address}" />
 								<ul>
 									<li th:each="err : ${#fields.errors('address')}"
@@ -129,8 +139,14 @@
 											<tr>
 												<!-- IMAGE -->
 												<td>
-													<div style="width: 140px;">
-														<img class="img-thumbnail" th:src="${dish.picture}" />
+													<div th:style="'
+													width: 100px;
+													height:100px; 
+													background-image: url('+${dish.picture}+');
+													background-position: center;
+													background-size:contain;
+													background-repeat: no-repeat;'">
+														
 													</div>
 												</td>
 												<!-- NAME -->
@@ -149,20 +165,23 @@
 								</table>
 							</div>
 
-							<div class="wrapper row">
-								<span th:text="${message}"></span>
-							</div>
+							
 							<!-- SUBMIT -->
 							<div class="wrapper row">
 								<input type="submit" value="Order"
-									class="btn float-right login_btn">
+									class="btn btn-secondary btn-lg">
 							</div>
 
 						</form>
 					</div>
 				</div>
 			</div>
-		</div>
-	</div>
+
+	
+	<footer th:replace="fragments/common :: footer"></footer>
+	<script th:src="@{/js/order.js}">		
+	</script>
+	
 </body>
+
 </html>

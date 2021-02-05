@@ -18,12 +18,20 @@ import com.project.TabernasSevilla.security.UserService;
 @Transactional
 public class RegKeyService {
 
-	@Autowired
+ 
 	private RegKeyRepository regKeyRepo;
-	@Autowired
+ 
 	private UserService userService;
-	@Autowired
+ 
 	private AuthorityService authService;
+	
+	@Autowired
+	public RegKeyService(RegKeyRepository regKeyRepo, UserService userService, AuthorityService authService) {
+		super();
+		this.regKeyRepo = regKeyRepo;
+		this.userService = userService;
+		this.authService = authService;
+	}
 
 	//CRUD
 	public List<RegKey> findAll() {

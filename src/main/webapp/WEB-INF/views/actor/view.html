@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+<meta charset="ISO-8859-1">
+<head>
+<th:block th:include="fragments/common :: head(title='Location')"></th:block>
+</head>
+<body>
+	<th:block th:include="fragments/common :: navbar"></th:block>
+	<div class="container">
+		<div class="card">
+			<div class="container-fliud">
+				<div class="wrapper row">
+					<!-- PICTURE -->
+					<div class="preview col-md-6">
+						<img th:src="${actor.avatar}" class="img-fluid"
+							style="border-radius: 50%; padding: 80px;" />
+					</div>
+					<div class="details col-md-6" style="padding: 50px;">
+						<div class="row">
+							<div style="padding-right:40px;" class="col">
+								<h3 class="product-title" th:inline="text">[[${actor.name}]]
+									[[${actor.surname}]]</h3>
+							</div>
+							<div class="col">
+								<a th:href="@{edit}"><i
+							class="fa fa-pencil-alt"></i></a>
+							</div>
+
+						</div>
+						<div>
+							<span th:text="${actor.email}"></span>
+						</div>
+						<div>
+							<span th:text="${actor.phoneNumber}"></span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

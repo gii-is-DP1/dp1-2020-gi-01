@@ -19,16 +19,25 @@ import com.project.TabernasSevilla.repository.EstablishmentRepository;
 @Transactional
 public class EstablishmentService {
 
-	@Autowired
+ 
 	private EstablishmentRepository establishmentRepo;
-	@Autowired
+ 
 	private CookService cookService;
-	@Autowired
+ 
 	private WaiterService waiterService;
-	@Autowired
+ 
 	private ManagerService managerService;
 
 	
+	@Autowired
+	public EstablishmentService(EstablishmentRepository establishmentRepo, CookService cookService,
+			WaiterService waiterService, ManagerService managerService) {
+		super();
+		this.establishmentRepo = establishmentRepo;
+		this.cookService = cookService;
+		this.waiterService = waiterService;
+		this.managerService = managerService;
+	}
 
 	// CRUD
 	public Establishment findById(Integer id) {

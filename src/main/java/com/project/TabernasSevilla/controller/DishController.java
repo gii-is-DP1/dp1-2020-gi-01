@@ -27,17 +27,21 @@ import com.project.TabernasSevilla.service.DishService;
 @RequestMapping("/dishes")
 public class DishController extends AbstractController {
 
-	@Autowired
+ 
 	private DishService dishService;
-	
-	@Autowired
+ 
 	private ActorService actorService;
-	
-	@Autowired 
-	private ReviewRepository repoReview;
+ 
+	private ReviewRepository reviewRepo;
 	
 	@Autowired
-	private ReviewRepository reviewRepo;
+	public DishController(DishService dishService, ActorService actorService,
+			ReviewRepository reviewRepo) {
+		super();
+		this.dishService = dishService;
+		this.actorService = actorService;
+		this.reviewRepo = reviewRepo;
+	}
 
 	@GetMapping(path = "/{dishId}")
 	public String showDishInfo(@PathVariable("dishId") int dishId, Model model) {
@@ -47,12 +51,12 @@ public class DishController extends AbstractController {
 		List<Review> reviews = reviewRepo.findByDish(dishId);
 		model.addAttribute("reviews", reviews);
 		Review rev = new Review();
-		
+
 		model.addAttribute("reviewComment", rev);
 		return view;
 	}
 
-	@GetMapping(path = "/list")
+	@GetMapping(path = "")
 	public String dishList(Model model) {
 		List<Dish> dishes = dishService.findAll();
 		model.addAttribute("dishes", dishes);
@@ -62,51 +66,56 @@ public class DishController extends AbstractController {
 
 	@GetMapping(path = "/new")
 	public String createDish(Model model) {
-		String view = "dishes/createDishForm";
+		String view = super.checkIfCurrentUserIsAllowed("dishes/createDishForm", "ADMIN");
 		model.addAttribute("dish", new Dish());
 		return view;
 	}
 
 	@PostMapping(path = "/save")
 	public String saveDish(@Valid Dish dish, BindingResult result, Model model) {
-		String view = "redirect:/dishes/list";
+		String view = super.checkIfCurrentUserIsAllowed("redirect:/dishes", "ADMIN");
 		if (result.hasErrors()) {
 			model.addAttribute("dish", dish);
 			return "dishes/createDishForm";
 		} else {
 			dishService.save(dish);
 			model.addAttribute("message", "Dish successfully saved");
-			view = dishList(model);
+			// view = dishList(model);
 		}
 		return view;
 	}
+
 	@PostMapping(path = "/savecomment/{dishId}")
-	public String saveComment(@Valid Review review, BindingResult result, Model model, @PathVariable("dishId") int dishId) {
-		String view = "redirect:/dishes/" + dishId;
+	public String saveComment(@Valid Review review, BindingResult result, Model model,
+			@PathVariable("dishId") int dishId) {
+		String view = super.checkIfCurrentUserIsAllowed("redirect:/dishes/" + dishId, "CUSTOMER");
 		Dish dish = dishService.findById(dishId).get();
-		//System.out.println(dish.getName());
-		
-		Actor actor = this.actorService.getPrincipal(); //usuario logeao
-		
+		// System.out.println(dish.getName());
+
+		Actor actor = this.actorService.getPrincipal(); // usuario logeao
+
 		review.setActor(actor);
 		review.setDish(dish);
-		
+
 		if (result.hasErrors()) {
 			System.out.println("::::::::::::::::Bueno amigo algo has hecho mal ::::::::::::::::::::");
-			System.out.println("comment de review: "+review.getComment());
-			System.out.println("rating: "+ review.getRating());
-			
+			System.out.println("comment de review: " + review.getComment());
+			System.out.println("rating: " + review.getRating());
+
 			System.out.println("dish id: " + review.getDish().getId());
-			System.out.println("actor: "+ review.getActor().getUser().getUsername());
-			
+			System.out.println("actor: " + review.getActor().getUser().getUsername());
+
 			List<ObjectError> errors = result.getAllErrors();
-	        for(int i=0;i<result.getErrorCount();i++){System.out.println("]]]]]]] error "+i+" is: "+errors.get(i).toString());}
-			
-		
+			for (int i = 0; i < result.getErrorCount(); i++) {
+				System.out.println("]]]]]]] error " + i + " is: " + errors.get(i).toString());
+			}
+
 			return "redirect:/dishes/" + dishId;
 		} else {
-			repoReview.save(review);
-			//model.addAttribute("message", "Dish successfully saved");
+			reviewRepo.save(review);
+			dishService.save(dish);
+
+			// model.addAttribute("message", "Dish successfully saved");
 			view = "redirect:/dishes/" + dishId;
 		}
 		return view;
@@ -115,12 +124,13 @@ public class DishController extends AbstractController {
 	@GetMapping(path = "/delete/{dishId}")
 	public String deleteDish(@PathVariable("dishId") int dishId, Model model) {
 
-		String view = super.checkIfCurrentUserIsAllowed("redirect:/dishes/list", "ADMIN");
+		String view = super.checkIfCurrentUserIsAllowed("redirect:/dishes", "ADMIN");
 
 		if (view != "error") {
 			Optional<Dish> dish = dishService.findById(dishId);
 			if (dish.isPresent()) {
-				dishService.delete(dish.get());
+				Dish d = dishService.findById(dishId).get();
+				d.setIsVisible(false);
 				model.addAttribute("message", "Dish succesfully deleted");
 				view = dishList(model);
 			} else {
@@ -142,7 +152,7 @@ public class DishController extends AbstractController {
 
 	@PostMapping(value = "{dishId}/edit")
 	public String processUpdateDishForm(@Valid Dish dish, BindingResult result, @PathVariable("dishId") int dishId) {
-		String view = "dishes/updateDishForm";
+		String view = super.checkIfCurrentUserIsAllowed("redirect:/dishes", "ADMIN");
 
 		if (result.hasErrors()) {
 			return view;
@@ -153,12 +163,12 @@ public class DishController extends AbstractController {
 			try {
 				this.dishService.save(dish);
 			} catch (Exception e) {
-				FieldError error = new FieldError("dish", "picture", "Invalid URL");
+				FieldError error = new FieldError("dish", "picture", "Invalid URL" + e.getMessage());
 				result.addError(error);
 				return view;
 			}
 
-			return "redirect:/dishes/list";
+			return view;
 		}
 	}
 

@@ -5,7 +5,6 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
 import com.project.TabernasSevilla.domain.Curriculum;
 import com.project.TabernasSevilla.forms.ContactForm;
 import com.project.TabernasSevilla.repository.CurriculumRepository;
@@ -17,9 +16,15 @@ import com.project.TabernasSevilla.repository.CurriculumRepository;
 //job application / curriculum service
 public class ContactService {
 	
-	@Autowired
+ 
 	private CurriculumRepository cvRepo;
 	
+	@Autowired
+	public ContactService(CurriculumRepository cvRepo) {
+		super();
+		this.cvRepo = cvRepo;
+	}
+
 	public Curriculum findById(final int id) { //hmmm no hay id en jobapplication o si...
 		return cvRepo.findById(id);
 	}
@@ -30,7 +35,7 @@ public class ContactService {
 	}
 	
 	public Curriculum save(Curriculum joba) {
-		return this.cvRepo.save(joba);
+		return this.cvRepo.saveAndFlush(joba);
 	}
 	
 	public Curriculum register(final ContactForm form) {

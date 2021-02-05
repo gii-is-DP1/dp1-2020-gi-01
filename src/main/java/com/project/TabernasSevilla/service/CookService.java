@@ -18,11 +18,18 @@ import com.project.TabernasSevilla.security.UserService;
 @Transactional
 public class CookService {
 
-	@Autowired
+
 	private CookRepository cookRepo;
-	@Autowired
+
 	private UserService userService;
 	
+	@Autowired
+	public CookService(CookRepository cookRepo, UserService userService) {
+		super();
+		this.cookRepo = cookRepo;
+		this.userService = userService;
+	}
+
 	public Cook create() {
 		Cook res = new Cook();
 		return res;

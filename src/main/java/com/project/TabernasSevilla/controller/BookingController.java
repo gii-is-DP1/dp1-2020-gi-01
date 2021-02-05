@@ -1,5 +1,7 @@
 package com.project.TabernasSevilla.controller;
 
+import java.time.Instant;
+import java.time.ZoneId;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -13,13 +15,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.project.TabernasSevilla.domain.Booking;
 import com.project.TabernasSevilla.domain.Establishment;
-import com.project.TabernasSevilla.forms.BookingForm;
+import com.project.TabernasSevilla.security.UserService;
+import com.project.TabernasSevilla.service.ActorService;
 import com.project.TabernasSevilla.service.BookingService;
 import com.project.TabernasSevilla.service.EstablishmentService;
+import com.project.TabernasSevilla.service.TableService;
 
 @Controller
 @RequestMapping("/booking")
@@ -27,8 +30,15 @@ public class BookingController {
 
 	@Autowired
 	private BookingService bookService;
+	
 	@Autowired
 	private EstablishmentService establishmentService;
+	
+	@Autowired
+	private TableService tableService;
+	
+	@Autowired
+	private ActorService actorService;
 
 	@RequestMapping(value = "/init/{id}", method = RequestMethod.GET)
 	public String createBooking(@PathVariable("id") int establishmentId, Model model) {
@@ -55,9 +65,10 @@ public class BookingController {
 		if (binding.hasErrors()) {
 			model.addAttribute("booking", booking);
 			return this.createBookingEditModel(booking, model);
-		} else {
+		}
+		else {
 			try {
-				this.bookService.register(booking);
+				this.bookService.register(booking,  this.actorService.getPrincipal());
 				return "redirect:/index";
 			} catch (final Exception e) {
 				return this.createBookingEditModel(booking, model, e.getMessage());

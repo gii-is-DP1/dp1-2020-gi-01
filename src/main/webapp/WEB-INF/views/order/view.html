@@ -18,6 +18,50 @@
 					<div class="preview col" th:if="${order!=null}">
 						<div class="wrapper row">
 							<div class="col">
+								<div class="row" th:if="${message}">
+									<span th:text="${message}"></span>
+								</div>
+								<div class="row"
+									sec:authorize="hasAnyAuthority('COOK','ADMIN','MANAGER','WAITER')">
+									<div class="col">
+										<div class="row">
+											<select name="sts" form="orderForm"
+												th:if="${order.type=='DELIVERY'}">
+												<option th:value="${order.status}"
+													th:utext="${order.status}"></option>
+												<option th:each="sts : ${deliveryStatus}" th:value="${sts}"
+													th:utext="${sts}" />
+											</select> <select name="sts" form="orderForm"
+												th:if="${order.type=='PICKUP'}">
+												<option th:value="${order.status}"
+													th:utext="${order.status}"></option>
+												<option th:each="sts : ${pickupStatus}" th:value="${sts}"
+													th:utext="${sts}" />
+											</select> <select name="sts" form="orderForm"
+												th:if="${order.type=='EAT-IN'}">
+												<option th:value="${order.status}"
+													th:utext="${order.status}"></option>
+												<option th:each="sts : ${eatInStatus}" th:value="${sts}"
+													th:utext="${sts}" />
+											</select>
+										</div>
+										<div class="row" th:if="${order.type == 'EAT_IN'}">
+											<select name="table" form="orderForm">
+												<option th:if="${order.table != null}"
+													th:value="${order.table.id}"
+													th:utext="${order.table.number}"></option>
+												<option th:each="table : ${tables}" th:value="${table.id}"
+													th:utext="${table.number}" />
+											</select>
+										</div>
+										<div class="row">
+											<form id="orderForm" method="get"
+												th:action="@{/order/{id}/update(id=${order.id})}">
+												<input type="submit" value="save" />
+											</form>
+										</div>
+									</div>
+								</div>
 								<div class="row">
 									<span><b>Order details</b></span>
 								</div>
@@ -40,6 +84,7 @@
 										</thead>
 										<tbody>
 											<th:block th:each="dish : ${order.dish}">
+
 												<tr>
 													<!-- IMAGE -->
 													<td>
@@ -61,7 +106,8 @@
 							</div>
 						</div>
 						<div class="wrapper row" th:if="${order.status !='DRAFT'}">
-							<span th:inline="text">Current status: <b>[[${order.status}]]</b></span>&nbsp;-&nbsp;<span th:if="${cancel}" th:text="${cancel.reason}"></span>
+							<span th:inline="text">Current status: <b>[[${order.status}]]</b></span>&nbsp;-&nbsp;<span
+								th:if="${cancel}" th:text="${cancel.reason}"></span>
 						</div>
 						<div class="wrapper row" th:if="${order.status =='DRAFT'}">
 							<div class="col">
@@ -89,12 +135,8 @@
 								<tbody>
 									<th:block th:each="log : ${logs}">
 										<tr>
-											<td>
-												<span th:text="${log.status}"></span>
-											</td>
-											<td>
-												<span th:text="${log.moment}"></span>
-											</td>
+											<td><span th:text="${log.status}"></span></td>
+											<td><span th:text="${log.moment}"></span></td>
 										</tr>
 									</th:block>
 								</tbody>

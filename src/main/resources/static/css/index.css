@@ -10,10 +10,13 @@ body {
   height: 100%;
 
   /* Center and scale the image nicely */
-  
-  background-repeat: no-repeat;
-  background-size: cover;
+
 }
+
+.main {
+  flex: 1;
+}
+
 
 a{
 	text-decoration: none;	
@@ -81,31 +84,7 @@ color: #FFFFFF;
 	margin-right: 1em;
 }
 
-input[type=text], select {
-  width: 100%;
-  padding: 12px 20px;
-  margin: 8px 0;
-  display: inline-block;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
-}
 
-input[type=submit] {
-  width: 100%;
-  background-color: #4CAF50;
-  color: white;
-  padding: 14px 20px;
-  margin: 8px 0;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-input[type=submit]:hover {
-  background-color: #45a049;
-  
-}
 
 .mi-archivo input[type=”FILE”] {
  width: 0.1px;

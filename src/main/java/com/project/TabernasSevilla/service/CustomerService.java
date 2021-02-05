@@ -16,14 +16,23 @@ import com.project.TabernasSevilla.security.UserService;
 @Transactional
 public class CustomerService {
 
-	@Autowired
+ 
 	private CustomerRepository costumerRepo;
-	@Autowired
+ 
 	private EstablishmentService establishmentService;
 	
-	@Autowired
+ 
 	private UserService userService;
 	
+	@Autowired
+	public CustomerService(CustomerRepository costumerRepo, EstablishmentService establishmentService,
+			UserService userService) {
+		super();
+		this.costumerRepo = costumerRepo;
+		this.establishmentService = establishmentService;
+		this.userService = userService;
+	}
+
 	public Customer findById(final int id) {
 		return costumerRepo.findById(id);
 	}
@@ -37,9 +46,9 @@ public class CustomerService {
 		return this.costumerRepo.save(customer);
 	}
 	
-	public Customer setPreferredEstablishment(int establishmentId) {
-		Customer cust = this.costumerRepo.findActorByUser(this.userService.getPrincipal().getUsername());
-		cust.setPreferredEstablishment(this.establishmentService.findById(establishmentId));
+	public Customer setPreferredEstablishment(int establishmentId, String username) {
+		Customer cust = this.costumerRepo.findActorByUser(username);
+		cust.setFavEstablishment(this.establishmentService.findById(establishmentId));
 		 Customer saved = this.save(cust);
 		 return saved;		
 	}
@@ -57,7 +66,7 @@ public class CustomerService {
 		customer.setName(form.getForm().getName());
 		customer.setSurname(form.getForm().getSurname());
 		customer.setPhoneNumber(form.getForm().getPhoneNumber());
-		customer.setPreferredEstablishment(null);
+		customer.setFavEstablishment(null);
 		User user = this.userService.createUser("CUSTOMER");
 		final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		user.setPassword(encoder.encode(form.getPassword()));
