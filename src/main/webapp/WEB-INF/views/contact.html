@@ -37,14 +37,18 @@
    		<br>
    		<br>
    		
-   		<span class="mi-archivo">
-   			<input type="FILE" name="mi-archivo" id="up-arch" style="display:none" th:field="*{cv}"> 
-   		</span>
+   		
+   			<input type="FILE" name="cv" th:field="*{cv}"> 
+   			<!--  
+   			<span class="mi-archivo">
+   			</span>
+   			
    		
    		<label for="mi-archivo">
    			<span id ="up-boton">Upload your CV</span>
 		
    		</label>
+   		-->
    				<ul>
 					<li th:each="err : ${#fields.errors('cv')}" th:text="${err}" />
 				</ul>
@@ -61,7 +65,8 @@
 	</div>
 		
 	</div>
-	
+
+<!--   
 <script type="application/javascript">
 var button = document.getElementById('up-boton');
 var input  = document.getElementById('up-arch');
@@ -80,6 +85,7 @@ input.addEventListener('change', function () {
    button.innerText = this.value; 
 });
 </script>
+-->
 
 </body>
 </html>

@@ -19,14 +19,15 @@
 </head>
 <body>
 	<th:block th:include="fragments/common :: navbar"></th:block>
-
+	
+	<div class="error" id="error" th:unless=${loginError==null}>
+		<p>Wrong user or password</p> </div>
+	
 	<div class="container bg-dark text-white rounded h-150" id="logincont">
 		<div class="d-flex justify-content-center">
-
-			<div class="login-form">
-				<p th:if="${loginError}" class="error">Wrong user or password</p>
+				
 					<form th:action="@{/login}" method="POST" class="mx-auto">
-					<h2 class="display-1 m-4">Customer login</h2>
+					<h2 class="display-1 m-4">   Login   </h2>
 					<br>
 						<div class="input-group form-group mx-auto" >
 							<div class="input-group-prepend">
@@ -34,7 +35,7 @@
 								</span>
 							</div>
 							<input type="text" class="form-control" placeholder="Username"
-								minlength=4 maxlength=32
+								
 								title="username must be between 4 and 32 characters."
 								name="username" required>
 
@@ -53,7 +54,6 @@
 						</div>
 					</form>
 				</div>
-			</div>
 			</div>
 
 	<footer th:replace="fragments/common :: footer"></footer>

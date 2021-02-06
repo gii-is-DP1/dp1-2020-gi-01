@@ -10,7 +10,9 @@
 </head>
 <body>
 	<header th:include="fragments/common :: navbar"></header>
-		<div class="main">
+		
+		<div class="info" id="info" th:unless=${message==null}>
+		<span th:text="${message}"></span>
 		
 		
 		</div>

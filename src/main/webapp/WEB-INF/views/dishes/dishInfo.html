@@ -8,6 +8,10 @@
 </head>
 <body>
 	<th:block th:include="fragments/common :: navbar"></th:block>
+	
+	<div class="error" id="error" th:unless=${message==null}>
+		<span th:text="${message}"></span> </div>
+		
 	<div class="container" >
 		<div class="card">
 			<div class="container-fluid" style="position: center; left: 20px;">
