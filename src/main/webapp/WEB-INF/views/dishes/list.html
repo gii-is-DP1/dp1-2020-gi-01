@@ -8,8 +8,8 @@
 </head>
 <body>
 	<th:block th:include="fragments/common :: navbar"></th:block>
-	<div class="container">
-		<div class="card">
+	<div class="container card">
+
 			<div class="container-fluid" style="position: center; left: 20px;">
 				<div class="wrapper row">
 					<div class="preview col-">
@@ -444,13 +444,6 @@
 								</tbody>
 							</table>
 
-
-
-
-
-
-
-
 							<h2>Postres</h2>
 							<table class="table">
 								<thead>
@@ -520,7 +513,7 @@
 					</div>
 				</div>
 			</div>
-		</div>
+
 
 		<div sec:authorize="hasAuthority('ADMIN')">
 			<a th:href="@{/dishes/new}" class="btn btn-primary">Create new

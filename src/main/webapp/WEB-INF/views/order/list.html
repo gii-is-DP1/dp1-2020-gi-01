@@ -8,8 +8,7 @@
 </head>
 <body>
 	<th:block th:include="fragments/common :: navbar"></th:block>
-	<div class="container">
-		<div class="card">
+	<div class="container card">
 			<div class="container-fliud">
 				<div class="wrapper row">
 					<div class="preview col">
@@ -71,13 +70,14 @@
 													<td><a th:href="@{/order/{id}/view(id=${order.id})}"
 														role="button" class="btn btn-secondary"
 														aria-pressed="true">View</a></td>
+														
 													<!-- CANCEL th:unless para que cuando sea preb true, no muestre el botond de cancelar-->
 													<td><a th:href="@{/order/cancel/{id}(id=${order.id})}" th:unless="${prev} or ${order.status == 'PREPARING' or order.status == 'READY' or order.status == 'OUT OF DELIVERY' or order.status == 'DELIVERED'}"
 														role="button" class="btn btn-secondary"
 														aria-pressed="true" >Cancel</a></td>
 														
 													<!-- REPEAT ORDER -->
-													<td><a th:href="@{/order/repeat/{id}(id=${order.id})}" th:if="${prev}" role="button" 
+													<td><a th:href="@{/order/repeat/{id}(id=${order.id})}" th:if="${prev} and ${order.status != 'DRAFT'}" role="button" 
 														class="btn btn-secondary" aria-pressed="true">Repeat order</a>
 
 													<!-- EMPLOYEE ACTIONS -->
@@ -130,7 +130,6 @@
 					</div>
 				</div>
 			</div>
-		</div>
 	</div>
 
 </body>

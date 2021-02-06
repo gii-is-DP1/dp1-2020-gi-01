@@ -167,7 +167,7 @@
 
 							
 							<!-- SUBMIT -->
-							<div class="wrapper row">
+							<div class="wrapper row" th:unless="${order.dish.empty}">
 								<input type="submit" value="Order"
 									class="btn btn-secondary btn-lg">
 							</div>

@@ -8,8 +8,7 @@
 </head>
 <body>
 	<th:block th:include="fragments/common :: navbar"></th:block>
-	<div class="container">
-		<div class="card">
+	<div class="container card">
 			<div class="container-fliud">
 				<div class="wrapper row">
 					<div class="preview col">
@@ -39,7 +38,7 @@
 											<!-- PLACEMENT -->
 											<td th:text="${booking.placementDate}"></td>
 											<!-- ACTIONS -->
-											
+											<td th:text="${booking.notes}"></td>
 											<td><a href="#"><i
 													class="fa fa-pencil" aria-hidden="true"></i></a></td>
 													
@@ -53,7 +52,6 @@
 					</div>
 				</div>
 			</div>
-		</div>
 	</div>
 </body>
 </html>

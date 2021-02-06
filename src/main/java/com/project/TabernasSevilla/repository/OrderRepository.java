@@ -21,6 +21,6 @@ public interface OrderRepository extends JpaRepository<RestaurantOrder,Integer>{
 	@Query("SELECT o FROM RestaurantOrder o WHERE o.establishment.id = ?1 AND o.status != 'DRAFT' AND o.status != 'CLOSED' AND o.status != 'CANCELLED'")
 	public List<RestaurantOrder> findActiveByEstablishment(int id);
 	
-	@Query("SELECT o FROM RestaurantOrder o WHERE o.establishment.id = ?1 AND o.status = 'DRAFT' OR o.status = 'CLOSED' OR o.status = 'CANCELLED'")
+	@Query("SELECT o FROM RestaurantOrder o WHERE o.establishment.id = ?1 AND (o.status = 'DRAFT' OR o.status = 'CLOSED' OR o.status = 'CANCELLED')")
 	public List<RestaurantOrder> findInactiveByEstablishment(int id);
 }

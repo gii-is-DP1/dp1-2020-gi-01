@@ -45,7 +45,7 @@
 					<li class="nav-item active dropdown"><a
 						class="nav-link dropdown-toggle" th:href="@{/}" role="button"
 						data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							Locations </a> <!-- Location list -->
+							Taverns </a> <!-- Location list -->
 						<div class="dropdown-menu">
 							
 								<a th:each="loc: ${@establishmentService.findAll()}" class="dropdown-item"
@@ -55,9 +55,11 @@
 						</div></li>
 					<li class="nav-item "><a class="nav-link"
 						th:href="@{/contact/init}"> Work with us </a></li>
-
+					
+					<!-- PROMOTIONS 
 					<li class="nav-item "><a class="nav-link"
 						th:href="@{/promotions}"> Promotions </a></li>
+						-->
 				</ul>
 				<ul class="navbar-nav ">
 					<!-- only show if authenticated -->

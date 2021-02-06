@@ -8,8 +8,8 @@
 </head>
 <body>
 	<th:block th:include="fragments/common :: navbar"></th:block>
-	<div class="container">
-		<div class="card">
+
+		<div class="container card">
 			<div class="container-fliud">
 				<div class="wrapper row">
 					<div class="preview col" th:if="${order==null}">
@@ -24,6 +24,7 @@
 								<div class="row"
 									sec:authorize="hasAnyAuthority('COOK','ADMIN','MANAGER','WAITER')">
 									<div class="col">
+										<!--  
 										<div class="row">
 											<select name="sts" form="orderForm"
 												th:if="${order.type=='DELIVERY'}">
@@ -60,6 +61,7 @@
 												<input type="submit" value="save" />
 											</form>
 										</div>
+										-->
 									</div>
 								</div>
 								<div class="row">
@@ -70,7 +72,11 @@
 										[[${order.establishment.title}]]:
 										[[${order.establishment.address}]]</span> <span th:case="'DELIVERY'"
 										th:inline="text">To be delivered to:
-										[[${order.address}]]</span>
+										[[${order.address}]]
+										</span>
+										<span th:inline="text" style="padding-left:5em"> Customer: [[${order.actor.user.username}]]</span>
+							
+									 
 								</div>
 
 								<div class="row">
@@ -146,6 +152,6 @@
 				</div>
 			</div>
 		</div>
-	</div>
+
 </body>
 </html>
