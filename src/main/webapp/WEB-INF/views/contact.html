@@ -8,6 +8,9 @@
 </head>
 <body >
 	<header th:include="fragments/common :: navbar"></header>
+	<div class="error">
+		<p th:text="${message}"></p>
+	</div>
 	<div class="square">
 	 <h1 class = "square"> Work with us!</h1>
 	 
@@ -60,9 +63,7 @@
 		 
 	 	</div>
 	 	
-	 	<div>
-		<p th:text="${message}"></p>
-	</div>
+	 	
 		
 	</div>
 
