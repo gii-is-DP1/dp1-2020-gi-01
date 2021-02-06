@@ -1,9 +1,19 @@
 package com.project.TabernasSevilla.web;
 
+import static org.mockito.BDDMockito.given;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+
+import java.time.Duration;
+import java.time.Instant;
+import java.util.Optional;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -14,31 +24,31 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.project.TabernasSevilla.configuration.SecurityConfiguration;
 import com.project.TabernasSevilla.controller.BookingController;
-import com.project.TabernasSevilla.controller.DishController;
 import com.project.TabernasSevilla.domain.Actor;
 import com.project.TabernasSevilla.domain.Admin;
 import com.project.TabernasSevilla.domain.Booking;
-import com.project.TabernasSevilla.domain.Dish;
 import com.project.TabernasSevilla.domain.Establishment;
-import com.project.TabernasSevilla.domain.Seccion;
-import com.project.TabernasSevilla.forms.ActorForm;
-import com.project.TabernasSevilla.forms.RegisterForm;
-import com.project.TabernasSevilla.repository.*;
-import com.project.TabernasSevilla.security.Authority;
+import com.project.TabernasSevilla.repository.AbstractActorRepository;
+import com.project.TabernasSevilla.repository.AdminRepository;
+import com.project.TabernasSevilla.repository.BookingRepository;
+import com.project.TabernasSevilla.repository.CookRepository;
+import com.project.TabernasSevilla.repository.CurriculumRepository;
+import com.project.TabernasSevilla.repository.CustomerRepository;
+import com.project.TabernasSevilla.repository.EstablishmentRepository;
+import com.project.TabernasSevilla.repository.ManagerRepository;
+import com.project.TabernasSevilla.repository.OrderCancellationRepository;
+import com.project.TabernasSevilla.repository.OrderLogRepository;
+import com.project.TabernasSevilla.repository.OrderRepository;
+import com.project.TabernasSevilla.repository.RegKeyRepository;
+import com.project.TabernasSevilla.repository.ReviewRepository;
+import com.project.TabernasSevilla.repository.TableRepository;
+import com.project.TabernasSevilla.repository.WaiterRepository;
 import com.project.TabernasSevilla.security.AuthorityRepository;
 import com.project.TabernasSevilla.security.AuthorityService;
-import com.project.TabernasSevilla.security.User;
 import com.project.TabernasSevilla.security.UserService;
 import com.project.TabernasSevilla.service.ActorService;
 import com.project.TabernasSevilla.service.AdminService;
@@ -46,40 +56,11 @@ import com.project.TabernasSevilla.service.BookingService;
 import com.project.TabernasSevilla.service.DishService;
 import com.project.TabernasSevilla.service.EstablishmentService;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.doReturn;
 
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-import java.time.Duration;
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-
-import javax.validation.Valid;
-
-//@RunWith(SpringRunner.class)
-//@WebAppConfiguration
 @WebMvcTest(controllers = BookingController.class, excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class), excludeAutoConfiguration = SecurityConfiguration.class, includeFilters = {
 		@ComponentScan.Filter(Service.class), @ComponentScan.Filter(Repository.class) })
-//@MockBean(JpaMetamodelMappingContext.class) //para que evite buscar la database
+
 public class BookingControllerTest {
-
-	private static final int TEST_DISH_ID = 1;
-
-	// @Autowired
-	// private DishController dishController;
 	
 	@Mock
 	Actor actor;
@@ -153,14 +134,11 @@ public class BookingControllerTest {
 	@MockBean
 	private OrderLogRepository logga;
 
-	// POR ALGUN MOTIVO HE TENIDO QUE CREAR TODOS ESTOS MOCKBEANS PARA QUE FUNCIONE
-	// EL TEST SIMPLE DE HTTPRESPONSE
-
 	@Autowired
 	private MockMvc mockMvc;
 
 	@BeforeEach
-	void setup() { // inicializar establishment y dish
+	void setup() {
 
 		Booking b = new Booking();
 		b.setActor(new Admin());
@@ -213,9 +191,8 @@ public class BookingControllerTest {
 	void testSaveBooking() throws Exception {
 		
 		given(this.actorService.getPrincipal()).willReturn(actor); //he tenido que hacer todo esto porque actor no se puede construir con new Actor()
-		
 		mockMvc.perform(post("/booking/save").with(csrf())
-				//.param("establishment", "1")
+//				.param("establishment", "1")
 				.param("actor", "mockUser")
 				.param("placementDate",
 						"2021-02-08T14:56:00Z")
@@ -224,6 +201,25 @@ public class BookingControllerTest {
 				.param("contactPhone", "677889900")
 				.param("notes", "Que rico"))
 				.andExpect(status().is3xxRedirection())
+				.andExpect(view().name("redirect:/index"));
+	}
+	
+	@ExceptionHandler
+	@WithMockUser(value = "spring", roles = "ADMIN")
+	@Test
+	void testBadSaveBooking() throws Exception {
+		//SIEMPRE ME PIDE ESTABLISHMENT.TITLE EN LA VISTA
+		given(this.actorService.getPrincipal()).willReturn(actor); //he tenido que hacer todo esto porque actor no se puede construir con new Actor()
+		mockMvc.perform(post("/booking/save").with(csrf())
+//				.param("establishment", "1")
+				.param("actor", "mockUser")
+				.param("placementDate",
+						"2021-02-08T14:56:00Z")
+				.param("reservationDate", "")
+				.param("seating", "2")
+				.param("contactPhone", "677889900")
+				.param("notes", "Que rico"))
+				.andExpect(status().isOk())
 				.andExpect(view().name("redirect:/index"));
 	}
 

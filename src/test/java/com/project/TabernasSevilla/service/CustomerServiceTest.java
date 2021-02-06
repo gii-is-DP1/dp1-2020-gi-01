@@ -14,8 +14,6 @@ import org.springframework.stereotype.Service;
 import com.project.TabernasSevilla.domain.Customer;
 import com.project.TabernasSevilla.domain.Establishment;
 import com.project.TabernasSevilla.forms.RegisterForm;
-import com.project.TabernasSevilla.repository.CustomerRepository;
-import com.project.TabernasSevilla.security.UserService;
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
 public class CustomerServiceTest {

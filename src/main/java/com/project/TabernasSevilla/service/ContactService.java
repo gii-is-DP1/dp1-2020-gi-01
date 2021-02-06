@@ -1,7 +1,5 @@
 package com.project.TabernasSevilla.service;
 
-import java.io.File;
-import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;

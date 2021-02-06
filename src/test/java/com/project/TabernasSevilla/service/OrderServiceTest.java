@@ -11,9 +11,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Service;
 
-import com.project.TabernasSevilla.domain.Actor;
 import com.project.TabernasSevilla.domain.Dish;
-import com.project.TabernasSevilla.domain.Establishment;
 import com.project.TabernasSevilla.domain.RestaurantOrder;
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))

@@ -1,6 +1,11 @@
 package com.project.TabernasSevilla.web;
 
-import org.junit.jupiter.api.BeforeEach;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -12,50 +17,30 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.project.TabernasSevilla.configuration.SecurityConfiguration;
 import com.project.TabernasSevilla.controller.ContactController;
-import com.project.TabernasSevilla.controller.DishController;
-import com.project.TabernasSevilla.domain.Dish;
-import com.project.TabernasSevilla.domain.Establishment;
-import com.project.TabernasSevilla.domain.Seccion;
-import com.project.TabernasSevilla.forms.ContactForm;
-import com.project.TabernasSevilla.repository.*;
-import com.project.TabernasSevilla.security.Authority;
+import com.project.TabernasSevilla.repository.AdminRepository;
+import com.project.TabernasSevilla.repository.BookingRepository;
+import com.project.TabernasSevilla.repository.CookRepository;
+import com.project.TabernasSevilla.repository.CurriculumRepository;
+import com.project.TabernasSevilla.repository.CustomerRepository;
+import com.project.TabernasSevilla.repository.EstablishmentRepository;
+import com.project.TabernasSevilla.repository.ManagerRepository;
+import com.project.TabernasSevilla.repository.OrderCancellationRepository;
+import com.project.TabernasSevilla.repository.OrderLogRepository;
+import com.project.TabernasSevilla.repository.OrderRepository;
+import com.project.TabernasSevilla.repository.RegKeyRepository;
+import com.project.TabernasSevilla.repository.ReviewRepository;
+import com.project.TabernasSevilla.repository.TableRepository;
+import com.project.TabernasSevilla.repository.WaiterRepository;
 import com.project.TabernasSevilla.security.AuthorityRepository;
 import com.project.TabernasSevilla.security.AuthorityService;
-import com.project.TabernasSevilla.security.User;
 import com.project.TabernasSevilla.security.UserService;
 import com.project.TabernasSevilla.service.ActorService;
 import com.project.TabernasSevilla.service.DishService;
 import com.project.TabernasSevilla.service.EstablishmentService;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.doReturn;
-
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-
-import javax.validation.Valid;
 
 //@RunWith(SpringRunner.class)
 //@WebAppConfiguration
@@ -129,43 +114,33 @@ public class ContactControllerTest {
 	@MockBean
 	private OrderLogRepository logga;
 
-	// POR ALGUN MOTIVO HE TENIDO QUE CREAR TODOS ESTOS MOCKBEANS PARA QUE FUNCIONE
-	// EL TEST SIMPLE DE HTTPRESPONSE
-
 	@Autowired
 	private MockMvc mockMvc;
 
-
-
-	// obtain the list of all dishes
 	@WithMockUser(value = "spring")
 	@Test
 	void testCreateJoba() throws Exception {
 		mockMvc.perform(get("/contact/init")).andExpect(status().isOk()).andExpect(view().name("contact"));
 	}
 
-	// create new dish
 	@ExceptionHandler
 	@WithMockUser(value = "spring", roles = "ADMIN")
 	@Test
 	void testSaveJoba() throws Exception {
-		// Primero debo mockear un user con la autoridad ADMIN, porque la anotacion de
-		// arriba no me funciona
-
-		User mockUser = new User();
-		Set<Authority> ls = new HashSet<>();
-		ls.add(new Authority("ADMIN"));
-		mockUser.setAuthorities(ls);
-		mockUser.setUsername("mockito");
-		given(this.userService.getPrincipal()).willReturn(mockUser);
-
-		System.out.println("=========>" + this.userService.getPrincipal().getUsername());
-		System.out.println("=========>" + this.userService.getPrincipal().getAuthorities());
 
 		mockMvc.perform(post("/contact/save").with(csrf()).param("fullName", "Adrian Perez")
-				.param("email", "adrian@us.es").param("cv",
-						"https://static.wikia.nocookie.net/fishmans/images/f/f9/Uchunippon_front.png/revision/latest/scale-to-width-down/150?cb=20200116094151"))
+				.param("email", "adrian@us.es").param("cv",	"curriculum.pdf"))
 				.andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/index"));
+	}
+
+	@ExceptionHandler
+	@WithMockUser(value = "spring", roles = "ADMIN")
+	@Test
+	void testBadSaveJoba() throws Exception {
+
+		mockMvc.perform(post("/contact/save").with(csrf()).param("fullName", "Adrian Perez")
+				.param("email", "adrian@us.es").param("cv",""))
+				.andExpect(status().isOk()).andExpect(view().name("contact"));
 	}
 
 }

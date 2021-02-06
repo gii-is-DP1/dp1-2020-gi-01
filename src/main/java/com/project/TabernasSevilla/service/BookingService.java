@@ -17,7 +17,6 @@ import com.project.TabernasSevilla.domain.Booking;
 import com.project.TabernasSevilla.domain.Establishment;
 import com.project.TabernasSevilla.domain.RestaurantTable;
 import com.project.TabernasSevilla.repository.BookingRepository;
-import com.project.TabernasSevilla.security.User;
 
 @Service
 @Transactional

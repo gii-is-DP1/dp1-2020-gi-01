@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.transaction.Transactional;
 
@@ -19,7 +17,6 @@ import com.project.TabernasSevilla.domain.Dish;
 import com.project.TabernasSevilla.domain.Establishment;
 import com.project.TabernasSevilla.domain.RestaurantOrder;
 import com.project.TabernasSevilla.repository.OrderRepository;
-import com.project.TabernasSevilla.security.User;
 import com.project.TabernasSevilla.security.UserService;
 
 @Service

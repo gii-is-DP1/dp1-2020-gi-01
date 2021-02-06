@@ -1,5 +1,14 @@
 package com.project.TabernasSevilla.web;
 
+import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,65 +21,43 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.ui.Model;
-import org.springframework.util.Assert;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.project.TabernasSevilla.configuration.SecurityConfiguration;
-import com.project.TabernasSevilla.controller.DishController;
 import com.project.TabernasSevilla.controller.OrderController;
 import com.project.TabernasSevilla.domain.Admin;
 import com.project.TabernasSevilla.domain.Dish;
 import com.project.TabernasSevilla.domain.Establishment;
-import com.project.TabernasSevilla.domain.OrderCancellation;
-import com.project.TabernasSevilla.domain.OrderLog;
 import com.project.TabernasSevilla.domain.RestaurantOrder;
-import com.project.TabernasSevilla.domain.RestaurantTable;
 import com.project.TabernasSevilla.domain.Seccion;
-import com.project.TabernasSevilla.repository.*;
-import com.project.TabernasSevilla.security.Authority;
+import com.project.TabernasSevilla.repository.AdminRepository;
+import com.project.TabernasSevilla.repository.BookingRepository;
+import com.project.TabernasSevilla.repository.CookRepository;
+import com.project.TabernasSevilla.repository.CurriculumRepository;
+import com.project.TabernasSevilla.repository.CustomerRepository;
+import com.project.TabernasSevilla.repository.EstablishmentRepository;
+import com.project.TabernasSevilla.repository.ManagerRepository;
+import com.project.TabernasSevilla.repository.OrderCancellationRepository;
+import com.project.TabernasSevilla.repository.OrderLogRepository;
+import com.project.TabernasSevilla.repository.OrderRepository;
+import com.project.TabernasSevilla.repository.RegKeyRepository;
+import com.project.TabernasSevilla.repository.ReviewRepository;
+import com.project.TabernasSevilla.repository.TableRepository;
+import com.project.TabernasSevilla.repository.WaiterRepository;
 import com.project.TabernasSevilla.security.AuthorityRepository;
 import com.project.TabernasSevilla.security.AuthorityService;
-import com.project.TabernasSevilla.security.User;
 import com.project.TabernasSevilla.security.UserService;
 import com.project.TabernasSevilla.service.ActorService;
 import com.project.TabernasSevilla.service.DishService;
 import com.project.TabernasSevilla.service.EstablishmentService;
 import com.project.TabernasSevilla.service.OrderService;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.doReturn;
 
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-
-//@RunWith(SpringRunner.class)
-//@WebAppConfiguration
 @WebMvcTest(controllers = OrderController.class, excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class), excludeAutoConfiguration = SecurityConfiguration.class, includeFilters = {
 		@ComponentScan.Filter(Service.class), @ComponentScan.Filter(Repository.class) })
-//@MockBean(JpaMetamodelMappingContext.class) //para que evite buscar la database
+
 public class OrderControllerTest {
 
 	private static final int TEST_DISH_ID = 1;
-
-	// @Autowired
-	// private DishController dishController;
 
 	@MockBean
 	private UserService userService;
@@ -135,14 +122,13 @@ public class OrderControllerTest {
 	@MockBean
 	private OrderLogRepository logga;
 
-	// POR ALGUN MOTIVO HE TENIDO QUE CREAR TODOS ESTOS MOCKBEANS PARA QUE FUNCIONE
-	// EL TEST SIMPLE DE HTTPRESPONSE
+
 
 	@Autowired
 	private MockMvc mockMvc;
 
 	@BeforeEach
-	void setup() { // inicializar establishment y dish
+	void setup() { 
 
 		Dish d = new Dish("Mi plato", "Mi descripción",
 				"https://international-experience.es/wp-content/uploads/2019/08/comidas-mundo.jpg", 20.0, 4.0,
@@ -163,7 +149,7 @@ public class OrderControllerTest {
 		est.setOpeningHours("24/7");
 		est.setScore(2);
 		est.setDish(ls);
-		given(this.establishmentService.findById(TEST_DISH_ID)).willReturn(est); // importantisimo
+		given(this.establishmentService.findById(1)).willReturn(est); 
 
 		RestaurantOrder order = new RestaurantOrder();
 		order.setAddress("Calle Calamar");
@@ -172,8 +158,7 @@ public class OrderControllerTest {
 		order.setActor(new Admin());
 		order.setType(RestaurantOrder.DELIVERY);
 		order.setStatus(RestaurantOrder.OPEN);
-		given(this.orderService.findById(1)).willReturn(Optional.of(order)); // importantisimo
-
+		given(this.orderService.findById(1)).willReturn(Optional.of(order)); 
 	}
 
 	@WithMockUser(value = "spring")
