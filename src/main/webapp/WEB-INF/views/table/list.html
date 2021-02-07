@@ -83,9 +83,7 @@
 													<option th:if="${table.booking != null}" th:value="${table.booking.id}" th:utext="${table.booking.reservationDate}"></option>
 													<option th:if="${table.booking != null}" value="">--</option>
 													<option th:if="${table.booking == null}" value="">--</option>
-													<option th:each="booking : ${bookings}"
-													th:value="${booking.id}"
-													th:utext="${booking.reservationDate}" />
+													<option th:each="booking : ${bookings}" th:if="${table.seating gt booking.seating}" th:value="${booking.id}" th:utext="${booking.reservationDate}" />
 												</select>
 											</td>
 											<!-- SEAT -->
