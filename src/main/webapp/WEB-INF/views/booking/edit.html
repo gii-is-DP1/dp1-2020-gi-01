@@ -50,7 +50,7 @@
 						<div class="input-group form-group">
 							<span>Reservation date</span>
 							<input id="fechaBooking" type="datetime-local" min="" max="2021-01-01" class="form-control" placeholder="Reservation date"
-								name="reservationDate" th:field="*{reservationDate}">
+								name="reservationDate" required th:field="*{reservationDate}">
 							<ul>
 								<li th:each="err : ${#fields.errors('reservationDate')}"
 									th:text="${err}" />
