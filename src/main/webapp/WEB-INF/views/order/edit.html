@@ -419,9 +419,12 @@
 					th:object="${order}">
 
 					<input type="hidden" name="id" th:field="*{id}">
+					
+
+					
 					<!-- TYPE -->
 					<div class="wrapper row" style="padding: 5px;">
-						<span>Order type: </span>&nbsp; <select name="type" id="type"
+						<span>Order type: </span>&nbsp; <select name="type" id="type" onChange="doReload();"
 							form="orderForm">
 							<option th:each="typeStr : ${order.onlineTypes}"
 								th:value="${typeStr}" th:utext="${typeStr}" />
@@ -433,13 +436,36 @@
 
 
 					<!-- ADDRESS -->
-					<div class="wrapper row" style="padding: 5px;">
+					<div id="direccion" class="wrapper row" style="padding: 5px;">
 						<span>Address: </span>&nbsp; <input type="text" name="address"
-							required th:value="*{address}" />
+							 th:value="*{address}" />
 						<ul>
 							<li th:each="err : ${#fields.errors('address')}" th:text="${err}" />
 						</ul>
 					</div>
+					<script>
+						var tipo = document.getElementById("type").value;
+						var add = document.getElementById("direccion");
+						console.log(tipo);
+						
+						if(tipo == 'PICKUP'){
+							console.log("SI es pickup");
+							add.style.visibility = "hidden";
+						}else{
+							console.log("es delivery");
+						}
+						function doReload(){
+							var direccionEl = document.getElementById("direccion");
+							var visibility = direccionEl.style.visibility == 'hidden' ? '' : 'hidden';
+							direccionEl.style.visibility = visibility;
+							
+						}
+						function cambiarType(){
+							document.getElementById("type").value = tipo;
+						}
+						
+					</script>
+					
 
 					<!-- DISHES -->
 					<div class="wrapper row">
@@ -498,9 +524,11 @@
 
 
 	<footer th:replace="fragments/common :: footer"></footer>
+	<!-- 
 	<script th:src="@{/js/order.js}">
 		
 	</script>
+	 -->
 
 </body>
 
