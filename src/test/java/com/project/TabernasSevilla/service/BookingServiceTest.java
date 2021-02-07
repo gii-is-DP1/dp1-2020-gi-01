@@ -67,8 +67,6 @@ class BookingServiceTest {
 		b.setContactPhone("655778899");
 		
 		Establishment est = new Establishment();
-		est.setCapacity(10);
-		est.setCurrentCapacity(10);
 		
 		b.setEstablishment(est);
 		b.setNotes("Comida de navidad");

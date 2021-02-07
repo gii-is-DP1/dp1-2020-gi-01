@@ -44,15 +44,13 @@ public class TableService {
 			return this.tableRepo.save(table);
 		}
 		
+		public Long getCapacityAtRestaurant(Establishment est) {
+			return this.tableRepo.getEstablishmentCapacity(est.getId());
+		}
+		
 		//extra
 		public Long getOccupancyAtRestaurant(Establishment est) {
-			Long ocByEst = this.tableRepo.countOccupiedByEstablishment(est.getId());
-			Long dos = (long) (est.getCapacity()-est.getCurrentCapacity()); //la ocupación de un establishment es la capacidad total menos la actual
-			if(ocByEst == null) {
-				return dos;
-			}else {
-				return ocByEst;
-				}
+			return this.tableRepo.countOccupiedByEstablishment(est.getId());
 		}
 		
 		public Long countFreeTables(Establishment est) {

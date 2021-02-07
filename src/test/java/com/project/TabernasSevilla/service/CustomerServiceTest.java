@@ -30,8 +30,6 @@ public class CustomerServiceTest {
 		Establishment est = new Establishment();
 		est.setTitle("prueba");
 		est.setAddress("calle ");
-		est.setCapacity(10);
-		est.setCurrentCapacity(10);
 		est.setOpeningHours("24/7");
 		est.setScore(2);
 		Establishment estSaved = this.establishmentService.save(est);

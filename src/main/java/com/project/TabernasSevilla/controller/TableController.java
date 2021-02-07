@@ -37,6 +37,7 @@ public class TableController {
 			t.getBooking();
 		}
 		Long occupied = this.tableService.getOccupancyAtRestaurant(est);
+		Long capacity = this.tableService.getCapacityAtRestaurant(est);
 		Long freeTables = this.tableService.countFreeTables(est);
 		String estimate = this.tableService.estimateFreeTable(est);
 		List<Booking> bookings = this.bookingService.findUnallocatedByEstablishment(est);
@@ -44,7 +45,7 @@ public class TableController {
 		model.addAttribute("estimate", estimate);
 		model.addAttribute("totalTables", tables.size());
 		model.addAttribute("freeTables", freeTables);
-		model.addAttribute("freeTables", freeTables);
+		model.addAttribute("capacity", capacity);
 		model.addAttribute("occupied", occupied);
 		model.addAttribute("establishment", est);
 		model.addAttribute("tables", tables);
@@ -80,6 +81,9 @@ public class TableController {
 		}
 		if(num!=null) {
 			table.setNumber(num);
+		}
+		if(cap!=null) {
+			table.setSeating(cap);
 		}
 		if(bookingId!=null) {
 			Booking booking = this.bookingService.findById(bookingId).get();

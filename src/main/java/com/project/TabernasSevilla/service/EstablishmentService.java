@@ -59,7 +59,6 @@ public class EstablishmentService {
 		res.setManager(new ArrayList<Manager>());
 		res.setWaiter(new ArrayList<Waiter>());
 		res.setScore(0);
-		res.setCapacity(1);
 
 		return res;
 	}

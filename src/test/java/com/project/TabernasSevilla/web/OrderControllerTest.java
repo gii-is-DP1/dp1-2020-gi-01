@@ -150,8 +150,6 @@ public class OrderControllerTest {
 		est.setId(1);
 		est.setTitle("prueba");
 		est.setAddress("calle ");
-		est.setCapacity(10);
-		est.setCurrentCapacity(10);
 		est.setOpeningHours("24/7");
 		est.setScore(2);
 		est.setDish(ls);
