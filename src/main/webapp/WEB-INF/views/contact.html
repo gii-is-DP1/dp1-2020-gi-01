@@ -8,7 +8,7 @@
 </head>
 <body >
 	<header th:include="fragments/common :: navbar"></header>
-	<div class="error">
+	<div class="error" th:unless="${message==null}">
 		<p th:text="${message}"></p>
 	</div>
 	<div class="square">

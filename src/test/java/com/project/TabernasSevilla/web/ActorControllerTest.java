@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -25,6 +26,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.project.TabernasSevilla.configuration.SecurityConfiguration;
 import com.project.TabernasSevilla.controller.ActorController;
+import com.project.TabernasSevilla.domain.Actor;
+import com.project.TabernasSevilla.forms.ActorForm;
 import com.project.TabernasSevilla.repository.AdminRepository;
 import com.project.TabernasSevilla.repository.BookingRepository;
 import com.project.TabernasSevilla.repository.CookRepository;
@@ -54,6 +57,9 @@ public class ActorControllerTest {
 
 	@MockBean
 	private UserService userService;
+	
+	@Mock
+	Actor actor;
 
 	@MockBean
 	private ActorService actorService;
@@ -127,7 +133,9 @@ public class ActorControllerTest {
 	@WithMockUser(value = "spring")
 	@Test
 	void testEdit() throws Exception {
-		mockMvc.perform(get("/actor/edit")).andExpect(status().isOk()).andExpect(view().name("actor/view"));
+		given(this.actorService.getPrincipal()).willReturn(actor);
+		given(this.actorService.formatForm(actor)).willReturn(new ActorForm());
+		mockMvc.perform(get("/actor/edit")).andExpect(status().isOk()).andExpect(view().name("actor/edit"));
 	}
 
 	@ExceptionHandler

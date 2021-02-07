@@ -11,6 +11,7 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -24,6 +25,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.project.TabernasSevilla.configuration.SecurityConfiguration;
 import com.project.TabernasSevilla.controller.OrderController;
+import com.project.TabernasSevilla.domain.Actor;
 import com.project.TabernasSevilla.domain.Admin;
 import com.project.TabernasSevilla.domain.Dish;
 import com.project.TabernasSevilla.domain.Establishment;
@@ -45,6 +47,7 @@ import com.project.TabernasSevilla.repository.TableRepository;
 import com.project.TabernasSevilla.repository.WaiterRepository;
 import com.project.TabernasSevilla.security.AuthorityRepository;
 import com.project.TabernasSevilla.security.AuthorityService;
+import com.project.TabernasSevilla.security.User;
 import com.project.TabernasSevilla.security.UserService;
 import com.project.TabernasSevilla.service.ActorService;
 import com.project.TabernasSevilla.service.DishService;
@@ -58,7 +61,10 @@ import com.project.TabernasSevilla.service.OrderService;
 public class OrderControllerTest {
 
 	private static final int TEST_DISH_ID = 1;
-
+	
+	@Mock
+	private Actor actor;
+	
 	@MockBean
 	private UserService userService;
 
@@ -155,10 +161,16 @@ public class OrderControllerTest {
 		order.setAddress("Calle Calamar");
 		order.setEstablishment(this.establishmentService.findById(1));
 		order.setDish(new ArrayList<Dish>());
-		order.setActor(new Admin());
+		User user = new User();
+		user.setUsername("mocki");
+		given(actor.getUser()).willReturn(user);
+		actor.setUser(user);
+		order.setActor(actor);
 		order.setType(RestaurantOrder.DELIVERY);
 		order.setStatus(RestaurantOrder.OPEN);
-		given(this.orderService.findById(1)).willReturn(Optional.of(order)); 
+		given(this.orderService.findById(1)).willReturn(Optional.of(order));
+		
+		given(order.getActor().getUser()).willReturn(user);
 	}
 
 	@WithMockUser(value = "spring")

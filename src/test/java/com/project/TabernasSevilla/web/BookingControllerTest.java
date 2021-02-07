@@ -11,14 +11,20 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.Optional;
 
+import javax.servlet.ServletContext;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.shadow.com.univocity.parsers.common.Context;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.mock.web.MockServletContext;
 import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.stereotype.Repository;
@@ -64,6 +70,10 @@ public class BookingControllerTest {
 	
 	@Mock
 	Actor actor;
+	
+	@Mock
+	Booking booking2;
+	
 	
 	@MockBean
 	private UserService userService;
@@ -162,6 +172,7 @@ public class BookingControllerTest {
 		this.establishmentService.save(est);
 		given(this.establishmentService.findById(1)).willReturn(est); //importantisimo
 		given(this.bookingService.findById(1)).willReturn(Optional.of(b));
+		given(booking2.getEstablishment()).willReturn(est);
 		given(this.actorService.findById(1)).willReturn(new Admin());
 
 	}
@@ -210,8 +221,9 @@ public class BookingControllerTest {
 	void testBadSaveBooking() throws Exception {
 		//SIEMPRE ME PIDE ESTABLISHMENT.TITLE EN LA VISTA
 		given(this.actorService.getPrincipal()).willReturn(actor); //he tenido que hacer todo esto porque actor no se puede construir con new Actor()
+		
 		mockMvc.perform(post("/booking/save").with(csrf())
-//				.param("establishment", "1")
+				.param("establishment.title", "jeje")
 				.param("actor", "mockUser")
 				.param("placementDate",
 						"2021-02-08T14:56:00Z")
@@ -220,7 +232,7 @@ public class BookingControllerTest {
 				.param("contactPhone", "677889900")
 				.param("notes", "Que rico"))
 				.andExpect(status().isOk())
-				.andExpect(view().name("redirect:/index"));
+				.andExpect(view().name("booking/edit"));
 	}
 
 

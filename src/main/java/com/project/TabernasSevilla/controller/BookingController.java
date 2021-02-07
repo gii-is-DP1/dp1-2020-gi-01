@@ -61,7 +61,7 @@ public class BookingController {
 
 		if (binding.hasErrors()) {
 			model.addAttribute("booking", booking);
-			return this.createBookingEditModel(booking, model);
+			return this.createBookingEditModel(booking, model, null);
 		}
 		else {
 			try {
@@ -81,9 +81,7 @@ public class BookingController {
 		return "booking/deleted";
 	}
 
-	private String createBookingEditModel(final Booking booking, Model model) {
-		return this.createBookingEditModel(booking, model, null);
-	}
+
 
 	private String createBookingEditModel(Booking booking, Model model, String message) {
 		model.addAttribute(booking);
