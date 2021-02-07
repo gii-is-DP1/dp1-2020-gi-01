@@ -88,6 +88,7 @@
 													<option th:if="${table.booking == null}" value="">--</option>
 													<option th:each="booking : ${bookings}"
 													th:value="${booking.id}"
+													th:if="${table.seating gt booking.seating}"
 													th:utext="${#temporals.format(booking.reservationDate,'dd-MM-yyyy HH:mm')}" />
 												</select>
 											</td>
