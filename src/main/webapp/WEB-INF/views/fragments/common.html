@@ -14,13 +14,17 @@
 	<link
 		href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css"
 		rel="stylesheet" type="text/css" />
-	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/js/bootstrap.min.js"></script>
-	
-<!-- 	<script -->
-<!-- 		src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
+	<script type="text/javascript"
+		src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script type="text/javascript"
+		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+	<script type="text/javascript"
+		src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script type="text/javascript"
+		src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+	<!-- 	<script -->
+	<!-- 		src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
 	<script th:src="@{/js/bootstrap/bootstrap.min.js}"></script>
 </th:block>
 </head>
@@ -47,15 +51,16 @@
 						data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							Taverns </a> <!-- Location list -->
 						<div class="dropdown-menu">
-							
-								<a th:each="loc: ${@establishmentService.findAll()}" class="dropdown-item"
-									th:href="@{/location/view?id={id}(id=${loc.id})}"
-									th:text="${loc.title}"></a>
-						
+
+							<a th:each="loc: ${@establishmentService.findAll()}"
+								class="dropdown-item"
+								th:href="@{/location/view?id={id}(id=${loc.id})}"
+								th:text="${loc.title}"></a>
+
 						</div></li>
 					<li class="nav-item "><a class="nav-link"
 						th:href="@{/contact/init}"> Work with us </a></li>
-					
+
 					<!-- PROMOTIONS 
 					<li class="nav-item "><a class="nav-link"
 						th:href="@{/promotions}"> Promotions </a></li>
@@ -63,28 +68,33 @@
 				</ul>
 				<ul class="navbar-nav ">
 					<!-- only show if authenticated -->
-					<li class="nav-item active" sec:authorize="isAuthenticated()">
-						<a class="nav-link" th:href="@{/order/}"> <i
-							class="fa fa-shopping-cart"></i>
-					</a>
+					<li class="nav-item active"
+						sec:authorize="hasAuthority('CUSTOMER')"><a class="nav-link"
+						th:href="@{/order/}"> <i class="fa fa-shopping-cart"></i>
+					</a></li>
+
+					<!-- only show if authenticated -->
+					<li class="nav-item active" sec:authorize="hasAuthority('ADMIN')">
+						<a class="nav-link"><i class="fas fa-crown"></i></a>
+
+
 					</li>
 					<li class="nav-item dropdown" sec:authorize="isAuthenticated()">
-						<!-- display username --> 
-						<a sec:authentication="name"
+						<!-- display username --> <a sec:authentication="name"
 						class="nav-link dropdown-toggle" role="button"
 						data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						</a>
-						<!--Display profile picture No funciona porque getPrincipal coge User, y user no tiene get Avatar 
+					</a> <!--Display profile picture No funciona porque getPrincipal coge User, y user no tiene get Avatar 
 						
 						<img th:src="${#authentication.getPrincipal().getAvatar()}" class="img-fluid"
 							style="border-radius: 50%; padding: 80px;" />
 					     -->
-					    
+
 						<div class="dropdown-menu dropdown-menu-right">
 							<!-- link to profile -->
-							<a class="dropdown-item" th:href="@{/actor/profile}">Profile</a> <a
-								class="dropdown-item" th:href="@{/booking/}">My reservations</a>
-							<a class="dropdown-item" th:href="@{/order/open}">My orders</a>
+							<a class="dropdown-item" th:href="@{/actor/profile}">Profile</a>
+							<a class="dropdown-item" th:href="@{/booking/}">My
+								reservations</a> <a class="dropdown-item" th:href="@{/order/open}">My
+								orders</a>
 							<!-- TABLE ACTIONS -->
 
 
@@ -136,9 +146,9 @@
 
 
 		</div>
-		
-		<br><br>
-		<span class="derecha" style="font-size: 30px; cursor: pointer; display: none"
+
+		<br> <br> <span class="derecha"
+			style="font-size: 30px; cursor: pointer; display: none"
 			onclick="openNav()">&#9776; </span>
 
 		<script>
@@ -152,10 +162,8 @@
 	</header>
 
 	<!-- Footer -->
-	<footer class="bg-white" th:fragment="footer" style=" margin-top:30px;
-    bottom: 0;
-  	width: 100%;
-  	min-height: 100px;">
+	<footer class="bg-white" th:fragment="footer"
+		style="margin-top: 30px; bottom: 0; width: 100%; min-height: 100px;">
 		<div class="footer">
 			<div class="row py-3">
 				<div class="col-lg-2 col-md-6 mb-4 mb-lg-0">
@@ -199,10 +207,12 @@
 					</ul>
 				</div>
 				<div class="col-lg-4 col-md-6 mb-lg-0">
-					<h6 class="text-uppercase font-weight-bold mb-4">
-						Office Address</h6>
-					<p class="text-muted mb-4">Hytasa Avenue number 12 Roof 3
-Door 19<br>  41005 Seville - Spain</p>
+					<h6 class="text-uppercase font-weight-bold mb-4">Office
+						Address</h6>
+					<p class="text-muted mb-4">
+						Hytasa Avenue number 12 Roof 3 Door 19<br> 41005 Seville -
+						Spain
+					</p>
 					<ul class="list-inline mt-4">
 						<li class="list-inline-item"><a href="#" target="_blank"
 							title="twitter"><i class="fab fa-2x fa-twitter"></i></a></li>
@@ -221,7 +231,8 @@ Door 19<br>  41005 Seville - Spain</p>
 		<hr class="p-0 m-0 b-0">
 		<div class="bg-light py-2">
 			<div class="container text-center">
-				<p class="text-muted mb-0 py-2">© 2020 Tabernas Sevilla. All rights reserved.</p>
+				<p class="text-muted mb-0 py-2">© 2020 Tabernas Sevilla. All
+					rights reserved.</p>
 			</div>
 		</div>
 	</footer>
