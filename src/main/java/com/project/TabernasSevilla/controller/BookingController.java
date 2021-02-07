@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.project.TabernasSevilla.domain.Booking;
 import com.project.TabernasSevilla.domain.Establishment;
@@ -56,7 +57,7 @@ public class BookingController {
 	}
 
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public String saveBooking(@ModelAttribute @Valid final Booking booking, final BindingResult binding,
+	public String saveBooking(@ModelAttribute @Valid final Booking booking, final BindingResult binding, RedirectAttributes reA,
 			Model model) {
 
 		if (binding.hasErrors()) {
@@ -66,6 +67,7 @@ public class BookingController {
 		else {
 			try {
 				this.bookService.register(booking,  this.actorService.getPrincipal());
+				reA.addFlashAttribute("message", "Booking registered");
 				return "redirect:/index";
 			} catch (final Exception e) {
 				return this.createBookingEditModel(booking, model, e.getMessage());

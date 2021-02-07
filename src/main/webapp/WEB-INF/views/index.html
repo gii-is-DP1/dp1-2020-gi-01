@@ -11,11 +11,19 @@
 </head>
 <body>
 	<header th:include="fragments/common :: navbar"></header>
+	
+	<div class="info" id="info" th:unless=${message==null}>
+		<span th:text="${message}"></span> </div>
+	
+	<div class="container card">
+	<h1 align=center style="color: black;">Welcome to tabernas Sevilla</h1>
+	<br>
+	<h2 align=center style="font-family: 'Courier', cursive; font-size: 15pt;">A place for lovers of good food. Start by choosing your favorite restaurant</h2>
+		</div>
 
-	<h1 align=center>Welcome to tabernas Sevilla</h1>
-	<h2 align=center>A place for lovers of good food. Start by
-		choosing your favorite restaurant</h2>
-
+	<br>
+	<br>
+	<img src="https://www.arengalia.es/images/logo-blanco-svg.svg" style=" max-width: 20%; margin-left: 40%; margin-right: 30%;"> 
 	<br>
 	<br>
 	<br>
@@ -45,7 +53,9 @@
 		</div>
 
 	</div>
-
+	<br>
+	<br>
+	<br>
 
 
 	<footer th:replace="fragments/common :: footer"></footer>
