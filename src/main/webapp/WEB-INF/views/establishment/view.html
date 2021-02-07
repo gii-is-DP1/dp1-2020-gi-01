@@ -51,12 +51,10 @@
 						<div>
 							<span th:inline="text">[[${estimate}]]</span>
 						</div>
-						
-						<div>
+						<div sec:authorize="hasAnyAuthority('COOK','ADMIN','CUSTOMER','MANAGER','WAITER')">
 							<span th:inline="text">Current occupancy: [[${occupied}]]/[[${establishment.capacity}]]</span>
-
-							
 						</div>
+						
 						<div sec:authorize="hasAnyAuthority('ADMIN','MANAGER','WAITER')">
 							<a th:href="@{/table/establishment/{id}(id=${establishment.id})}">
 
