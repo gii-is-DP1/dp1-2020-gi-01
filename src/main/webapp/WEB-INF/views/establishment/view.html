@@ -48,9 +48,15 @@
 							<a th:href="@{/booking/init/{id}(id=${establishment.id})}" role="button" class="btn btn-secondary" aria-pressed="true">Make reservation</a>
 						</div>
 						
-						<div>
-							<span th:inline="text">[[${estimate}]]</span>
+						<div th:if="${estimate!=null}">
+							<b>Estimated wait:</b>&nbsp;<span th:text="${estimate}"></span>
 						</div>
+						<div th:if="${estimate==null}">
+							<span><b>Table available right now</b></span>
+						</div>
+<!-- 						<div> -->
+<!-- 							<span th:inline="text">[[${estimate}]]</span> -->
+<!-- 						</div> -->
 						<div sec:authorize="!hasAnyAuthority('COOK','ADMIN','CUSTOMER','MANAGER','WAITER')">
 							<span th:inline="text">Log in to see the occupancy</span>
 						</div>

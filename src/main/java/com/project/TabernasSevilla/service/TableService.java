@@ -57,9 +57,9 @@ public class TableService {
 			return this.tableRepo.countFreeTables(est.getId());
 		}
 		
-		//hard coded, ugly way
-		public String estimateFreeTable(Establishment est) {
-			String res="";
+		//estimate returned in millis
+		public Long estimateFreeTable(Establishment est) {
+			Long res;
 			List<RestaurantTable> tables = this.findByEstablishment(est);
 			RestaurantTable oldest = null;
 			Duration oldestDuration = Duration.ofMinutes(0);
@@ -77,12 +77,12 @@ public class TableService {
 				}
 			}
 			if(oldest == null) {
-				res = "Table available right now";
+				res = null;
 			}else {
 				Instant estimate = oldest.getHourSeated().plus(1,ChronoUnit.HOURS);
 				Duration dur = Duration.between(Instant.now(), estimate);
 				//TODO: parse this shit string
-				res = "Estimated wait of: "+dur.toString();
+				res = dur.toMillis();
 			}
 			return res;
 		}

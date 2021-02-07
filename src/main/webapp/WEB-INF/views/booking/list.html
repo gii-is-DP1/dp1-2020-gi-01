@@ -32,11 +32,11 @@
 											<td th:text="${booking.establishment.title}">
 											</td>
 											<!-- RESERVATION DATE -->
-											<td th:text="${booking.reservationDate}"></td>
+											<td th:text="${#temporals.format(booking.reservationDate,'dd-MM-yyyy HH:mm')}"></td>
 											<!-- SEATING -->
 											<td th:text="${booking.seating}"></td>
 											<!-- PLACEMENT -->
-											<td th:text="${booking.placementDate}"></td>
+											<td th:text="${#temporals.format(booking.placementDate,'dd-MM-yyyy HH:mm')}"></td>
 											<!-- ACTIONS -->
 											<td th:text="${booking.notes}"></td>
 											<td><a href="#"><i

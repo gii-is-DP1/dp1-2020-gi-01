@@ -37,8 +37,11 @@
 										[[${freeTables}]]/[[${totalTables}]]
 									</span>
 								</div>
-								<div>
-									<span th:inline="text"> <b>[[${estimate}]]</b></span>
+								<div th:if="${estimate!=null}">
+									<b>Estimated wait:</b>&nbsp;<span th:text="${estimate}"></span>
+								</div>
+								<div th:if="${estimate==null}">
+									<span>Table available right now</span>
 								</div>
 								<!-- CREATE TABLE -->
 								<div>
@@ -68,7 +71,7 @@
 											<td><input type="number" class="count" name="num"
 												th:value="${table.number}" th:form="form + ${table.id}">
 											</td>
-											<td th:text="${table.hourSeated}"></td>
+											<td th:text="${#temporals.format(table.hourSeated,'dd-MM-yyyy HH:mm')}"></td>
 											<!-- CAPACITY -->
 											<td><input type="number" class="count" name="cap"
 												th:value="${table.seating}" th:form="form + ${table.id}">
@@ -80,12 +83,12 @@
 											<!-- RESERVATION -->
 											<td>
 												<select name="bookingId" th:form="form + ${table.id}">
-													<option th:if="${table.booking != null}" th:value="${table.booking.id}" th:utext="${table.booking.reservationDate}"></option>
+													<option th:if="${table.booking != null}" th:value="${table.booking.id}" th:utext="${#temporals.format(table.booking.reservationDate,'dd-MM-yyyy HH:mm')}"></option>
 													<option th:if="${table.booking != null}" value="">--</option>
 													<option th:if="${table.booking == null}" value="">--</option>
 													<option th:each="booking : ${bookings}"
 													th:value="${booking.id}"
-													th:utext="${booking.reservationDate}" />
+													th:utext="${#temporals.format(booking.reservationDate,'dd-MM-yyyy HH:mm')}" />
 												</select>
 											</td>
 											<!-- SEAT -->

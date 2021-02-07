@@ -1,8 +1,10 @@
 package com.project.TabernasSevilla.controller;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 
+import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -40,7 +42,7 @@ public class TableController {
 		Long occupied = this.tableService.getOccupancyAtRestaurant(est);
 		Long capacity = this.tableService.getCapacityAtRestaurant(est);
 		Long freeTables = this.tableService.countFreeTables(est);
-		String estimate = this.tableService.estimateFreeTable(est);
+		String estimate = this.tableService.estimateFreeTable(est) == null ? null : DurationFormatUtils.formatDuration(this.tableService.estimateFreeTable(est), "HH:mm", true);
 		List<Booking> bookings = this.bookingService.findUnallocatedByEstablishment(est);
 		model.addAttribute("bookings", bookings);
 		model.addAttribute("estimate", estimate);
@@ -134,7 +136,7 @@ public class TableController {
 		Long occupied = this.tableService.getOccupancyAtRestaurant(est);
 		Long capacity = this.tableService.getCapacityAtRestaurant(est);
 		Long freeTables = this.tableService.countFreeTables(est);
-		String estimate = this.tableService.estimateFreeTable(est);
+		String estimate = this.tableService.estimateFreeTable(est) == null ? null : DurationFormatUtils.formatDuration(this.tableService.estimateFreeTable(est), "HH:mm", true);
 		List<Booking> bookings = this.bookingService.findUnallocatedByEstablishment(est);
 		model.addAttribute("bookings", bookings);
 		model.addAttribute("estimate", estimate);
