@@ -20,11 +20,6 @@ public class AdminController {
 	@Autowired
 	private AuthorityService authService;
 
-	// got to control panel
-	@GetMapping("/control")
-	public String controlPanel() {
-		return "admin/controlpanel";
-	}
 	
 	@GetMapping("/employees/key")
 	public String createKey() {

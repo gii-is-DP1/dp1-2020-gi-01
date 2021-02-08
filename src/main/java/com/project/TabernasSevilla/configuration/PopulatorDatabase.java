@@ -60,7 +60,6 @@ public class PopulatorDatabase implements CommandLineRunner {
 
 		Dish dEntrantes1 = new Dish("Gulas al Ajillo", "Exquisita tosta crujiente con gulas de Cádiz",
 				"http://localhost:8080/images/gulas.jpg", 5.0, 3.0, Seccion.ENTRANTES, true, allergensFromD);
-
 		Dish dBebidas1 = new Dish("Coca-Cola", "Refrescante bebida de cola", "http://localhost:8080/images/coke.jpg",
 				1.5, 0.0, Seccion.BEBIDAS, true, null);
 

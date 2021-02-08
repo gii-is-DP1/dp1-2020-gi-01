@@ -116,12 +116,6 @@ public class AdminControllerTest {
 	
 	@WithMockUser(value = "spring")
 	@Test
-	void testControlPanel() throws Exception {
-		mockMvc.perform(get("/admin/control")).andExpect(status().isOk()).andExpect(view().name("admin/controlpanel"));
-	}
-	
-	@WithMockUser(value = "spring")
-	@Test
 	void testCreateKey() throws Exception {
 		mockMvc.perform(get("/admin/employees/key")).andExpect(status().isOk()).andExpect(view().name("admin/employees/keys"));
 	}
