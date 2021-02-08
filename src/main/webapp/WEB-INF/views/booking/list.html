@@ -17,11 +17,12 @@
 								<thead>
 									<tr>
 										<th>Restaurant</th>
+										<th>Placement date</th>
 										<th>Reservation date</th>
 										<th>Seating</th>
-										<th>Placement date</th>
 										<th>Notes</th>
-										<th></th>
+										<th>To name</th>
+
 										<th></th>
 									</tr>
 								</thead>
@@ -31,16 +32,18 @@
 											<!-- ESTABLISHMENT -->
 											<td th:text="${booking.establishment.title}">
 											</td>
+											<!-- PLACEMENT -->
+											<td th:text="${#temporals.format(booking.placementDate,'dd-MM-yyyy HH:mm')}"></td>
 											<!-- RESERVATION DATE -->
 											<td th:text="${#temporals.format(booking.reservationDate,'dd-MM-yyyy HH:mm')}"></td>
 											<!-- SEATING -->
 											<td th:text="${booking.seating}"></td>
-											<!-- PLACEMENT -->
-											<td th:text="${#temporals.format(booking.placementDate,'dd-MM-yyyy HH:mm')}"></td>
 											<!-- ACTIONS -->
 											<td th:text="${booking.notes}"></td>
+											<td th:text="${booking.actor.name + ' ' + booking.actor.surname}"></td>
 											<td><a href="#"><i
 													class="fa fa-pencil" aria-hidden="true"></i></a></td>
+											
 													
 											<td><a th:href="@{/booking/{id}/delete(id=${booking.id})}"><i
 													class="fa fa-times" aria-hidden="true"></i></a></td>

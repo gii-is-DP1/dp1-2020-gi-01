@@ -106,7 +106,7 @@
 						<div class="input-group form-group">
 							<span>Notes</span> <textarea 
 								class="form-control" name="notes" rows="8" cols="3"
-								th:field="*{notes}" form="bookingForm"></textarea>
+								th:field="*{notes}" form="bookingForm" maxlength="50"></textarea>
 							<ul>
 								<li th:each="err : ${#fields.errors('notes')}"
 									th:text="${err}" />

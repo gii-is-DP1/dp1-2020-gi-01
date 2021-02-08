@@ -108,6 +108,8 @@ public class IndexControllerTest {
 
 	@Autowired
 	private MockMvc mockMvc;
+	
+	
 
 
 	@WithMockUser(value = "spring")
@@ -116,7 +118,7 @@ public class IndexControllerTest {
 		mockMvc.perform(get("/index")).andExpect(status().isOk()).andExpect(view().name("index"));
 	}
 
-	@WithMockUser(value = "spring")
+
 	@Test
 	void testGetLoginPage() throws Exception {
 		mockMvc.perform(get("/login")).andExpect(status().isOk()).andExpect(view().name("login"));

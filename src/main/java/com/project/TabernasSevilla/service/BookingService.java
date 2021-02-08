@@ -101,9 +101,12 @@ public class BookingService {
 		//TODO: esto no tiene sentido
 		//Assert.isTrue(!((tableService.getOccupancyAtRestaurant((booking.getEstablishment())) == (long) booking.getEstablishment().getCapacity()) && 
 		//		(booking.getReservationDate().atZone(ZoneId.systemDefault()).getDayOfWeek() == Instant.now().atZone(ZoneId.systemDefault()).getDayOfWeek())), "The restaurant is currently full, sorry for the inconvenience");
-		
+		booking.setReservationDate(booking.getReservationDate().minus(1, ChronoUnit.HOURS));
 		Assert.isTrue(free.compareTo(booking.getReservationDate())<0,"Cannot book for this time: restaurant is too busy");
 		Assert.isTrue(min.compareTo(booking.getReservationDate())<0,"Cannot book for this time: booking notice too short");
+		System.out.println("===== HORA DE RESERVA: " + booking.getReservationDate().atZone(ZoneId.systemDefault()).getHour());
+		Assert.isTrue(booking.getReservationDate().atZone(ZoneId.systemDefault()).getHour() >= 10 , "Out of restaurant hours (10:00 to 23:59)");
+		Assert.isTrue(booking.getReservationDate().atZone(ZoneId.systemDefault()).getHour() <= 23 , "Out of restaurant hours (10:00 to 23:59)");
 		booking.setActor(actor);
 		booking.setPlacementDate(Instant.now());
 		Booking saved = this.save(booking);
