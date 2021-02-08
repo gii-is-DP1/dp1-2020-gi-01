@@ -23,7 +23,7 @@
 					<table class="table">
 						<thead>
 							<tr>
-
+								<th></th>
 								<th>Name</th>
 								<th>Score</th>
 								<th>Price</th>
@@ -32,7 +32,7 @@
 							</tr>
 						</thead>
 						<tbody>
-
+	
 							<th:block th:each="dish : ${dishes}">
 								<tr
 									th:if="${dish.isVisible == true and dish.seccion.name() == 'ENTRANTES'}">

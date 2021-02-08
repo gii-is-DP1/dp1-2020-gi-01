@@ -201,7 +201,6 @@ public class BookingControllerTest {
 		
 		given(this.actorService.getPrincipal()).willReturn(actor); //he tenido que hacer todo esto porque actor no se puede construir con new Actor()
 		mockMvc.perform(post("/booking/save").with(csrf())
-//				.param("establishment", "1")
 				.param("actor", "mockUser")
 				.param("placementDate",
 						"2021-02-08T14:56:00Z")
@@ -218,7 +217,7 @@ public class BookingControllerTest {
 	@Test
 	void testBadSaveBooking() throws Exception {
 		//SIEMPRE ME PIDE ESTABLISHMENT.TITLE EN LA VISTA
-		given(this.actorService.getPrincipal()).willReturn(actor); //he tenido que hacer todo esto porque actor no se puede construir con new Actor()
+		given(this.actorService.getPrincipal()).willReturn(actor); 
 		
 		mockMvc.perform(post("/booking/save").with(csrf())
 				.param("establishment.title", "jeje")

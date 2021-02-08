@@ -6,21 +6,42 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
+import java.io.File;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+import static org.mockito.BDDMockito.given;
+
+import org.junit.Rule;
 import org.junit.jupiter.api.Test;
+import org.junit.rules.TemporaryFolder;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.TabernasSevilla.configuration.SecurityConfiguration;
 import com.project.TabernasSevilla.controller.ContactController;
+import com.project.TabernasSevilla.domain.Curriculum;
+import com.project.TabernasSevilla.forms.ContactForm;
 import com.project.TabernasSevilla.repository.AdminRepository;
 import com.project.TabernasSevilla.repository.BookingRepository;
 import com.project.TabernasSevilla.repository.CookRepository;
@@ -39,6 +60,7 @@ import com.project.TabernasSevilla.security.AuthorityRepository;
 import com.project.TabernasSevilla.security.AuthorityService;
 import com.project.TabernasSevilla.security.UserService;
 import com.project.TabernasSevilla.service.ActorService;
+import com.project.TabernasSevilla.service.ContactService;
 import com.project.TabernasSevilla.service.DishService;
 import com.project.TabernasSevilla.service.EstablishmentService;
 
@@ -49,10 +71,12 @@ import com.project.TabernasSevilla.service.EstablishmentService;
 //@MockBean(JpaMetamodelMappingContext.class) //para que evite buscar la database
 public class ContactControllerTest {
 
-	private static final int TEST_DISH_ID = 1;
-
 	// @Autowired
 	// private DishController dishController;
+	@Autowired
+    private WebApplicationContext webApplicationContext;
+	@Rule
+    public TemporaryFolder folder = new TemporaryFolder();
 
 	@MockBean
 	private UserService userService;
@@ -68,6 +92,9 @@ public class ContactControllerTest {
 
 	@MockBean
 	private AuthorityService authService;
+	
+	@MockBean
+	private ContactService contactService;
 
 	@MockBean
 	private ReviewRepository reviewRepository;
@@ -127,20 +154,25 @@ public class ContactControllerTest {
 	@WithMockUser(value = "spring", roles = "ADMIN")
 	@Test
 	void testSaveJoba() throws Exception {
-
-		mockMvc.perform(post("/contact/save").with(csrf()).param("fullName", "Adrian Perez")
-				.param("email", "adrian@us.es").param("cv",	"curriculum.pdf"))
+		
+        MockMultipartFile jsonFile = new MockMultipartFile("json", "", "application/json", "{\"json\": \"someValue\"}".getBytes());
+		
+		MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+		mockMvc.perform(MockMvcRequestBuilders.multipart("/contact/save")
+				.file("cv", jsonFile.getBytes())
+				.param("fullName","Mokck dsf")
+				.param("email", "email@sdf.com"))
 				.andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/index"));
 	}
 
 	@ExceptionHandler
 	@WithMockUser(value = "spring", roles = "ADMIN")
 	@Test
-	void testBadSaveJoba() throws Exception {
+	void testBadSaveJoba() throws Exception { //no se le pasa el fichero CV y da error
 
 		mockMvc.perform(post("/contact/save").with(csrf()).param("fullName", "Adrian Perez")
 				.param("email", "adrian@us.es").param("cv",""))
-				.andExpect(status().isOk()).andExpect(view().name("contact"));
+				.andExpect(status().isOk()).andExpect(view().name("error"));
 	}
 
 }

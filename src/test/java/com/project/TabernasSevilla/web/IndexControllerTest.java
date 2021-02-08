@@ -118,12 +118,6 @@ public class IndexControllerTest {
 		mockMvc.perform(get("/index")).andExpect(status().isOk()).andExpect(view().name("index"));
 	}
 
-
-	@Test
-	void testGetLoginPage() throws Exception {
-		mockMvc.perform(get("/login")).andExpect(status().isOk()).andExpect(view().name("login"));
-	}
-
 	@WithMockUser(value = "spring")
 	@Test
 	void testLoginError() throws Exception {

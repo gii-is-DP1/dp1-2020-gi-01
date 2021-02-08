@@ -137,16 +137,6 @@ public class OrderCancellationControllerTest {
 
 	@BeforeEach
 	void setup() { 
-		RestaurantOrder order = new RestaurantOrder();
-		order.setAddress("Calle Calamar");
-		order.setEstablishment(this.establishmentService.findById(1));
-		order.setDish(new ArrayList<Dish>());
-		order.setActor(new Admin());
-		order.setType(RestaurantOrder.DELIVERY);
-		order.setStatus(RestaurantOrder.OPEN);
-
-		given(this.orderService.findById(1)).willReturn(Optional.of(order));
-		given(this.orderService.findById(11)).willReturn(Optional.of(order)); 
 		
 	}
 	
@@ -167,15 +157,9 @@ public class OrderCancellationControllerTest {
 	@WithMockUser(value = "spring", roles = "ADMIN") 
 	@Test
 	void testSaveOrderCancel() throws Exception{
-		User mockUser = new User();
-		Set<Authority> ls = new HashSet<>();
-		ls.add(new Authority("ADMIN"));
-		mockUser.setAuthorities(ls);
-		mockUser.setUsername("mockito");
-		given(this.userService.getPrincipal()).willReturn(mockUser);
-				
-		mockMvc.perform(post("/order/cancel/save")
-							.with(csrf()))
+		mockMvc.perform(post("/order/cancel/save").with(csrf())
+							.param("reason", "sample")
+							.param("placementDate", "2021-02-08T14:56:00Z"))
 						.andExpect(status().is3xxRedirection())
 						.andExpect(view().name("redirect:/index"));
 	}
