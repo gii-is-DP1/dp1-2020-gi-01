@@ -44,7 +44,7 @@ public class PopulatorDatabase implements CommandLineRunner {
 		// Creo el objeto
 
 		Allergen a1 = new Allergen("GLUTEN", "GLU",
-				"https://cdn.icon-icons.com/icons2/852/PNG/512/IconoAlergenoGluten-Gluten_icon-icons.com_67600.png");
+				"https://cdn3.iconfinder.com/data/icons/food-product-labels-color/128/contains-gluten-512.png");
 		Allergen a2 = new Allergen("LACTOSA", "LACTO", "https://www.flaticon.es/svg/static/icons/svg/1624/1624652.svg");
 
 		// Guardo el objeto en BBDD

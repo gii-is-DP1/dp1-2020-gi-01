@@ -16,12 +16,11 @@ import com.project.TabernasSevilla.repository.ReviewRepository;
 @Service
 @Transactional
 public class DishService {
- 
+
 	private DishRepository dishRepository;
-	
- 
+
 	private ReviewRepository reviewRepository;
-	
+
 	@Autowired
 	public DishService(DishRepository dishRepository, ReviewRepository reviewRepository) {
 		super();
@@ -41,27 +40,13 @@ public class DishService {
 		return dishRepository.findById(id);
 	}
 
-	public Dish create() {
-		Dish dish = new Dish();
-		return dish;
-	}
 	/*
-	public void actualizarScore(Dish dish) {
-		List<Review> ls = reviewRepository.findByDish(dish.getId());
-		//List<Review> ls = new ArrayList<Review>();
-		Double rat = 0.0;
-		if(!(ls.isEmpty())) {
-			Integer n = 0;
-			Double suma = 0.0;
-			for(Review rev :ls) {
-				n++;
-				suma = suma + rev.getRating();
-			}
-			rat = suma/n;
-		}
-		dish.setScore(rat);
-	}
-	*/
+	 * public void actualizarScore(Dish dish) { List<Review> ls =
+	 * reviewRepository.findByDish(dish.getId()); //List<Review> ls = new
+	 * ArrayList<Review>(); Double rat = 0.0; if(!(ls.isEmpty())) { Integer n = 0;
+	 * Double suma = 0.0; for(Review rev :ls) { n++; suma = suma + rev.getRating();
+	 * } rat = suma/n; } dish.setScore(rat); }
+	 */
 
 	public Dish save(Dish dish) {
 		Dish result = null;
@@ -74,19 +59,18 @@ public class DishService {
 			result.setName(dish.getName());
 			result.setPrice(dish.getPrice());
 
-
 			try {
 				List<Review> ls = reviewRepository.findByDish(dish.getId());
-				//List<Review> ls = new ArrayList<Review>();
+				// List<Review> ls = new ArrayList<Review>();
 				Double rat = 0.0;
-				if(!(ls.isEmpty())) {
+				if (!(ls.isEmpty())) {
 					Integer n = 0;
 					Double suma = 0.0;
-					for(Review rev :ls) {
+					for (Review rev : ls) {
 						n++;
 						suma = suma + rev.getRating();
 					}
-					rat = suma/n;
+					rat = suma / n;
 				}
 				result.setScore(rat);
 			} catch (Exception e) {
@@ -112,4 +96,3 @@ public class DishService {
 	}
 
 }
-

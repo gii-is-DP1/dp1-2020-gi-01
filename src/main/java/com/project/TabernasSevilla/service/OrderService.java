@@ -56,16 +56,6 @@ public class OrderService {
 		return this.orderRepo.save(order);
 	}
 	
-	public RestaurantOrder create() {
-		RestaurantOrder res = new RestaurantOrder();
-		return res;
-	}
-	
-	public void delete(RestaurantOrder order) {
-		Assert.isTrue(order.getActor().equals(this.actorService.getPrincipal()),"Order could not be deleted");
-		this.orderRepo.delete(order);
-	}
-	
 	//OTHER METHODS
 	
 //	//Create order for booking and set type
@@ -120,7 +110,7 @@ public class OrderService {
 	}
 	
 	public RestaurantOrder initialize(Establishment est) {
-		RestaurantOrder order = this.create();
+		RestaurantOrder order = new RestaurantOrder();
 		Actor actor = this.actorService.getPrincipal();
 		order.setActor(actor);
 		order.setDish(new ArrayList<Dish>());
@@ -144,18 +134,11 @@ public class OrderService {
 		
 		
 		//no puedes tener mas de 2 pedidos en activo
-		Integer n2 = 0;
-		for(RestaurantOrder o: orderRepo.findActiveByActor(order.getActor().getId()) ) {
-			n2++;
-		}
+		Integer n2 = orderRepo.findActiveByActor(order.getActor().getId()).size();
+
 		Assert.isTrue(!(n2>1), "You can't have more than 2 active orders. Please wait until your order's states are closed"); //hay que poner uno menos del que realmente queremos ok?
 		
 		switch(order.getType()) {
-		case RestaurantOrder.EAT_IN:
-			Assert.isTrue(this.userService.principalHasAnyAuthority(Arrays.asList("WAITER","COOK","MANAGER","ADMIN")),"Cannot save type of order: not an employee");
-			return this.openOrder(order);
-			
-			
 		case RestaurantOrder.DELIVERY:
 			
 			//no puedes dejar la direccion vacía si pides para delivery
@@ -188,17 +171,6 @@ public class OrderService {
 		return saved;
 	}
 	
-	//open orders can be modified
-	public RestaurantOrder openOrder(RestaurantOrder order) {
-		Assert.isTrue(order.getType().equals("EAT-IN"),"Cannot keep this order open");		
-		Assert.isTrue(this.userService.principalHasAnyAuthority(Arrays.asList("ADMIN","MANAGER","COOK","WAITER")),"Cannot place order for someone else");
-		order.setStatus(RestaurantOrder.OPEN);
-		//log open order
-		this.orderLogService.log(order, order.getStatus());
-		order.setPlacementDate(Instant.now());
-		RestaurantOrder saved = this.save(order);
-		return saved;
-	}
 	
 	public RestaurantOrder cancelOrder(RestaurantOrder order) {
 		order.setStatus(RestaurantOrder.CANCELLED);
