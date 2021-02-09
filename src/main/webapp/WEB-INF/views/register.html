@@ -41,7 +41,7 @@
 					<!-- USERNAME -->
 					<div class="form-group">
 
-						<input type="text" class="form-control" placeholder="Username"
+						<input type="text" class="form-control" placeholder="Username" required
 							minlength="4" maxlength="32" name="username"
 							th:field="*{username}">
 						<ul>
@@ -51,7 +51,7 @@
 					</div>
 					<!-- PASSWORD -->
 					<div class="form-group">
-						<input type="password" class="form-control" placeholder="Password"
+						<input type="password" required class="form-control" placeholder="Password"
 							name="password" th:field="*{password}">
 						<ul>
 							<li th:each="err : ${#fields.errors('password')}"
@@ -62,7 +62,7 @@
 					<input type="hidden" id="id" name="id" th:field="*{form.id}">
 
 					<div class="form-group">
-						<input type="text" class="form-control" placeholder="name"
+						<input type="text" class="form-control" required placeholder="name"
 							pattern="[a-zA-ZÃƒÂ ÃƒÂ¡ÃƒÂ¢ÃƒÂ¤ÃƒÂ£ÃƒÂ¥Ã„â€¦Ã„ï¿½Ã„â€¡Ã„â„¢ÃƒÂ¨ÃƒÂ©ÃƒÂªÃƒÂ«Ã„â€”Ã„Â¯ÃƒÂ¬ÃƒÂ­ÃƒÂ®ÃƒÂ¯Ã…â€šÃ…â€žÃƒÂ²ÃƒÂ³ÃƒÂ´ÃƒÂ¶ÃƒÂµÃƒÂ¸ÃƒÂ¹ÃƒÂºÃƒÂ»ÃƒÂ¼Ã…Â³Ã…Â«ÃƒÂ¿ÃƒÂ½Ã…Â¼Ã…ÂºÃƒÂ±ÃƒÂ§Ã„ï¿½Ã…Â¡Ã…Â¾Ãƒâ‚¬Ãƒï¿½Ãƒâ€šÃƒâ€žÃƒÆ’Ãƒâ€¦Ã„â€žÃ„â€ Ã„Å’Ã„â€“Ã„ËœÃƒË†Ãƒâ€°ÃƒÅ Ãƒâ€¹ÃƒÅ’Ãƒï¿½ÃƒÅ½Ãƒï¿½Ã„Â®Ã…ï¿½Ã…Æ’Ãƒâ€™Ãƒâ€œÃƒâ€�Ãƒâ€“Ãƒâ€¢ÃƒËœÃƒâ„¢ÃƒÅ¡Ãƒâ€ºÃƒÅ“Ã…Â²Ã…ÂªÃ…Â¸Ãƒï¿½Ã…Â»Ã…Â¹Ãƒâ€˜ÃƒÅ¸Ãƒâ€¡Ã…â€™Ãƒâ€ Ã„Å’Ã…Â Ã…Â½Ã¢Ë†â€šÃƒÂ° ,.'-]{2,64}"
 							name="name" th:field="*{form.name}">
 						<ul>
@@ -84,7 +84,7 @@
 					</div>
 					<div class="form-group">
 						<input type="text" class="form-control" placeholder="surname"
-							pattern="[a-zA-ZÃƒÂ ÃƒÂ¡ÃƒÂ¢ÃƒÂ¤ÃƒÂ£ÃƒÂ¥Ã„â€¦Ã„ï¿½Ã„â€¡Ã„â„¢ÃƒÂ¨ÃƒÂ©ÃƒÂªÃƒÂ«Ã„â€”Ã„Â¯ÃƒÂ¬ÃƒÂ­ÃƒÂ®ÃƒÂ¯Ã…â€šÃ…â€žÃƒÂ²ÃƒÂ³ÃƒÂ´ÃƒÂ¶ÃƒÂµÃƒÂ¸ÃƒÂ¹ÃƒÂºÃƒÂ»ÃƒÂ¼Ã…Â³Ã…Â«ÃƒÂ¿ÃƒÂ½Ã…Â¼Ã…ÂºÃƒÂ±ÃƒÂ§Ã„ï¿½Ã…Â¡Ã…Â¾Ãƒâ‚¬Ãƒï¿½Ãƒâ€šÃƒâ€žÃƒÆ’Ãƒâ€¦Ã„â€žÃ„â€ Ã„Å’Ã„â€“Ã„ËœÃƒË†Ãƒâ€°ÃƒÅ Ãƒâ€¹ÃƒÅ’Ãƒï¿½ÃƒÅ½Ãƒï¿½Ã„Â®Ã…ï¿½Ã…Æ’Ãƒâ€™Ãƒâ€œÃƒâ€�Ãƒâ€“Ãƒâ€¢ÃƒËœÃƒâ„¢ÃƒÅ¡Ãƒâ€ºÃƒÅ“Ã…Â²Ã…ÂªÃ…Â¸Ãƒï¿½Ã…Â»Ã…Â¹Ãƒâ€˜ÃƒÅ¸Ãƒâ€¡Ã…â€™Ãƒâ€ Ã„Å’Ã…Â Ã…Â½Ã¢Ë†â€šÃƒÂ° ,.'-]{2,128}"
+							required pattern="[a-zA-ZÃƒÂ ÃƒÂ¡ÃƒÂ¢ÃƒÂ¤ÃƒÂ£ÃƒÂ¥Ã„â€¦Ã„ï¿½Ã„â€¡Ã„â„¢ÃƒÂ¨ÃƒÂ©ÃƒÂªÃƒÂ«Ã„â€”Ã„Â¯ÃƒÂ¬ÃƒÂ­ÃƒÂ®ÃƒÂ¯Ã…â€šÃ…â€žÃƒÂ²ÃƒÂ³ÃƒÂ´ÃƒÂ¶ÃƒÂµÃƒÂ¸ÃƒÂ¹ÃƒÂºÃƒÂ»ÃƒÂ¼Ã…Â³Ã…Â«ÃƒÂ¿ÃƒÂ½Ã…Â¼Ã…ÂºÃƒÂ±ÃƒÂ§Ã„ï¿½Ã…Â¡Ã…Â¾Ãƒâ‚¬Ãƒï¿½Ãƒâ€šÃƒâ€žÃƒÆ’Ãƒâ€¦Ã„â€žÃ„â€ Ã„Å’Ã„â€“Ã„ËœÃƒË†Ãƒâ€°ÃƒÅ Ãƒâ€¹ÃƒÅ’Ãƒï¿½ÃƒÅ½Ãƒï¿½Ã„Â®Ã…ï¿½Ã…Æ’Ãƒâ€™Ãƒâ€œÃƒâ€�Ãƒâ€“Ãƒâ€¢ÃƒËœÃƒâ„¢ÃƒÅ¡Ãƒâ€ºÃƒÅ“Ã…Â²Ã…ÂªÃ…Â¸Ãƒï¿½Ã…Â»Ã…Â¹Ãƒâ€˜ÃƒÅ¸Ãƒâ€¡Ã…â€™Ãƒâ€ Ã„Å’Ã…Â Ã…Â½Ã¢Ë†â€šÃƒÂ° ,.'-]{2,128}"
 							name="surname" th:field="*{form.surname}">
 						<ul>
 							<li th:each="err : ${#fields.errors('form.surname')}"
@@ -97,7 +97,7 @@
 					<div class="form-group">
 						<input type="email"
 							pattern="^[a-zA-Z0-9.!#$%&Ã¢â‚¬â„¢*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$"
-							class="form-control" placeholder="email" name="email"
+							class="form-control" placeholder="email" required name="email"
 							th:field="*{form.email}">
 						<ul>
 							<li th:each="err : ${#fields.errors('form.email')}"
@@ -116,7 +116,7 @@
 					<!-- PHONE NUMBER -->
 					<div class="form-group">
 						<input type="text" class="form-control" minlength="9"
-							maxlength="9" placeholder="Phone number" name="phoneNumber"
+							maxlength="9" required placeholder="Phone number" name="phoneNumber"
 							th:field="*{form.phoneNumber}">
 						<ul>
 							<li th:each="err : ${#fields.errors('form.phoneNumber')}"

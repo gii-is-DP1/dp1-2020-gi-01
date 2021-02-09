@@ -63,6 +63,8 @@
 				var anio = fechaHoy.getFullYear();
 				var mes = fechaHoy.getMonth() + 1; 
 				var dia = fechaHoy.getDate();
+				var minuts = fechaHoy.getMinutes();
+				var hora = fechaHoy.getHours();
 				var mes2 = fechaHoy.getMonth() +2;
 
 
@@ -72,7 +74,7 @@
 					var dia = "0"+dia;
 				}
 
-				var minimo = anio + "-" + "0"+mes + "-" + dia+"T00:00:00";
+				var minimo = anio + "-" + "0"+mes + "-" + dia + "T" + hora + ":" + minuts +":00";
 				var maximo = anio + "-" + "0"+mes2 + "-" + dia+"T00:00:00";
 
 				console.log(maximo);
@@ -95,7 +97,7 @@
 						<div class="input-group form-group">
 							<span>Contact number</span> <input type="tel"
 								class="form-control" placeholder="contactPhone"
-								name="contactcontactPhone" th:field="*{contactPhone}">
+								name="contactcontactPhone" pattern="[0-9]{9}" th:field="*{contactPhone}">
 							<ul>
 								<li th:each="err : ${#fields.errors('contactPhone')}"
 									th:text="${err}" />
