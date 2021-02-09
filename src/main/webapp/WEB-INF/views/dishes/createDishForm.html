@@ -18,14 +18,16 @@
 				<form enctype="multipart/form-data" th:action="@{/dishes/save}"
 					role="form" th:object="${dish}" method="post">
 					<label for="name">Name:</label> <input id="name" name="name"
-						type="text" th:field="*{name}" placeholder="Name" required maxlength="30">
+						type="text" th:field="*{name}" placeholder="Name" required
+						maxlength="30">
 					<ul>
 						<li th:each="err : ${#fields.errors('name')}" th:text="${err}" />
 					</ul>
 
 					<label for="description">Description:</label> <input
 						id="description" name="description" type="text"
-						th:field="*{description}" placeholder="Description" required maxlength="200">
+						th:field="*{description}" placeholder="Description" required
+						maxlength="200">
 					<ul>
 						<li th:each="err : ${#fields.errors('description')}"
 							th:text="${err}" />
@@ -39,39 +41,39 @@
 					</ul>
 
 					<label for="price">Price:</label> <input id="price" name="price"
-						type="number" th:field="*{price}" placeholder="Price" required min="0">
+						type="number" th:field="*{price}" placeholder="Price" required
+						min="0">
 					<ul>
 						<li th:each="err : ${#fields.errors('price')}" th:text="${err}" />
 					</ul>
-					
-					
-					<label for="allergens">Tipo de plato:</label> 
-					<select name="seccion" id="seccion" th:field="*{seccion}">
-  							<option value="ENTRANTES">Entrantes</option>
-  							<option value="BEBIDAS">Bebidas</option>
-  							<option value="VINOS">Vinos</option>
-  							<option value="ENSALADAS">Ensaladas</option>
-  							<option value="PESCADOS">Pescados</option>
-  							<option value="CARNES">Carnes</option>
-  							<option value="POSTRES">Postres</option>
+
+
+					<label for="allergens">Tipo de plato:</label> <select
+						name="seccion" id="seccion" th:field="*{seccion}">
+						<option value="ENTRANTES">Entrantes</option>
+						<option value="BEBIDAS">Bebidas</option>
+						<option value="VINOS">Vinos</option>
+						<option value="ENSALADAS">Ensaladas</option>
+						<option value="PESCADOS">Pescados</option>
+						<option value="CARNES">Carnes</option>
+						<option value="POSTRES">Postres</option>
 
 					</select>
 					<ul>
-					
-						<li th:each="err : ${#fields.errors('seccion')}"
-							th:text="${err}" />
+
+						<li th:each="err : ${#fields.errors('seccion')}" th:text="${err}" />
 					</ul>
-					
-					
-					
-					<label for="allergens">Allergens:</label> 
-					<select name="allergens" id="allergens" th:field="*{allergens}" multiple>
-  							<option value="1">Gluten</option>
-  							<option value="2">Lactosa</option>
+
+
+
+					<label for="allergens">Allergens:</label> <select name="allergens"
+						id="allergens" th:field="*{allergens}" multiple>
+						<option value="1">Gluten</option>
+						<option value="2">Lactosa</option>
 
 					</select>
 					<ul>
-					
+
 						<li th:each="err : ${#fields.errors('allergens')}"
 							th:text="${err}" />
 					</ul>

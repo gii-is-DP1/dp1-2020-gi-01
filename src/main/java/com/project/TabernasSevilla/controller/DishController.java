@@ -28,16 +28,14 @@ import com.project.TabernasSevilla.service.DishService;
 @RequestMapping("/dishes")
 public class DishController extends AbstractController {
 
- 
 	private DishService dishService;
- 
+
 	private ActorService actorService;
- 
+
 	private ReviewRepository reviewRepo;
-	
+
 	@Autowired
-	public DishController(DishService dishService, ActorService actorService,
-			ReviewRepository reviewRepo) {
+	public DishController(DishService dishService, ActorService actorService, ReviewRepository reviewRepo) {
 		super();
 		this.dishService = dishService;
 		this.actorService = actorService;
@@ -81,7 +79,6 @@ public class DishController extends AbstractController {
 		} else {
 			dishService.save(dish);
 			model.addAttribute("message", "Dish successfully saved");
-			// view = dishList(model);
 		}
 		return view;
 	}
@@ -91,9 +88,8 @@ public class DishController extends AbstractController {
 			@PathVariable("dishId") int dishId) {
 		String view = super.checkIfCurrentUserIsAllowed("redirect:/dishes/" + dishId, "CUSTOMER");
 		Dish dish = dishService.findById(dishId).get();
-		// System.out.println(dish.getName());
 
-		Actor actor = this.actorService.getPrincipal(); // usuario logeao
+		Actor actor = this.actorService.getPrincipal(); // usuario loggeado
 
 		review.setActor(actor);
 		review.setDish(dish);
@@ -103,14 +99,12 @@ public class DishController extends AbstractController {
 			for (int i = 0; i < result.getErrorCount(); i++) {
 				System.out.println("]]]]]]] error " + i + " is: " + errors.get(i).toString());
 			}
-			
+
 			reA.addFlashAttribute("message", errors);
 			return "redirect:/dishes/" + dishId;
 		} else {
 			reviewRepo.save(review);
 			dishService.save(dish);
-
-			// model.addAttribute("message", "Dish successfully saved");
 			view = "redirect:/dishes/" + dishId;
 		}
 		return view;

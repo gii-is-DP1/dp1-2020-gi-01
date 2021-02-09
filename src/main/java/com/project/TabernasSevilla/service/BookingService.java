@@ -62,8 +62,6 @@ public class BookingService {
 	}
 	
 	//OTHER METHODS
-	
-	//TODO: return all for establishment
 	public List<Booking> findByEstablishment(Establishment est){
 		return this.bookingRepo.findByEstablishment(est.getId());
 	}
@@ -83,7 +81,7 @@ public class BookingService {
 		return bookings;
 	}
 	
-	//TODO: return all for establishment where reservation date > today's date
+	// return all for establishment where reservation date > today's date
 	
 	public Booking initialize(Establishment est) {
 		Booking res = this.create();
@@ -96,11 +94,6 @@ public class BookingService {
 	public Booking register(Booking booking, Actor actor) {
 		Instant free = this.tableService.estimateFreeTableInstant(booking.getEstablishment());
 		Instant min = Instant.now().plus(2,ChronoUnit.HOURS);
-		
-		//comprueba si el restaurante está lleno en el mismo día
-		//TODO: esto no tiene sentido
-		//Assert.isTrue(!((tableService.getOccupancyAtRestaurant((booking.getEstablishment())) == (long) booking.getEstablishment().getCapacity()) && 
-		//		(booking.getReservationDate().atZone(ZoneId.systemDefault()).getDayOfWeek() == Instant.now().atZone(ZoneId.systemDefault()).getDayOfWeek())), "The restaurant is currently full, sorry for the inconvenience");
 		booking.setReservationDate(booking.getReservationDate().minus(1, ChronoUnit.HOURS));
 		Assert.isTrue(free.compareTo(booking.getReservationDate())<0,"Cannot book for this time: restaurant is too busy");
 		Assert.isTrue(min.compareTo(booking.getReservationDate())<0,"Cannot book for this time: booking notice too short");
@@ -113,17 +106,4 @@ public class BookingService {
 		return saved;
 	}
 	
-//	public Booking register(final BookingForm forma) {
-//		Booking boka = create();
-//		boka.setPlacementDate(forma.getPlacementDate());
-//		boka.setReservationDate(forma.getReservationDate());
-//		boka.setContactPhone(forma.getContactPhone());
-//		//TODO: fix to accomodate for multiple notes or change to have just one note 
-//		//boka.setNotes(forma.getNotes());
-//		boka.setSeating(forma.getSeating());
-//		boka.setHourDate(forma.getHourDate());
-//		boka.setEstablishment(forma.getLocation());
-//		Booking bokaed = save(boka);
-//		return bokaed;
-//	}
 }

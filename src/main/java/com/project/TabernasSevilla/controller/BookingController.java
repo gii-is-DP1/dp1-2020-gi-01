@@ -20,7 +20,6 @@ import com.project.TabernasSevilla.domain.Establishment;
 import com.project.TabernasSevilla.service.ActorService;
 import com.project.TabernasSevilla.service.BookingService;
 import com.project.TabernasSevilla.service.EstablishmentService;
-import com.project.TabernasSevilla.service.TableService;
 
 @Controller
 @RequestMapping("/booking")
@@ -31,9 +30,6 @@ public class BookingController {
 	
 	@Autowired
 	private EstablishmentService establishmentService;
-	
-	@Autowired
-	private TableService tableService;
 	
 	@Autowired
 	private ActorService actorService;

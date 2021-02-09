@@ -13,7 +13,7 @@ import lombok.Data;
 public class BookingForm {
 	
 	@DateTimeFormat(pattern="yyyy-MM-dd")
-	private LocalDate placementDate; //IMPORTANTE ES LOCALDATE, NO LOCALDATETIME
+	private LocalDate placementDate;
 	
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private LocalDate reservationDate;
@@ -34,8 +34,6 @@ public class BookingForm {
 		this.location = eso;
 	}
 	
-	//aqui hay que añadir un pedido que es opcional
-	// Y LOCATION
 	
 
 }

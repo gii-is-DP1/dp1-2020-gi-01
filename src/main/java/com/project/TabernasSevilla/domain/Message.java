@@ -20,12 +20,11 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Message extends BaseEntity {
 
-	// relations
 	@ManyToOne(fetch=FetchType.LAZY)
 	private Actor actor;
 	@ManyToOne(fetch=FetchType.LAZY, optional=true)
 	private RestaurantOrder order;
-	// attributes
+	
 	@NotNull
 	private Instant deliveryDate;
 	

@@ -26,7 +26,6 @@ public class AdminController {
 		return "admin/employees/keys";
 	}
 
-	//TODO: TRY CATCH FOR ERRORS
 	// create manager key
 	@GetMapping("/employees/key/manager")
 	public String createManagerKey(Model model) {

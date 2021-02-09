@@ -57,7 +57,7 @@ public class TableService {
 			return this.tableRepo.countFreeTables(est.getId());
 		}
 		
-		//estimate returned in millis
+		//estimate returned in milliseconds
 		public Long estimateFreeTable(Establishment est) {
 			Long res;
 			List<RestaurantTable> tables = this.findByEstablishment(est);
@@ -81,7 +81,6 @@ public class TableService {
 			}else {
 				Instant estimate = oldest.getHourSeated().plus(1,ChronoUnit.HOURS);
 				Duration dur = Duration.between(Instant.now(), estimate);
-				//TODO: parse this shit string
 				res = dur.toMillis();
 			}
 			return res;

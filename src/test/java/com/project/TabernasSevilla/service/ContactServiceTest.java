@@ -25,8 +25,6 @@ public class ContactServiceTest {
 	@Mock
 	MultipartFile multi;
 
-	//This is a testing class for ContactService that stores the curriculums of the people who want to apply for a job at Tabernas Sevilla
-	// found in "Work with us!"
 	@Test
 	public void testingRegister() {
 	ContactForm form = new ContactForm();	

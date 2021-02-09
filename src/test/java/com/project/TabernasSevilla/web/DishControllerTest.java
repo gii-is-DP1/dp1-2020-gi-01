@@ -124,7 +124,7 @@ public class DishControllerTest {
 	@BeforeEach
 	void setup() {
 
-		given(this.dishService.findById(TEST_DISH_ID)).willReturn(Optional.of(new Dish())); // importantisimo
+		given(this.dishService.findById(TEST_DISH_ID)).willReturn(Optional.of(new Dish()));
 
 	}
 
@@ -178,7 +178,7 @@ public class DishControllerTest {
 	@WithMockUser(value = "spring", roles = "ADMIN")
 	@Test
 	void createDishError() throws Exception {
-		// Primero debo mockear un user con la autoridad ADMIN, porque la anotacion de
+		// Primero debo mockear un user con la autoridad ADMIN, porque la anotación de
 		// arriba no me funciona
 
 		User mockUser = new User();

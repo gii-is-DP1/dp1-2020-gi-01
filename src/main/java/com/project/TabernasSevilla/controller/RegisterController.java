@@ -40,7 +40,6 @@ public class RegisterController {
 		return "register";
 	}
 
-	// TODO: validation in view
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
 	public String saveUser(@ModelAttribute @Valid final RegisterForm regForm, final BindingResult binding,
 			Model model) {
@@ -58,7 +57,6 @@ public class RegisterController {
 	}
 
 	// go to employee enter regkey view
-	// TODO: enter regkey view
 	@GetMapping("/employees")
 	public String employeeRegister() {
 		return "admin/employees/key";

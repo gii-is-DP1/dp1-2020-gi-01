@@ -7,10 +7,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -29,7 +25,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import com.project.TabernasSevilla.configuration.SecurityConfiguration;
 import com.project.TabernasSevilla.controller.ActorController;
 import com.project.TabernasSevilla.domain.Actor;
-import com.project.TabernasSevilla.domain.Dish;
 import com.project.TabernasSevilla.forms.ActorForm;
 import com.project.TabernasSevilla.repository.AdminRepository;
 import com.project.TabernasSevilla.repository.BookingRepository;
@@ -45,10 +40,8 @@ import com.project.TabernasSevilla.repository.RegKeyRepository;
 import com.project.TabernasSevilla.repository.ReviewRepository;
 import com.project.TabernasSevilla.repository.TableRepository;
 import com.project.TabernasSevilla.repository.WaiterRepository;
-import com.project.TabernasSevilla.security.Authority;
 import com.project.TabernasSevilla.security.AuthorityRepository;
 import com.project.TabernasSevilla.security.AuthorityService;
-import com.project.TabernasSevilla.security.User;
 import com.project.TabernasSevilla.security.UserService;
 import com.project.TabernasSevilla.service.ActorService;
 import com.project.TabernasSevilla.service.DishService;

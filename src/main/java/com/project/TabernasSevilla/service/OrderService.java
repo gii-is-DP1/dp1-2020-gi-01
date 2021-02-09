@@ -2,7 +2,6 @@ package com.project.TabernasSevilla.service;
 
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,15 +56,6 @@ public class OrderService {
 	}
 	
 	//OTHER METHODS
-	
-//	//Create order for booking and set type
-//	public Order createFromBooking(Booking booking) {
-//		Order order = this.create();
-//		order.setBooking(booking);
-//		order.setType(Order.EAT_IN);
-//		return order;
-//	}
-//	
 	
 	public RestaurantOrder findDraftByActor(Actor actor){
 		return this.orderRepo.findDraftByActor(actor.getId());
@@ -180,7 +170,6 @@ public class OrderService {
 		return saved;
 	}
 	
-	//TODO: better way to handle this
 	public RestaurantOrder updateStatus(RestaurantOrder order, String status, Boolean isEmployee) {
 		Assert.isTrue(isEmployee,"Unsuficiant authority");
 		order.setStatus(status);

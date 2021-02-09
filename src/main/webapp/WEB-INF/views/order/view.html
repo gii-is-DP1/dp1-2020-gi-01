@@ -9,22 +9,22 @@
 <body>
 	<th:block th:include="fragments/common :: navbar"></th:block>
 
-		<div class="container card">
-			<div class="container-fliud">
-				<div class="wrapper row">
-					<div class="preview col" th:if="${order==null}">
-						<span>Your cart is empty</span>
-					</div>
-					<div class="preview col" th:if="${order!=null}">
-						<div class="wrapper row">
-							<div class="col">
-								<div class="row" th:if="${message}">
-									<span th:text="${message}"></span>
-								</div>
-								<div class="row"
-									sec:authorize="hasAnyAuthority('COOK','ADMIN','MANAGER','WAITER')">
-									<div class="col">
-										<!--  
+	<div class="container card">
+		<div class="container-fliud">
+			<div class="wrapper row">
+				<div class="preview col" th:if="${order==null}">
+					<span>Your cart is empty</span>
+				</div>
+				<div class="preview col" th:if="${order!=null}">
+					<div class="wrapper row">
+						<div class="col">
+							<div class="row" th:if="${message}">
+								<span th:text="${message}"></span>
+							</div>
+							<div class="row"
+								sec:authorize="hasAnyAuthority('COOK','ADMIN','MANAGER','WAITER')">
+								<div class="col">
+									<!--  
 										<div class="row">
 											<select name="sts" form="orderForm"
 												th:if="${order.type=='DELIVERY'}">
@@ -62,96 +62,96 @@
 											</form>
 										</div>
 										-->
-									</div>
-								</div>
-								<div class="row">
-									<span><b>Order details</b></span>
-								</div>
-								<div class="row" th:switch="${order.type}">
-									<span th:case="'PICKUP'" th:inline="text">Pick up at
-										[[${order.establishment.title}]]:
-										[[${order.establishment.address}]]</span> <span th:case="'DELIVERY'"
-										th:inline="text">To be delivered to:
-										[[${order.address}]]
-										</span>
-										<span th:inline="text" style="padding-left:5em"> Customer: [[${order.actor.user.username}]]</span>
-							
-									 
-								</div>
-
-								<div class="row">
-									<table class="table">
-										<thead>
-											<tr>
-												<th></th>
-												<th>Name</th>
-												<th>Price</th>
-											</tr>
-										</thead>
-										<tbody>
-											<th:block th:each="dish : ${order.dish}">
-
-												<tr>
-													<!-- IMAGE -->
-													<td>
-														<div style="width: 140px;">
-															<img class="img-thumbnail" th:src="${dish.picture}" />
-														</div>
-													</td>
-													<!-- NAME -->
-													<td th:inline="text"><b>[[${dish.name}]]</b></td>
-
-													<!-- PRICE -->
-													<td th:inline="text">[[${dish.price}]]€</td>
-
-												</tr>
-											</th:block>
-										</tbody>
-									</table>
 								</div>
 							</div>
-						</div>
-						<div class="wrapper row" th:if="${order.status !='DRAFT'}">
-							<span th:inline="text">Current status: <b>[[${order.status}]]</b></span>&nbsp;-&nbsp;<span
-								th:if="${cancel}" th:text="${cancel.reason}"></span>
-						</div>
-						<div class="wrapper row" th:if="${order.status =='DRAFT'}">
-							<div class="col">
-								<div class="row">
-									<span>Your total is: <b th:text="${total}"></b>€
-									</span>
-								</div>
-								<div class="row">
-									<div class="wrapper row">
-										<div class="col-md-6">
-											<a th:href="@{/order/}" role="button"
-												class="btn btn-secondary" aria-pressed="true">Edit</a>
-										</div>
-										<div class="col-md-6">
-											<a th:href="@{'/order/'+${order.id}+'/save'}" role="button"
-												class="btn btn-secondary" aria-pressed="true">Proceed to
-												payment</a>
-										</div>
-									</div>
-								</div>
+							<div class="row">
+								<span><b>Order details</b></span>
 							</div>
-						</div>
-						<div class="wrapper row" th:if="${order.status !='DRAFT'}">
-							<table class="table">
-								<tbody>
-									<th:block th:each="log : ${logs}">
+							<div class="row" th:switch="${order.type}">
+								<span th:case="'PICKUP'" th:inline="text">Pick up at
+									[[${order.establishment.title}]]:
+									[[${order.establishment.address}]]</span> <span th:case="'DELIVERY'"
+									th:inline="text">To be delivered to:
+									[[${order.address}]] </span> <span th:inline="text"
+									style="padding-left: 5em"> Customer:
+									[[${order.actor.user.username}]]</span>
+
+
+							</div>
+
+							<div class="row">
+								<table class="table">
+									<thead>
 										<tr>
-											<td><span th:text="${log.status}"></span></td>
-											<td><span th:text="${log.moment}"></span></td>
+											<th></th>
+											<th>Name</th>
+											<th>Price</th>
 										</tr>
-									</th:block>
-								</tbody>
-							</table>
+									</thead>
+									<tbody>
+										<th:block th:each="dish : ${order.dish}">
+
+											<tr>
+												<!-- IMAGE -->
+												<td>
+													<div style="width: 140px;">
+														<img class="img-thumbnail" th:src="${dish.picture}" />
+													</div>
+												</td>
+												<!-- NAME -->
+												<td th:inline="text"><b>[[${dish.name}]]</b></td>
+
+												<!-- PRICE -->
+												<td th:inline="text">[[${dish.price}]]€</td>
+
+											</tr>
+										</th:block>
+									</tbody>
+								</table>
+							</div>
 						</div>
+					</div>
+					<div class="wrapper row" th:if="${order.status !='DRAFT'}">
+						<span th:inline="text">Current status: <b>[[${order.status}]]</b></span>&nbsp;-&nbsp;<span
+							th:if="${cancel}" th:text="${cancel.reason}"></span>
+					</div>
+					<div class="wrapper row" th:if="${order.status =='DRAFT'}">
+						<div class="col">
+							<div class="row">
+								<span>Your total is: <b th:text="${total}"></b>€
+								</span>
+							</div>
+							<div class="row">
+								<div class="wrapper row">
+									<div class="col-md-6">
+										<a th:href="@{/order/}" role="button"
+											class="btn btn-secondary" aria-pressed="true">Edit</a>
+									</div>
+									<div class="col-md-6">
+										<a th:href="@{'/order/'+${order.id}+'/save'}" role="button"
+											class="btn btn-secondary" aria-pressed="true">Proceed to
+											payment</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="wrapper row" th:if="${order.status !='DRAFT'}">
+						<table class="table">
+							<tbody>
+								<th:block th:each="log : ${logs}">
+									<tr>
+										<td><span th:text="${log.status}"></span></td>
+										<td><span th:text="${log.moment}"></span></td>
+									</tr>
+								</th:block>
+							</tbody>
+						</table>
 					</div>
 				</div>
 			</div>
 		</div>
-<footer th:replace="fragments/common :: footer"></footer>
+	</div>
+	<footer th:replace="fragments/common :: footer"></footer>
 </body>
 </html>

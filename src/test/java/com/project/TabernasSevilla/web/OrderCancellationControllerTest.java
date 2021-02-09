@@ -8,7 +8,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -16,7 +15,6 @@ import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -32,13 +30,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import com.project.TabernasSevilla.configuration.SecurityConfiguration;
 import com.project.TabernasSevilla.controller.OrderCancellationController;
 import com.project.TabernasSevilla.domain.Actor;
-import com.project.TabernasSevilla.domain.Admin;
-import com.project.TabernasSevilla.domain.Cook;
 import com.project.TabernasSevilla.domain.Dish;
 import com.project.TabernasSevilla.domain.Establishment;
-import com.project.TabernasSevilla.domain.Manager;
 import com.project.TabernasSevilla.domain.RestaurantOrder;
-import com.project.TabernasSevilla.domain.Waiter;
 import com.project.TabernasSevilla.repository.AdminRepository;
 import com.project.TabernasSevilla.repository.BookingRepository;
 import com.project.TabernasSevilla.repository.CookRepository;
@@ -70,9 +64,6 @@ import com.project.TabernasSevilla.service.OrderService;
 	includeFilters = {@ComponentScan.Filter(Service.class), @ComponentScan.Filter(Repository.class) })
 public class OrderCancellationControllerTest {
 	
-
-	//@Autowired
-	//private DishController dishController;
 	@Mock
 	Actor actor;
 	

@@ -9,52 +9,55 @@
 <body>
 	<th:block th:include="fragments/common :: navbar"></th:block>
 	<div class="container card">
-			<div class="container-fliud">
-				<div class="wrapper row">
-					<div class="preview col">
-						<div class="wrapper row" th:fragment="list-booking(bookings)">
-							<table class="table">
-								<thead>
-									<tr>
-										<th>Restaurant</th>
-										<th>Placement date</th>
-										<th>Reservation date</th>
-										<th>Seating</th>
-										<th>Notes</th>
-										<th>To name</th>
+		<div class="container-fliud">
+			<div class="wrapper row">
+				<div class="preview col">
+					<div class="wrapper row" th:fragment="list-booking(bookings)">
+						<table class="table">
+							<thead>
+								<tr>
+									<th>Restaurant</th>
+									<th>Placement date</th>
+									<th>Reservation date</th>
+									<th>Seating</th>
+									<th>Notes</th>
+									<th>To name</th>
 
-										<th></th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody>
+								<th:block th:each="booking : ${bookings}">
+									<tr>
+										<!-- ESTABLISHMENT -->
+										<td th:text="${booking.establishment.title}"></td>
+										<!-- PLACEMENT -->
+										<td
+											th:text="${#temporals.format(booking.placementDate,'dd-MM-yyyy HH:mm')}"></td>
+										<!-- RESERVATION DATE -->
+										<td
+											th:text="${#temporals.format(booking.reservationDate,'dd-MM-yyyy HH:mm')}"></td>
+										<!-- SEATING -->
+										<td th:text="${booking.seating}"></td>
+										<!-- ACTIONS -->
+										<td th:text="${booking.notes}"></td>
+										<td
+											th:text="${booking.actor.name + ' ' + booking.actor.surname}"></td>
+										<td><a href="#"><i class="fa fa-pencil"
+												aria-hidden="true"></i></a></td>
+
+
+										<td><a
+											th:href="@{/booking/{id}/delete(id=${booking.id})}"><i
+												class="fa fa-times" aria-hidden="true"></i></a></td>
 									</tr>
-								</thead>
-								<tbody>
-									<th:block th:each="booking : ${bookings}">
-										<tr>
-											<!-- ESTABLISHMENT -->
-											<td th:text="${booking.establishment.title}">
-											</td>
-											<!-- PLACEMENT -->
-											<td th:text="${#temporals.format(booking.placementDate,'dd-MM-yyyy HH:mm')}"></td>
-											<!-- RESERVATION DATE -->
-											<td th:text="${#temporals.format(booking.reservationDate,'dd-MM-yyyy HH:mm')}"></td>
-											<!-- SEATING -->
-											<td th:text="${booking.seating}"></td>
-											<!-- ACTIONS -->
-											<td th:text="${booking.notes}"></td>
-											<td th:text="${booking.actor.name + ' ' + booking.actor.surname}"></td>
-											<td><a href="#"><i
-													class="fa fa-pencil" aria-hidden="true"></i></a></td>
-											
-													
-											<td><a th:href="@{/booking/{id}/delete(id=${booking.id})}"><i
-													class="fa fa-times" aria-hidden="true"></i></a></td>
-										</tr>
-									</th:block>
-								</tbody>
-							</table>
-						</div>
+								</th:block>
+							</tbody>
+						</table>
 					</div>
 				</div>
 			</div>
+		</div>
 	</div>
 	<footer th:replace="fragments/common :: footer"></footer>
 </body>

@@ -31,7 +31,7 @@ public class ContactService {
 		this.cvRepo = cvRepo;
 	}
 
-	public Curriculum findById(final int id) { //hmmm no hay id en jobapplication o si...
+	public Curriculum findById(final int id) {
 		return cvRepo.findById(id);
 	}
 	

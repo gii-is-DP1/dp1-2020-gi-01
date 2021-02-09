@@ -169,7 +169,7 @@ public class RegisterControllerTest {
 							.param("form.email", "elpepecabrales@gmail.com")
 							.param("form.phoneNumber", "765132956"))
 						.andExpect(status().is3xxRedirection())
-						.andExpect(view().name("redirect:/login")); // y expect que el nombre de usuario que aparece en login sea el del usuario?
+						.andExpect(view().name("redirect:/login"));
 	}
 	
 	@ExceptionHandler
@@ -195,7 +195,7 @@ public class RegisterControllerTest {
 							.param("form.email", "elpepecabrales@gmail.com")
 							.param("form.phoneNumber", "765132956"))
 						.andExpect(status().isOk())
-						.andExpect(view().name("register")); // y expect que el nombre de usuario que aparece en login sea el del usuario?
+						.andExpect(view().name("register"));
 	}
 	
 	

@@ -1,125 +1,121 @@
 @charset "UTF-8";
 
 body {
-  font-family: "Lato", sans-serif;
-  text-align: right;
-  margin: 0px;
-  background: #ffffff;
-  background-image: url('img/interior-arenal.jpeg');
-  /* Full height */
-  height: 100%;
+	font-family: "Lato", sans-serif;
+	text-align: right;
+	margin: 0px;
+	background: #ffffff;
+	background-image: url('img/interior-arenal.jpeg');
+	/* Full height */
+	height: 100%;
 
-  /* Center and scale the image nicely */
-
+	/* Center and scale the image nicely */
 }
 
 .main {
-  flex: 1;
+	flex: 1;
 }
 
-
-a{
-	text-decoration: none;	
+a {
+	text-decoration: none;
 	color: white;
 }
 
-a:hover{
+a:hover {
 	color: #a0b6fe;
-	
 }
+
 .flex-container {
-  display: flex;
-  padding: 0px;
-  margin:0px;
-  background-color: black; 
-  color: white;
+	display: flex;
+	padding: 0px;
+	margin: 0px;
+	background-color: black;
+	color: white;
 }
 
-.flex-container > div {
-
-  margin: 10px;
-  padding: 20px 10px 20px 10px;
-  font-size: 20px;
+.flex-container>div {
+	margin: 10px;
+	padding: 20px 10px 20px 10px;
+	font-size: 20px;
 }
 
-h1{
-color: #FFFFFF;
+h1 {
+	color: #FFFFFF;
 }
 
 .sidenav {
-  height: 100%;
-  width: 0;
-  position: fixed;
-  z-index: 1;
-  top: 0;
-  right: 0;
-  background-color: #111;
-  overflow-x: hidden;
-  transition: 0.5s;
-  padding-top: 60px;
+	height: 100%;
+	width: 0;
+	position: fixed;
+	z-index: 1;
+	top: 0;
+	right: 0;
+	background-color: #111;
+	overflow-x: hidden;
+	transition: 0.5s;
+	padding-top: 60px;
 }
 
 .sidenav a {
-  padding: 8px 32px 8px 8px; /* top right bottom left */
-  text-decoration: none;
-  font-size: 25px;
-  color: #818181;
-  display: block;
-  transition: 0.3s;
+	padding: 8px 32px 8px 8px; /* top right bottom left */
+	text-decoration: none;
+	font-size: 25px;
+	color: #818181;
+	display: block;
+	transition: 0.3s;
 }
 
 .sidenav a:hover {
-  color: #f1f1f1;
+	color: #f1f1f1;
 }
 
 .sidenav .closebtn {
-  position: absolute;
-  top: 0;
-  left: 25px;
-  font-size: 36px;
-  margin-right: 1em;
+	position: absolute;
+	top: 0;
+	left: 25px;
+	font-size: 36px;
+	margin-right: 1em;
 }
 
 .derecha {
 	margin-right: 1em;
 }
 
-
-
 .mi-archivo input[type=”FILE”] {
- width: 0.1px;
- height: 0.1px;
- opacity: 0;
- overflow: hidden;
- position: absolute;
- z-index: -1;
- }
- 
- label[for="mi-archivo"] {
- font-size: 14px;
- font-weight: 600;
- color: #fff;
- background-color: #106BA0;
- display: inline-block;
- transition: all .5s;
- cursor: pointer;
- padding: 15px 40px !important;
- text-transform: uppercase;
- width: fit-content;
- text-align: center;
- }
- 
-.square .forma  {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
+label[for="mi-archivo"] {
+	font-size: 14px;
+	font-weight: 600;
+	color: #fff;
+	background-color: #106BA0;
+	display: inline-block;
+	transition: all .5s;
+	cursor: pointer;
+	padding: 15px 40px !important;
+	text-transform: uppercase;
+	width: fit-content;
+	text-align: center;
+}
+
+.square .forma {
 	border-style: solid;
-  border-radius: 5px;
-  border-color: gray;
-  background-color: #f2f2f2;
-  padding: 40px;
+	border-radius: 5px;
+	border-color: gray;
+	background-color: #f2f2f2;
+	padding: 40px;
 }
-.square h1{
+
+.square h1 {
 	padding: 20px;
-	
 }
+
 .square {
 	margin: 1em;
 	text-align: left;
@@ -129,6 +125,10 @@ color: #FFFFFF;
 }
 
 @media screen and (max-height: 450px) {
-  .sidenav {padding-top: 15px;}
-  .sidenav a {font-size: 18px;}
+	.sidenav {
+		padding-top: 15px;
+	}
+	.sidenav a {
+		font-size: 18px;
+	}
 }

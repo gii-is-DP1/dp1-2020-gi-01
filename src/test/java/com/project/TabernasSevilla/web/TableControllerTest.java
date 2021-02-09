@@ -148,7 +148,7 @@ public class TableControllerTest {
 		est.setOpeningHours("24/7");
 		est.setScore(2);
 		est.setDish(ls);
-		given(this.establishmentService.findById(1)).willReturn(est); //importantisimo
+		given(this.establishmentService.findById(1)).willReturn(est);
 		
 		RestaurantTable table = new RestaurantTable();
 		table.setBooking(new Booking());

@@ -33,43 +33,52 @@
 						<h4>
 							CONTACT: <span th:text="${establishment.phone}"></span>
 						</h4>
-						
+
 						<!-- MENU -->
 						<div class="p-1">
-							<a th:href="@{/dishes}" role="button" class="btn btn-secondary" aria-pressed="true">View menu</a>
+							<a th:href="@{/dishes}" role="button" class="btn btn-secondary"
+								aria-pressed="true">View menu</a>
 						</div>
 						<!-- ORDER -->
 						<div class="p-1">
-							<a th:href="@{/order/est/{id}(id=${establishment.id})}" role="button" class="btn btn-secondary" aria-pressed="true">Place an order</a>
+							<a th:href="@{/order/est/{id}(id=${establishment.id})}"
+								role="button" class="btn btn-secondary" aria-pressed="true">Place
+								an order</a>
 						</div>
-						
+
 						<!-- RESERVATION -->
 						<div class="p-1">
-							<a th:href="@{/booking/init/{id}(id=${establishment.id})}" role="button" class="btn btn-secondary" aria-pressed="true">Make reservation</a>
+							<a th:href="@{/booking/init/{id}(id=${establishment.id})}"
+								role="button" class="btn btn-secondary" aria-pressed="true">Make
+								reservation</a>
 						</div>
-						
+
 						<div th:if="${estimate!=null}">
 							<b>Estimated wait:</b>&nbsp;<span th:text="${estimate}"></span>
 						</div>
 						<div th:if="${estimate==null}">
 							<span><b>Table available right now</b></span>
 						</div>
-<!-- 						<div> -->
-<!-- 							<span th:inline="text">[[${estimate}]]</span> -->
-<!-- 						</div> -->
-						<div sec:authorize="!hasAnyAuthority('COOK','ADMIN','CUSTOMER','MANAGER','WAITER')">
+						<!-- 						<div> -->
+						<!-- 							<span th:inline="text">[[${estimate}]]</span> -->
+						<!-- 						</div> -->
+						<div
+							sec:authorize="!hasAnyAuthority('COOK','ADMIN','CUSTOMER','MANAGER','WAITER')">
 							<span th:inline="text">Log in to see the occupancy</span>
 						</div>
-						<div sec:authorize="hasAnyAuthority('COOK','ADMIN','CUSTOMER','MANAGER','WAITER')">
-							<span th:inline="text">Current occupancy: [[${occupied}]]/[[${capacity}]]</span>
+						<div
+							sec:authorize="hasAnyAuthority('COOK','ADMIN','CUSTOMER','MANAGER','WAITER')">
+							<span th:inline="text">Current occupancy:
+								[[${occupied}]]/[[${capacity}]]</span>
 						</div>
-						
+
 						<div sec:authorize="hasAnyAuthority('ADMIN','MANAGER','WAITER')">
 							<a th:href="@{/table/establishment/{id}(id=${establishment.id})}">
 
 								Manage tables and reservations</a>
 						</div>
-						<div sec:authorize="hasAnyAuthority('COOK','ADMIN','MANAGER','WAITER')">
+						<div
+							sec:authorize="hasAnyAuthority('COOK','ADMIN','MANAGER','WAITER')">
 							<a th:href="@{/order/est/{id}/list(id=${establishment.id})}">
 
 								View orders </a>

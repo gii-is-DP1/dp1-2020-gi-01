@@ -32,7 +32,7 @@
 							</tr>
 						</thead>
 						<tbody>
-	
+
 							<th:block th:each="dish : ${dishes}">
 								<tr
 									th:if="${dish.isVisible == true and dish.seccion.name() == 'ENTRANTES'}">
@@ -419,13 +419,13 @@
 					th:object="${order}">
 
 					<input type="hidden" name="id" th:field="*{id}">
-					
 
-					
+
+
 					<!-- TYPE -->
 					<div class="wrapper row" style="padding: 5px;">
-						<span>Order type: </span>&nbsp; <select name="type" id="type" onChange="doReload();"
-							form="orderForm">
+						<span>Order type: </span>&nbsp; <select name="type" id="type"
+							onChange="doReload();" form="orderForm">
 							<option th:each="typeStr : ${order.onlineTypes}"
 								th:value="${typeStr}" th:utext="${typeStr}" />
 						</select>
@@ -438,7 +438,7 @@
 					<!-- ADDRESS -->
 					<div id="direccion" class="wrapper row" style="padding: 5px;">
 						<span>Address: </span>&nbsp; <input type="text" name="address"
-							 th:value="*{address}" />
+							th:value="*{address}" />
 						<ul>
 							<li th:each="err : ${#fields.errors('address')}" th:text="${err}" />
 						</ul>
@@ -465,7 +465,7 @@
 						}
 						
 					</script>
-					
+
 
 					<!-- DISHES -->
 					<div class="wrapper row">
@@ -529,7 +529,7 @@
 		
 	</script>
 	 -->
-<footer th:replace="fragments/common :: footer"></footer>
+	<footer th:replace="fragments/common :: footer"></footer>
 </body>
 
 </html>

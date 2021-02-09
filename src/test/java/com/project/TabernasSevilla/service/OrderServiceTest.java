@@ -2,26 +2,17 @@ package com.project.TabernasSevilla.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.stereotype.Service;
 
 import com.project.TabernasSevilla.domain.Dish;
@@ -176,7 +167,8 @@ class OrderServiceTest {
 		order.setStatus(RestaurantOrder.OPEN);
 		this.orderService.save(order);
 		//Pongo true para hacer efectivo que tenga autoridad
-		RestaurantOrder updated = this.orderService.updateStatus(order, RestaurantOrder.DELIVERED, true);
+		given(this.userService.principalIsEmployee()).willReturn(true);
+		RestaurantOrder updated = this.orderService.updateStatus(order, RestaurantOrder.DELIVERED, this.userService.principalIsEmployee());
 		assertThat(updated).isNotNull();
 	}	
 	

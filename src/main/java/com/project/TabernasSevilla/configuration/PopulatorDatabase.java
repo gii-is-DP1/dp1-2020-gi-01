@@ -26,17 +26,11 @@ public class PopulatorDatabase implements CommandLineRunner {
 	@Autowired
 	private AllergenRepository repositoryAllergen;
 
-	// @Autowired
-	// private UserRepository repositoryUser;
-
 	@Autowired
 	private ReviewRepository repoReview;
 
 	@Autowired
 	private AdminRepository repoAdmin;
-
-	// @Autowired
-	// private AbstractActorRepository repoActor;
 
 	@Override
 	public void run(String... args) throws Exception {
@@ -78,23 +72,6 @@ public class PopulatorDatabase implements CommandLineRunner {
 		Dish dPostres1 = new Dish("Tocino de cielo", "Dulce postre casero", "http://localhost:8080/images/tocino.jpg",
 				2.4, 0.0, Seccion.POSTRES, true, allergensFromD);
 
-		// creo un user para la review
-		// crear user y de ahi actor con sus propiedades de constructor
-
-		/*
-		 * User us = new User(); us.setUsername("Anthony Fantano");
-		 * us.setPassword("fantano"); Authority auth = new Authority();
-		 * auth.setAuthority("reviewer"); Set<Authority> ls = new HashSet<>();
-		 * ls.add(auth); us.setAuthorities(ls);
-		 */
-
-		// Actor persona = new Actor();
-
-		// Actor ActSave = this.repoActor.save(persona);
-
-		// creo review
-		// Review rev = new Review(persona, d, "ta rico la verdad", 4);
-		// Review Rsaved = this.repoReview.save(rev);
 
 		Dish savedEN1 = this.repository.save(dEntrantes1);
 		Dish savedB1 = this.repository.save(dBebidas1);
@@ -111,7 +88,5 @@ public class PopulatorDatabase implements CommandLineRunner {
 
 	}
 
-	// INSERT INTO REVIEW(id, version, comment, rating, actor_id, dish_id) VALUES
-	// (1, 0, 'ta rico la verdad', 4, 1, 3);
 
 }

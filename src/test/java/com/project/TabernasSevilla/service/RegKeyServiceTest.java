@@ -4,9 +4,6 @@ package com.project.TabernasSevilla.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -17,7 +14,6 @@ import org.springframework.stereotype.Service;
 import com.project.TabernasSevilla.domain.RegKey;
 import com.project.TabernasSevilla.security.Authority;
 import com.project.TabernasSevilla.security.AuthorityService;
-import com.project.TabernasSevilla.security.User;
 import com.project.TabernasSevilla.security.UserService;
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
@@ -37,7 +33,8 @@ class RegKeyServiceTest {
 	
 	@Test
 	public void createRegKeyCook() {
-		given(this.userService.getPrincipal()).willReturn(this.adminService.findAll().get(0).getUser()); //porque esta acción necesita privilegios
+		given(this.userService.getPrincipal()).willReturn(this.adminService.findAll().get(0).getUser()); 
+		//porque esta acción necesita privilegios
 		
 		RegKey kei = this.regKey.create();
 		Authority auth = this.authService.findByName("COOK");
@@ -49,7 +46,8 @@ class RegKeyServiceTest {
 	
 	@Test
 	public void deleteRegKeyCook() {
-		given(this.userService.getPrincipal()).willReturn(this.adminService.findAll().get(0).getUser()); //porque esta acción necesita privilegios
+		given(this.userService.getPrincipal()).willReturn(this.adminService.findAll().get(0).getUser()); 
+		//porque esta acción necesita privilegios
 		
 		RegKey kei = this.regKey.create();
 		Authority auth = this.authService.findByName("COOK");

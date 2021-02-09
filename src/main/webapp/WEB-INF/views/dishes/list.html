@@ -10,146 +10,146 @@
 	<th:block th:include="fragments/common :: navbar"></th:block>
 	<div class="container card">
 
-			<div class="container-fluid" style="position: center; left: 20px;">
-				<div class="wrapper row">
-					<div class="preview col-">
+		<div class="container-fluid" style="position: center; left: 20px;">
+			<div class="wrapper row">
+				<div class="preview col-">
 
-						<div class="wrapper row">
+					<div class="wrapper row">
 
-							<h2>Entrantes</h2>
-							<table class="table">
-								<thead>
-									<tr>
-										<th></th>
-										<th>Name</th>
-										<th>Description</th>
-										<th>Score</th>
-										<th>Price</th>
-										<th>Allergens</th>
-										<th>Reviews</th>
-										<th sec:authorize="hasAuthority('ADMIN')">Actions</th>
+						<h2>Entrantes</h2>
+						<table class="table">
+							<thead>
+								<tr>
+									<th></th>
+									<th>Name</th>
+									<th>Description</th>
+									<th>Score</th>
+									<th>Price</th>
+									<th>Allergens</th>
+									<th>Reviews</th>
+									<th sec:authorize="hasAuthority('ADMIN')">Actions</th>
 
+								</tr>
+							</thead>
+							<tbody>
+
+								<th:block th:each="dish : ${dishes}">
+									<tr
+										th:if="${dish.isVisible == true and dish.seccion.name() == 'ENTRANTES'}">
+										<!-- IMAGE -->
+										<td>
+											<div style="width: 140px;">
+												<img class="img-thumbnail" th:src="${dish.picture}" />
+											</div>
+										</td>
+										<!-- NAME -->
+										<td th:inline="text"><b>[[${dish.name}]]</b></td>
+										<!-- DESCRIPTION -->
+										<td th:text="${dish.description}"></td>
+										<!-- SCORE -->
+										<td>
+											<div
+												th:replace="fragments/score :: stars(score=${dish.score})">
+											</div>
+										</td>
+										<!-- PRICE -->
+										<td th:inline="text">[[${dish.price}]]€</td>
+										<!-- ALLERGENS -->
+										<td>
+											<div class="row">
+												<th:block th:each="allergen : ${dish.allergens}">
+													<div style="width: 70px;">
+														<img class="img-thumbnail" th:src="${allergen.icon}" />
+													</div>
+												</th:block>
+											</div>
+										</td>
+
+
+
+										<!-- view reviews -->
+										<td><a th:href="@{/dishes/{dishId}(dishId=${dish.id})}">
+												View Reviews</a></td>
+										<!-- ACTIONS; only for employees -->
+										<td sec:authorize="hasAuthority('ADMIN')"><a
+											th:href="@{/dishes/{dishId}/edit(dishId=${dish.id})}"><i
+												class="fa fa-info" aria-hidden="true"></i></a> <a
+											th:href="@{/dishes/delete/{dishId}(dishId=${dish.id})}"><i
+												class="fa fa-times" aria-hidden="true"></i></a></td>
 									</tr>
-								</thead>
-								<tbody>
-
-									<th:block th:each="dish : ${dishes}">
-										<tr
-											th:if="${dish.isVisible == true and dish.seccion.name() == 'ENTRANTES'}">
-											<!-- IMAGE -->
-											<td>
-												<div style="width: 140px;">
-													<img class="img-thumbnail" th:src="${dish.picture}" />
-												</div>
-											</td>
-											<!-- NAME -->
-											<td th:inline="text"><b>[[${dish.name}]]</b></td>
-											<!-- DESCRIPTION -->
-											<td th:text="${dish.description}"></td>
-											<!-- SCORE -->
-											<td>
-												<div
-													th:replace="fragments/score :: stars(score=${dish.score})">
-												</div>
-											</td>
-											<!-- PRICE -->
-											<td th:inline="text">[[${dish.price}]]€</td>
-											<!-- ALLERGENS -->
-											<td>
-												<div class="row">
-													<th:block th:each="allergen : ${dish.allergens}">
-														<div style="width: 70px;">
-															<img class="img-thumbnail" th:src="${allergen.icon}" />
-														</div>
-													</th:block>
-												</div>
-											</td>
-
-
-
-											<!-- view reviews -->
-											<td><a th:href="@{/dishes/{dishId}(dishId=${dish.id})}">
-													View Reviews</a></td>
-											<!-- ACTIONS; only for employees -->
-											<td sec:authorize="hasAuthority('ADMIN')"><a
-												th:href="@{/dishes/{dishId}/edit(dishId=${dish.id})}"><i
-													class="fa fa-info" aria-hidden="true"></i></a> <a
-												th:href="@{/dishes/delete/{dishId}(dishId=${dish.id})}"><i
-													class="fa fa-times" aria-hidden="true"></i></a></td>
-										</tr>
-									</th:block>
-								</tbody>
-							</table>
+								</th:block>
+							</tbody>
+						</table>
 
 
 
 
 
 
-							<h2>Bebidas</h2>
-							<table class="table">
-								<thead>
-									<tr>
-										<th></th>
-										<th>Name</th>
-										<th>Description</th>
-										<th>Score</th>
-										<th>Price</th>
-										<th>Allergens</th>
-										<th>Reviews</th>
-										<th sec:authorize="hasAuthority('ADMIN')">Actions</th>
+						<h2>Bebidas</h2>
+						<table class="table">
+							<thead>
+								<tr>
+									<th></th>
+									<th>Name</th>
+									<th>Description</th>
+									<th>Score</th>
+									<th>Price</th>
+									<th>Allergens</th>
+									<th>Reviews</th>
+									<th sec:authorize="hasAuthority('ADMIN')">Actions</th>
 
+								</tr>
+							</thead>
+							<tbody>
+
+								<th:block th:each="dish : ${dishes}">
+									<tr
+										th:if="${dish.isVisible == true and dish.seccion.name() == 'BEBIDAS'}">
+										<!-- IMAGE -->
+										<td>
+											<div style="width: 140px;">
+												<img class="img-thumbnail" th:src="${dish.picture}" />
+											</div>
+										</td>
+										<!-- NAME -->
+										<td th:inline="text"><b>[[${dish.name}]]</b></td>
+										<!-- DESCRIPTION -->
+										<td th:text="${dish.description}"></td>
+										<!-- SCORE -->
+										<td>
+											<div
+												th:replace="fragments/score :: stars(score=${dish.score})">
+											</div>
+										</td>
+										<!-- PRICE -->
+										<td th:inline="text">[[${dish.price}]]€</td>
+										<!-- ALLERGENS -->
+										<td>
+											<div class="row">
+												<th:block th:each="allergen : ${dish.allergens}">
+													<div style="width: 70px;">
+														<img class="img-thumbnail" th:src="${allergen.icon}" />
+													</div>
+												</th:block>
+											</div>
+										</td>
+
+
+
+										<!-- view reviews -->
+										<td><a th:href="@{/dishes/{dishId}(dishId=${dish.id})}">
+												View Reviews</a></td>
+										<!-- ACTIONS; only for employees -->
+										<td sec:authorize="hasAuthority('ADMIN')"><a
+											th:href="@{/dishes/{dishId}/edit(dishId=${dish.id})}"><i
+												class="fa fa-info" aria-hidden="true"></i></a> <a
+											th:href="@{/dishes/delete/{dishId}(dishId=${dish.id})}"><i
+												class="fa fa-times" aria-hidden="true"></i></a></td>
 									</tr>
-								</thead>
-								<tbody>
-
-									<th:block th:each="dish : ${dishes}">
-										<tr
-											th:if="${dish.isVisible == true and dish.seccion.name() == 'BEBIDAS'}">
-											<!-- IMAGE -->
-											<td>
-												<div style="width: 140px;">
-													<img class="img-thumbnail" th:src="${dish.picture}" />
-												</div>
-											</td>
-											<!-- NAME -->
-											<td th:inline="text"><b>[[${dish.name}]]</b></td>
-											<!-- DESCRIPTION -->
-											<td th:text="${dish.description}"></td>
-											<!-- SCORE -->
-											<td>
-												<div
-													th:replace="fragments/score :: stars(score=${dish.score})">
-												</div>
-											</td>
-											<!-- PRICE -->
-											<td th:inline="text">[[${dish.price}]]€</td>
-											<!-- ALLERGENS -->
-											<td>
-												<div class="row">
-													<th:block th:each="allergen : ${dish.allergens}">
-														<div style="width: 70px;">
-															<img class="img-thumbnail" th:src="${allergen.icon}" />
-														</div>
-													</th:block>
-												</div>
-											</td>
-
-
-
-											<!-- view reviews -->
-											<td><a th:href="@{/dishes/{dishId}(dishId=${dish.id})}">
-													View Reviews</a></td>
-											<!-- ACTIONS; only for employees -->
-											<td sec:authorize="hasAuthority('ADMIN')"><a
-												th:href="@{/dishes/{dishId}/edit(dishId=${dish.id})}"><i
-													class="fa fa-info" aria-hidden="true"></i></a> <a
-												th:href="@{/dishes/delete/{dishId}(dishId=${dish.id})}"><i
-													class="fa fa-times" aria-hidden="true"></i></a></td>
-										</tr>
-									</th:block>
-								</tbody>
-							</table>
+								</th:block>
+							</tbody>
+						</table>
 
 
 
@@ -159,70 +159,70 @@
 
 
 
-							<h2>Vinos</h2>
-							<table class="table">
-								<thead>
-									<tr>
-										<th></th>
-										<th>Name</th>
-										<th>Description</th>
-										<th>Score</th>
-										<th>Price</th>
-										<th>Allergens</th>
-										<th>Reviews</th>
-										<th sec:authorize="hasAuthority('ADMIN')">Actions</th>
+						<h2>Vinos</h2>
+						<table class="table">
+							<thead>
+								<tr>
+									<th></th>
+									<th>Name</th>
+									<th>Description</th>
+									<th>Score</th>
+									<th>Price</th>
+									<th>Allergens</th>
+									<th>Reviews</th>
+									<th sec:authorize="hasAuthority('ADMIN')">Actions</th>
 
+								</tr>
+							</thead>
+							<tbody>
+
+								<th:block th:each="dish : ${dishes}">
+									<tr
+										th:if="${dish.isVisible == true and dish.seccion.name() == 'VINOS'}">
+										<!-- IMAGE -->
+										<td>
+											<div style="width: 140px;">
+												<img class="img-thumbnail" th:src="${dish.picture}" />
+											</div>
+										</td>
+										<!-- NAME -->
+										<td th:inline="text"><b>[[${dish.name}]]</b></td>
+										<!-- DESCRIPTION -->
+										<td th:text="${dish.description}"></td>
+										<!-- SCORE -->
+										<td>
+											<div
+												th:replace="fragments/score :: stars(score=${dish.score})">
+											</div>
+										</td>
+										<!-- PRICE -->
+										<td th:inline="text">[[${dish.price}]]€</td>
+										<!-- ALLERGENS -->
+										<td>
+											<div class="row">
+												<th:block th:each="allergen : ${dish.allergens}">
+													<div style="width: 70px;">
+														<img class="img-thumbnail" th:src="${allergen.icon}" />
+													</div>
+												</th:block>
+											</div>
+										</td>
+
+
+
+										<!-- view reviews -->
+										<td><a th:href="@{/dishes/{dishId}(dishId=${dish.id})}">
+												View Reviews</a></td>
+										<!-- ACTIONS; only for employees -->
+										<td sec:authorize="hasAuthority('ADMIN')"><a
+											th:href="@{/dishes/{dishId}/edit(dishId=${dish.id})}"><i
+												class="fa fa-info" aria-hidden="true"></i></a> <a
+											th:href="@{/dishes/delete/{dishId}(dishId=${dish.id})}"><i
+												class="fa fa-times" aria-hidden="true"></i></a></td>
 									</tr>
-								</thead>
-								<tbody>
-
-									<th:block th:each="dish : ${dishes}">
-										<tr
-											th:if="${dish.isVisible == true and dish.seccion.name() == 'VINOS'}">
-											<!-- IMAGE -->
-											<td>
-												<div style="width: 140px;">
-													<img class="img-thumbnail" th:src="${dish.picture}" />
-												</div>
-											</td>
-											<!-- NAME -->
-											<td th:inline="text"><b>[[${dish.name}]]</b></td>
-											<!-- DESCRIPTION -->
-											<td th:text="${dish.description}"></td>
-											<!-- SCORE -->
-											<td>
-												<div
-													th:replace="fragments/score :: stars(score=${dish.score})">
-												</div>
-											</td>
-											<!-- PRICE -->
-											<td th:inline="text">[[${dish.price}]]€</td>
-											<!-- ALLERGENS -->
-											<td>
-												<div class="row">
-													<th:block th:each="allergen : ${dish.allergens}">
-														<div style="width: 70px;">
-															<img class="img-thumbnail" th:src="${allergen.icon}" />
-														</div>
-													</th:block>
-												</div>
-											</td>
-
-
-
-											<!-- view reviews -->
-											<td><a th:href="@{/dishes/{dishId}(dishId=${dish.id})}">
-													View Reviews</a></td>
-											<!-- ACTIONS; only for employees -->
-											<td sec:authorize="hasAuthority('ADMIN')"><a
-												th:href="@{/dishes/{dishId}/edit(dishId=${dish.id})}"><i
-													class="fa fa-info" aria-hidden="true"></i></a> <a
-												th:href="@{/dishes/delete/{dishId}(dishId=${dish.id})}"><i
-													class="fa fa-times" aria-hidden="true"></i></a></td>
-										</tr>
-									</th:block>
-								</tbody>
-							</table>
+								</th:block>
+							</tbody>
+						</table>
 
 
 
@@ -237,70 +237,70 @@
 
 
 
-							<h2>Ensaladas</h2>
-							<table class="table">
-								<thead>
-									<tr>
-										<th></th>
-										<th>Name</th>
-										<th>Description</th>
-										<th>Score</th>
-										<th>Price</th>
-										<th>Allergens</th>
-										<th>Reviews</th>
-										<th sec:authorize="hasAuthority('ADMIN')">Actions</th>
+						<h2>Ensaladas</h2>
+						<table class="table">
+							<thead>
+								<tr>
+									<th></th>
+									<th>Name</th>
+									<th>Description</th>
+									<th>Score</th>
+									<th>Price</th>
+									<th>Allergens</th>
+									<th>Reviews</th>
+									<th sec:authorize="hasAuthority('ADMIN')">Actions</th>
 
+								</tr>
+							</thead>
+							<tbody>
+
+								<th:block th:each="dish : ${dishes}">
+									<tr
+										th:if="${dish.isVisible == true and dish.seccion.name() == 'ENSALADAS'}">
+										<!-- IMAGE -->
+										<td>
+											<div style="width: 140px;">
+												<img class="img-thumbnail" th:src="${dish.picture}" />
+											</div>
+										</td>
+										<!-- NAME -->
+										<td th:inline="text"><b>[[${dish.name}]]</b></td>
+										<!-- DESCRIPTION -->
+										<td th:text="${dish.description}"></td>
+										<!-- SCORE -->
+										<td>
+											<div
+												th:replace="fragments/score :: stars(score=${dish.score})">
+											</div>
+										</td>
+										<!-- PRICE -->
+										<td th:inline="text">[[${dish.price}]]€</td>
+										<!-- ALLERGENS -->
+										<td>
+											<div class="row">
+												<th:block th:each="allergen : ${dish.allergens}">
+													<div style="width: 70px;">
+														<img class="img-thumbnail" th:src="${allergen.icon}" />
+													</div>
+												</th:block>
+											</div>
+										</td>
+
+
+
+										<!-- view reviews -->
+										<td><a th:href="@{/dishes/{dishId}(dishId=${dish.id})}">
+												View Reviews</a></td>
+										<!-- ACTIONS; only for employees -->
+										<td sec:authorize="hasAuthority('ADMIN')"><a
+											th:href="@{/dishes/{dishId}/edit(dishId=${dish.id})}"><i
+												class="fa fa-info" aria-hidden="true"></i></a> <a
+											th:href="@{/dishes/delete/{dishId}(dishId=${dish.id})}"><i
+												class="fa fa-times" aria-hidden="true"></i></a></td>
 									</tr>
-								</thead>
-								<tbody>
-
-									<th:block th:each="dish : ${dishes}">
-										<tr
-											th:if="${dish.isVisible == true and dish.seccion.name() == 'ENSALADAS'}">
-											<!-- IMAGE -->
-											<td>
-												<div style="width: 140px;">
-													<img class="img-thumbnail" th:src="${dish.picture}" />
-												</div>
-											</td>
-											<!-- NAME -->
-											<td th:inline="text"><b>[[${dish.name}]]</b></td>
-											<!-- DESCRIPTION -->
-											<td th:text="${dish.description}"></td>
-											<!-- SCORE -->
-											<td>
-												<div
-													th:replace="fragments/score :: stars(score=${dish.score})">
-												</div>
-											</td>
-											<!-- PRICE -->
-											<td th:inline="text">[[${dish.price}]]€</td>
-											<!-- ALLERGENS -->
-											<td>
-												<div class="row">
-													<th:block th:each="allergen : ${dish.allergens}">
-														<div style="width: 70px;">
-															<img class="img-thumbnail" th:src="${allergen.icon}" />
-														</div>
-													</th:block>
-												</div>
-											</td>
-
-
-
-											<!-- view reviews -->
-											<td><a th:href="@{/dishes/{dishId}(dishId=${dish.id})}">
-													View Reviews</a></td>
-											<!-- ACTIONS; only for employees -->
-											<td sec:authorize="hasAuthority('ADMIN')"><a
-												th:href="@{/dishes/{dishId}/edit(dishId=${dish.id})}"><i
-													class="fa fa-info" aria-hidden="true"></i></a> <a
-												th:href="@{/dishes/delete/{dishId}(dishId=${dish.id})}"><i
-													class="fa fa-times" aria-hidden="true"></i></a></td>
-										</tr>
-									</th:block>
-								</tbody>
-							</table>
+								</th:block>
+							</tbody>
+						</table>
 
 
 
@@ -308,70 +308,70 @@
 
 
 
-							<h2>Pescados</h2>
-							<table class="table">
-								<thead>
-									<tr>
-										<th></th>
-										<th>Name</th>
-										<th>Description</th>
-										<th>Score</th>
-										<th>Price</th>
-										<th>Allergens</th>
-										<th>Reviews</th>
-										<th sec:authorize="hasAuthority('ADMIN')">Actions</th>
+						<h2>Pescados</h2>
+						<table class="table">
+							<thead>
+								<tr>
+									<th></th>
+									<th>Name</th>
+									<th>Description</th>
+									<th>Score</th>
+									<th>Price</th>
+									<th>Allergens</th>
+									<th>Reviews</th>
+									<th sec:authorize="hasAuthority('ADMIN')">Actions</th>
 
+								</tr>
+							</thead>
+							<tbody>
+
+								<th:block th:each="dish : ${dishes}">
+									<tr
+										th:if="${dish.isVisible == true and dish.seccion.name() == 'PESCADOS'}">
+										<!-- IMAGE -->
+										<td>
+											<div style="width: 140px;">
+												<img class="img-thumbnail" th:src="${dish.picture}" />
+											</div>
+										</td>
+										<!-- NAME -->
+										<td th:inline="text"><b>[[${dish.name}]]</b></td>
+										<!-- DESCRIPTION -->
+										<td th:text="${dish.description}"></td>
+										<!-- SCORE -->
+										<td>
+											<div
+												th:replace="fragments/score :: stars(score=${dish.score})">
+											</div>
+										</td>
+										<!-- PRICE -->
+										<td th:inline="text">[[${dish.price}]]€</td>
+										<!-- ALLERGENS -->
+										<td>
+											<div class="row">
+												<th:block th:each="allergen : ${dish.allergens}">
+													<div style="width: 70px;">
+														<img class="img-thumbnail" th:src="${allergen.icon}" />
+													</div>
+												</th:block>
+											</div>
+										</td>
+
+
+
+										<!-- view reviews -->
+										<td><a th:href="@{/dishes/{dishId}(dishId=${dish.id})}">
+												View Reviews</a></td>
+										<!-- ACTIONS; only for employees -->
+										<td sec:authorize="hasAuthority('ADMIN')"><a
+											th:href="@{/dishes/{dishId}/edit(dishId=${dish.id})}"><i
+												class="fa fa-info" aria-hidden="true"></i></a> <a
+											th:href="@{/dishes/delete/{dishId}(dishId=${dish.id})}"><i
+												class="fa fa-times" aria-hidden="true"></i></a></td>
 									</tr>
-								</thead>
-								<tbody>
-
-									<th:block th:each="dish : ${dishes}">
-										<tr
-											th:if="${dish.isVisible == true and dish.seccion.name() == 'PESCADOS'}">
-											<!-- IMAGE -->
-											<td>
-												<div style="width: 140px;">
-													<img class="img-thumbnail" th:src="${dish.picture}" />
-												</div>
-											</td>
-											<!-- NAME -->
-											<td th:inline="text"><b>[[${dish.name}]]</b></td>
-											<!-- DESCRIPTION -->
-											<td th:text="${dish.description}"></td>
-											<!-- SCORE -->
-											<td>
-												<div
-													th:replace="fragments/score :: stars(score=${dish.score})">
-												</div>
-											</td>
-											<!-- PRICE -->
-											<td th:inline="text">[[${dish.price}]]€</td>
-											<!-- ALLERGENS -->
-											<td>
-												<div class="row">
-													<th:block th:each="allergen : ${dish.allergens}">
-														<div style="width: 70px;">
-															<img class="img-thumbnail" th:src="${allergen.icon}" />
-														</div>
-													</th:block>
-												</div>
-											</td>
-
-
-
-											<!-- view reviews -->
-											<td><a th:href="@{/dishes/{dishId}(dishId=${dish.id})}">
-													View Reviews</a></td>
-											<!-- ACTIONS; only for employees -->
-											<td sec:authorize="hasAuthority('ADMIN')"><a
-												th:href="@{/dishes/{dishId}/edit(dishId=${dish.id})}"><i
-													class="fa fa-info" aria-hidden="true"></i></a> <a
-												th:href="@{/dishes/delete/{dishId}(dishId=${dish.id})}"><i
-													class="fa fa-times" aria-hidden="true"></i></a></td>
-										</tr>
-									</th:block>
-								</tbody>
-							</table>
+								</th:block>
+							</tbody>
+						</table>
 
 
 
@@ -379,140 +379,140 @@
 
 
 
-							<h2>Carnes</h2>
-							<table class="table">
-								<thead>
-									<tr>
-										<th></th>
-										<th>Name</th>
-										<th>Description</th>
-										<th>Score</th>
-										<th>Price</th>
-										<th>Allergens</th>
-										<th>Reviews</th>
-										<th sec:authorize="hasAuthority('ADMIN')">Actions</th>
+						<h2>Carnes</h2>
+						<table class="table">
+							<thead>
+								<tr>
+									<th></th>
+									<th>Name</th>
+									<th>Description</th>
+									<th>Score</th>
+									<th>Price</th>
+									<th>Allergens</th>
+									<th>Reviews</th>
+									<th sec:authorize="hasAuthority('ADMIN')">Actions</th>
 
+								</tr>
+							</thead>
+							<tbody>
+
+								<th:block th:each="dish : ${dishes}">
+									<tr
+										th:if="${dish.isVisible == true and dish.seccion.name() == 'CARNES'}">
+										<!-- IMAGE -->
+										<td>
+											<div style="width: 140px;">
+												<img class="img-thumbnail" th:src="${dish.picture}" />
+											</div>
+										</td>
+										<!-- NAME -->
+										<td th:inline="text"><b>[[${dish.name}]]</b></td>
+										<!-- DESCRIPTION -->
+										<td th:text="${dish.description}"></td>
+										<!-- SCORE -->
+										<td>
+											<div
+												th:replace="fragments/score :: stars(score=${dish.score})">
+											</div>
+										</td>
+										<!-- PRICE -->
+										<td th:inline="text">[[${dish.price}]]€</td>
+										<!-- ALLERGENS -->
+										<td>
+											<div class="row">
+												<th:block th:each="allergen : ${dish.allergens}">
+													<div style="width: 70px;">
+														<img class="img-thumbnail" th:src="${allergen.icon}" />
+													</div>
+												</th:block>
+											</div>
+										</td>
+
+
+
+										<!-- view reviews -->
+										<td><a th:href="@{/dishes/{dishId}(dishId=${dish.id})}">
+												View Reviews</a></td>
+										<!-- ACTIONS; only for employees -->
+										<td sec:authorize="hasAuthority('ADMIN')"><a
+											th:href="@{/dishes/{dishId}/edit(dishId=${dish.id})}"><i
+												class="fa fa-info" aria-hidden="true"></i></a> <a
+											th:href="@{/dishes/delete/{dishId}(dishId=${dish.id})}"><i
+												class="fa fa-times" aria-hidden="true"></i></a></td>
 									</tr>
-								</thead>
-								<tbody>
+								</th:block>
+							</tbody>
+						</table>
 
-									<th:block th:each="dish : ${dishes}">
-										<tr
-											th:if="${dish.isVisible == true and dish.seccion.name() == 'CARNES'}">
-											<!-- IMAGE -->
-											<td>
-												<div style="width: 140px;">
-													<img class="img-thumbnail" th:src="${dish.picture}" />
-												</div>
-											</td>
-											<!-- NAME -->
-											<td th:inline="text"><b>[[${dish.name}]]</b></td>
-											<!-- DESCRIPTION -->
-											<td th:text="${dish.description}"></td>
-											<!-- SCORE -->
-											<td>
-												<div
-													th:replace="fragments/score :: stars(score=${dish.score})">
-												</div>
-											</td>
-											<!-- PRICE -->
-											<td th:inline="text">[[${dish.price}]]€</td>
-											<!-- ALLERGENS -->
-											<td>
-												<div class="row">
-													<th:block th:each="allergen : ${dish.allergens}">
-														<div style="width: 70px;">
-															<img class="img-thumbnail" th:src="${allergen.icon}" />
-														</div>
-													</th:block>
-												</div>
-											</td>
+						<h2>Postres</h2>
+						<table class="table">
+							<thead>
+								<tr>
+									<th></th>
+									<th>Name</th>
+									<th>Description</th>
+									<th>Score</th>
+									<th>Price</th>
+									<th>Allergens</th>
+									<th>Reviews</th>
+									<th sec:authorize="hasAuthority('ADMIN')">Actions</th>
+
+								</tr>
+							</thead>
+							<tbody>
+
+								<th:block th:each="dish : ${dishes}">
+									<tr
+										th:if="${dish.isVisible == true and dish.seccion.name() == 'POSTRES'}">
+										<!-- IMAGE -->
+										<td>
+											<div style="width: 140px;">
+												<img class="img-thumbnail" th:src="${dish.picture}" />
+											</div>
+										</td>
+										<!-- NAME -->
+										<td th:inline="text"><b>[[${dish.name}]]</b></td>
+										<!-- DESCRIPTION -->
+										<td th:text="${dish.description}"></td>
+										<!-- SCORE -->
+										<td>
+											<div
+												th:replace="fragments/score :: stars(score=${dish.score})">
+											</div>
+										</td>
+										<!-- PRICE -->
+										<td th:inline="text">[[${dish.price}]]€</td>
+										<!-- ALLERGENS -->
+										<td>
+											<div class="row">
+												<th:block th:each="allergen : ${dish.allergens}">
+													<div style="width: 70px;">
+														<img class="img-thumbnail" th:src="${allergen.icon}" />
+													</div>
+												</th:block>
+											</div>
+										</td>
 
 
 
-											<!-- view reviews -->
-											<td><a th:href="@{/dishes/{dishId}(dishId=${dish.id})}">
-													View Reviews</a></td>
-											<!-- ACTIONS; only for employees -->
-											<td sec:authorize="hasAuthority('ADMIN')"><a
-												th:href="@{/dishes/{dishId}/edit(dishId=${dish.id})}"><i
-													class="fa fa-info" aria-hidden="true"></i></a> <a
-												th:href="@{/dishes/delete/{dishId}(dishId=${dish.id})}"><i
-													class="fa fa-times" aria-hidden="true"></i></a></td>
-										</tr>
-									</th:block>
-								</tbody>
-							</table>
-
-							<h2>Postres</h2>
-							<table class="table">
-								<thead>
-									<tr>
-										<th></th>
-										<th>Name</th>
-										<th>Description</th>
-										<th>Score</th>
-										<th>Price</th>
-										<th>Allergens</th>
-										<th>Reviews</th>
-										<th sec:authorize="hasAuthority('ADMIN')">Actions</th>
-
+										<!-- view reviews -->
+										<td><a th:href="@{/dishes/{dishId}(dishId=${dish.id})}">
+												View Reviews</a></td>
+										<!-- ACTIONS; only for employees -->
+										<td sec:authorize="hasAuthority('ADMIN')"><a
+											th:href="@{/dishes/{dishId}/edit(dishId=${dish.id})}"><i
+												class="fa fa-info" aria-hidden="true"></i></a> <a
+											th:href="@{/dishes/delete/{dishId}(dishId=${dish.id})}"><i
+												class="fa fa-times" aria-hidden="true"></i></a></td>
 									</tr>
-								</thead>
-								<tbody>
+								</th:block>
+							</tbody>
+						</table>
 
-									<th:block th:each="dish : ${dishes}">
-										<tr
-											th:if="${dish.isVisible == true and dish.seccion.name() == 'POSTRES'}">
-											<!-- IMAGE -->
-											<td>
-												<div style="width: 140px;">
-													<img class="img-thumbnail" th:src="${dish.picture}" />
-												</div>
-											</td>
-											<!-- NAME -->
-											<td th:inline="text"><b>[[${dish.name}]]</b></td>
-											<!-- DESCRIPTION -->
-											<td th:text="${dish.description}"></td>
-											<!-- SCORE -->
-											<td>
-												<div
-													th:replace="fragments/score :: stars(score=${dish.score})">
-												</div>
-											</td>
-											<!-- PRICE -->
-											<td th:inline="text">[[${dish.price}]]€</td>
-											<!-- ALLERGENS -->
-											<td>
-												<div class="row">
-													<th:block th:each="allergen : ${dish.allergens}">
-														<div style="width: 70px;">
-															<img class="img-thumbnail" th:src="${allergen.icon}" />
-														</div>
-													</th:block>
-												</div>
-											</td>
-
-
-
-											<!-- view reviews -->
-											<td><a th:href="@{/dishes/{dishId}(dishId=${dish.id})}">
-													View Reviews</a></td>
-											<!-- ACTIONS; only for employees -->
-											<td sec:authorize="hasAuthority('ADMIN')"><a
-												th:href="@{/dishes/{dishId}/edit(dishId=${dish.id})}"><i
-													class="fa fa-info" aria-hidden="true"></i></a> <a
-												th:href="@{/dishes/delete/{dishId}(dishId=${dish.id})}"><i
-													class="fa fa-times" aria-hidden="true"></i></a></td>
-										</tr>
-									</th:block>
-								</tbody>
-							</table>
-
-						</div>
 					</div>
 				</div>
 			</div>
+		</div>
 
 
 		<div sec:authorize="hasAuthority('ADMIN')">

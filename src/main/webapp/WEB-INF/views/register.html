@@ -29,11 +29,11 @@
 							onclick="showMe('enter-key')"> Register as an employee
 					</div>
 
-					<div class="form-group" id="enter-key" style="display:none;">
+					<div class="form-group" id="enter-key" style="display: none;">
 						<input type="text" class="form-control" data-toggle="tooltip"
 							title="Employee registration key"
 							placeholder="Enter registration key" name="key" id="reg-key"
-							th:field="*{key}" >
+							th:field="*{key}">
 						<!--   <span id="reg-key-msg"></span> -->
 						<small id="reg-key-msg" class="form-text text-white"></small>
 					</div>
@@ -70,11 +70,11 @@
 								th:text="${err}" />
 						</ul>
 					</div>
-<div class="form-check remember">
-					<input type="checkbox" class="form-check-input"
-						th:field="*{acceptTerms}" required> Accept terms and
-					conditions.
-				</div>
+					<div class="form-check remember">
+						<input type="checkbox" class="form-check-input"
+							th:field="*{acceptTerms}" required> Accept terms and
+						conditions.
+					</div>
 
 				</div>
 				<!-- SURNAME -->
@@ -122,12 +122,12 @@
 							<li th:each="err : ${#fields.errors('form.phoneNumber')}"
 								th:text="${err}" />
 						</ul>
-					</div>				
-				
-				<div class="form-group">
-					<input type="submit" value="Register"
-						class="btn btn-outline-success ">
-				</div>
+					</div>
+
+					<div class="form-group">
+						<input type="submit" value="Register"
+							class="btn btn-outline-success ">
+					</div>
 				</div>
 			</div>
 		</form>

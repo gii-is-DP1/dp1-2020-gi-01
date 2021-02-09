@@ -15,14 +15,9 @@ import lombok.Setter;
 @Setter
 public class ContactForm { 
 	
-	//est - validaciones hechas.
 	
 	@NotEmpty(message = "You must put your name and surname to contact you, thank you.")
 	@Size(min = 2, max = 128)
-	//To allow "tildes"
-	//@Pattern(regexp ="[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]" 
-	//, message = "Please enter your first and last name correctly.")
-	//lo comento porque siempre daba error
 	private String fullName;
 	
 	@NotNull
