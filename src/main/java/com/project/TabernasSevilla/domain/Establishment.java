@@ -34,10 +34,6 @@ public class Establishment extends BaseEntity {
 	private String picture;
 	@NotBlank
 	private String address;
-	@NotNull @Min(1)
-	private Integer capacity;
-	@NotNull
-	private Integer currentCapacity;
 
 	private String phone;
 	@NotBlank

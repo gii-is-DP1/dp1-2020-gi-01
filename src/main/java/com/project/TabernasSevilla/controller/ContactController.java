@@ -9,6 +9,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.project.TabernasSevilla.forms.ContactForm;
 import com.project.TabernasSevilla.service.ContactService;
@@ -27,15 +28,16 @@ public class ContactController {
 		model.addAttribute("contactForm", confor);
 			return "contact";
 	    }
-	
+	//the CV will be stored in /resources/JobApplication
 	@RequestMapping(value="/save",method = RequestMethod.POST)
-	public String saveJoba(@ModelAttribute @Valid final ContactForm confor, final BindingResult binding, Model model) {
-		if(binding.hasErrors()) {
+	public String saveJoba(@ModelAttribute @Valid final ContactForm confor, final BindingResult binding, Model model, RedirectAttributes reA) {
+		if(binding.hasErrors() || confor.getCv().getSize()==0) {
 			model.addAttribute("contactForm", confor);
-			return this.createJobaEditModel(confor, model);
+			return this.createJobaEditModel(confor, model, "");
 		}else {
 			try {
 				this.conSer.register(confor);
+				reA.addFlashAttribute("message", "Thanks for sending us the job application"); //si pongo model.addAttribute no funciona, porque no esta pensado para redirecciones
 				return "redirect:/index";
 			}catch(final Exception e) {
 				return this.createJobaEditModel(confor, model, e.getMessage());
@@ -43,13 +45,13 @@ public class ContactController {
 		}
 	}
 	
-
-	private String createJobaEditModel(final ContactForm confor, Model model) {
-		return this.createJobaEditModel(confor, model, null);
-	}
+	
 
 	private String createJobaEditModel(ContactForm confor, Model model, String message) {
 		model.addAttribute(confor);
+		if(confor.getCv().getSize()==0) {
+			message = message + " Please upload your CV";
+		}
 		model.addAttribute("message", message);
 		return "contact";
 	}

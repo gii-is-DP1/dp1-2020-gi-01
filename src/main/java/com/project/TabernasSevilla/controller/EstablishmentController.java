@@ -1,5 +1,6 @@
 package com.project.TabernasSevilla.controller;
 
+import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,9 +27,11 @@ public class EstablishmentController {
 		Establishment est = this.establishmentService.findById(id);
 		Assert.notNull(est,"Establishment could not be found");
 		Long occupied = this.tableService.getOccupancyAtRestaurant(est); //numero de personas ocupando sitio
-		String estimate = this.tableService.estimateFreeTable(est);
+		Long capacity = this.tableService.getCapacityAtRestaurant(est);
+		String estimate = this.tableService.estimateFreeTable(est) == null ? null : DurationFormatUtils.formatDuration(this.tableService.estimateFreeTable(est), "HH:mm", true);
 		model.addAttribute("establishment",est);
 		model.addAttribute("occupied",occupied);
+		model.addAttribute("capacity",capacity);
 		model.addAttribute("estimate",estimate);
 		return "establishment/view";
 	}

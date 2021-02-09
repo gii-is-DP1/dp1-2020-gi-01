@@ -20,7 +20,8 @@
 					<span th:inline="text">Restaurant: <a href="">[[${establishment.title}]]</a></span>
 				</div>
 				<div>
-					<span>Please place reservations with a minimum of 2 hours notice</span>
+					<span>Please place reservations with a minimum of 2 hours
+						notice</span>
 				</div>
 
 				<div class="card-body">
@@ -28,29 +29,28 @@
 						th:object="${booking}" id="bookingForm">
 
 						<input type="hidden" name="establishment"
-							th:field="*{establishment}"> 
+							th:field="*{establishment}">
 						<ul>
-								<li th:each="err : ${#fields.errors('establishment')}"
-									th:text="${err}" />
-							</ul>
-						<input type="hidden"
-							name="actor" th:field="*{actor}"> 
-							<ul>
-								<li th:each="err : ${#fields.errors('actor')}"
-									th:text="${err}" />
-							</ul>
-						<input type="hidden"
-							name="placementDate" th:field="*{placementDate}">
-							<ul>
-								<li th:each="err : ${#fields.errors('placementDate')}"
-									th:text="${err}" />
-							</ul>
+							<li th:each="err : ${#fields.errors('establishment')}"
+								th:text="${err}" />
+						</ul>
+						<input type="hidden" name="actor" th:field="*{actor}">
+						<ul>
+							<li th:each="err : ${#fields.errors('actor')}" th:text="${err}" />
+						</ul>
+						<input type="hidden" name="placementDate"
+							th:field="*{placementDate}">
+						<ul>
+							<li th:each="err : ${#fields.errors('placementDate')}"
+								th:text="${err}" />
+						</ul>
 
 						<!-- RESERVATION DATE -->
 						<div class="input-group form-group">
-							<span>Reservation date</span>
-							<input id="fechaBooking" type="datetime-local" min="" max="2021-01-01" class="form-control" placeholder="Reservation date"
-								name="reservationDate" th:field="*{reservationDate}">
+							<span>Reservation date</span> <input id="fechaBooking"
+								type="datetime-local" min="" max="2021-01-01"
+								class="form-control" placeholder="Reservation date"
+								name="reservationDate" required th:field="*{reservationDate}">
 							<ul>
 								<li th:each="err : ${#fields.errors('reservationDate')}"
 									th:text="${err}" />
@@ -58,11 +58,13 @@
 						</div>
 						<!-- Esto es para que no puedas reservar en una fecha más antigua que la del dia actual,
 						y como maximo puedes reservar con 30 dias de adelanto -->
-				<script>
+						<script>
 				var fechaHoy = new Date();
 				var anio = fechaHoy.getFullYear();
 				var mes = fechaHoy.getMonth() + 1; 
 				var dia = fechaHoy.getDate();
+				var minuts = fechaHoy.getMinutes();
+				var hora = fechaHoy.getHours();
 				var mes2 = fechaHoy.getMonth() +2;
 
 
@@ -72,7 +74,7 @@
 					var dia = "0"+dia;
 				}
 
-				var minimo = anio + "-" + "0"+mes + "-" + dia+"T00:00:00";
+				var minimo = anio + "-" + "0"+mes + "-" + dia + "T" + hora + ":" + minuts +":00";
 				var maximo = anio + "-" + "0"+mes2 + "-" + dia+"T00:00:00";
 
 				console.log(maximo);
@@ -94,22 +96,21 @@
 						<!-- CONTACT -->
 						<div class="input-group form-group">
 							<span>Contact number</span> <input type="tel"
-								class="form-control" placeholder="contactPhone" name="contactcontactPhone"
-								th:field="*{contactPhone}">
+								class="form-control" placeholder="contactPhone"
+								name="contactcontactPhone" pattern="[0-9]{9}" th:field="*{contactPhone}">
 							<ul>
 								<li th:each="err : ${#fields.errors('contactPhone')}"
 									th:text="${err}" />
 							</ul>
 						</div>
-						
+
 						<!-- NOTES -->
 						<div class="input-group form-group">
-							<span>Notes</span> <textarea 
-								class="form-control" name="notes" rows="8" cols="3"
-								th:field="*{notes}" form="bookingForm"></textarea>
+							<span>Notes</span>
+							<textarea class="form-control" name="notes" rows="8" cols="3"
+								th:field="*{notes}" form="bookingForm" maxlength="50"></textarea>
 							<ul>
-								<li th:each="err : ${#fields.errors('notes')}"
-									th:text="${err}" />
+								<li th:each="err : ${#fields.errors('notes')}" th:text="${err}" />
 							</ul>
 						</div>
 
@@ -120,8 +121,9 @@
 					</form>
 				</div>
 			</div>
-			
+
 		</div>
 	</div>
+	<footer th:replace="fragments/common :: footer"></footer>
 </body>
 </html>

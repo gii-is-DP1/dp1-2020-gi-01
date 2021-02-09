@@ -10,7 +10,6 @@ public class RegisterForm {
 	private ActorForm form;
 
 	@Size(min = 4, max = 32, message = "Password must have 4 to 32 characters")
-//	@Pattern(regexp = "^[a-zA-Z0-9_]*$", message = "Characters must be alphanumeric")
 	private String password;
 
 	@Size(min = 4, max = 32, message = "username must be between 4 and 32 characters.")

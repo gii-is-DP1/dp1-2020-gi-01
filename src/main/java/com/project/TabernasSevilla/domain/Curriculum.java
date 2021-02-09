@@ -1,9 +1,11 @@
 package com.project.TabernasSevilla.domain;
 
 import javax.persistence.Entity;
+import javax.persistence.Transient;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+
+import org.springframework.web.multipart.MultipartFile;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,7 +21,8 @@ public class Curriculum extends BaseEntity {
 	@NotBlank
 	@Email
 	private String email;
-
-	private String cv;
+	
+	@Transient
+	private MultipartFile cv;
 
 }

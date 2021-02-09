@@ -1,76 +1,61 @@
 package com.project.TabernasSevilla.web;
 
-import org.junit.jupiter.api.BeforeEach;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.context.WebApplicationContext;
 
 import com.project.TabernasSevilla.configuration.SecurityConfiguration;
 import com.project.TabernasSevilla.controller.ContactController;
-import com.project.TabernasSevilla.controller.DishController;
-import com.project.TabernasSevilla.domain.Dish;
-import com.project.TabernasSevilla.domain.Establishment;
-import com.project.TabernasSevilla.domain.Seccion;
-import com.project.TabernasSevilla.forms.ContactForm;
-import com.project.TabernasSevilla.repository.*;
-import com.project.TabernasSevilla.security.Authority;
+import com.project.TabernasSevilla.repository.AdminRepository;
+import com.project.TabernasSevilla.repository.BookingRepository;
+import com.project.TabernasSevilla.repository.CookRepository;
+import com.project.TabernasSevilla.repository.CurriculumRepository;
+import com.project.TabernasSevilla.repository.CustomerRepository;
+import com.project.TabernasSevilla.repository.EstablishmentRepository;
+import com.project.TabernasSevilla.repository.ManagerRepository;
+import com.project.TabernasSevilla.repository.OrderCancellationRepository;
+import com.project.TabernasSevilla.repository.OrderLogRepository;
+import com.project.TabernasSevilla.repository.OrderRepository;
+import com.project.TabernasSevilla.repository.RegKeyRepository;
+import com.project.TabernasSevilla.repository.ReviewRepository;
+import com.project.TabernasSevilla.repository.TableRepository;
+import com.project.TabernasSevilla.repository.WaiterRepository;
 import com.project.TabernasSevilla.security.AuthorityRepository;
 import com.project.TabernasSevilla.security.AuthorityService;
-import com.project.TabernasSevilla.security.User;
 import com.project.TabernasSevilla.security.UserService;
 import com.project.TabernasSevilla.service.ActorService;
+import com.project.TabernasSevilla.service.ContactService;
 import com.project.TabernasSevilla.service.DishService;
 import com.project.TabernasSevilla.service.EstablishmentService;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.doReturn;
 
+@WebMvcTest(controllers = ContactController.class, excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class), excludeAutoConfiguration = SecurityConfiguration.class, includeFilters = {
+		@ComponentScan.Filter(Service.class), @ComponentScan.Filter(Repository.class) })
 
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-
-import javax.validation.Valid;
-
-//@RunWith(SpringRunner.class)
-//@WebAppConfiguration
-@WebMvcTest(controllers = ContactController.class, 
-	excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class), 
-	excludeAutoConfiguration = SecurityConfiguration.class, 
-	includeFilters = {@ComponentScan.Filter(Service.class), @ComponentScan.Filter(Repository.class) })
-//@MockBean(JpaMetamodelMappingContext.class) //para que evite buscar la database
 public class ContactControllerTest {
-	
-	private static final int TEST_DISH_ID = 1;
 
-	//@Autowired
-	//private DishController dishController;
+	
+	@Autowired
+    private WebApplicationContext webApplicationContext;
 
 	@MockBean
 	private UserService userService;
@@ -83,9 +68,12 @@ public class ContactControllerTest {
 
 	@MockBean
 	private EstablishmentService establishmentService;
-	
+
 	@MockBean
 	private AuthorityService authService;
+	
+	@MockBean
+	private ContactService contactService;
 
 	@MockBean
 	private ReviewRepository reviewRepository;
@@ -132,78 +120,39 @@ public class ContactControllerTest {
 	@MockBean
 	private OrderLogRepository logga;
 
-	// POR ALGUN MOTIVO HE TENIDO QUE CREAR TODOS ESTOS MOCKBEANS PARA QUE FUNCIONE
-	// EL TEST SIMPLE DE HTTPRESPONSE
-
 	@Autowired
 	private MockMvc mockMvc;
 
-	@BeforeEach
-	void setup() { // inicializar establishment y dish
-		
-		Dish d = new Dish("Mi plato", "Mi descripción",
-				"https://international-experience.es/wp-content/uploads/2019/08/comidas-mundo.jpg", 20.0, 4.0, Seccion.CARNES, true,
-				null);
-
-		d.setId(1);
-		System.out.println("%%%%%%%%%%%% la id del plato "+d.getId());
-		List<Dish> ls = new ArrayList<Dish>();
-		ls.add(d);
-
-		Establishment est = new Establishment();
-		est.setId(1);
-		est.setTitle("prueba");
-		est.setAddress("calle ");
-		est.setCapacity(10);
-		est.setCurrentCapacity(10);
-		est.setOpeningHours("24/7");
-		est.setScore(2);
-		est.setDish(ls);
-		establishmentRepository.save(est);
-		System.out.println("############ todos los establecimientos: " + establishmentService.findAll());
-		
-		given(this.dishService.findById(TEST_DISH_ID)).willReturn(Optional.of(new Dish())); //importantisimo
-		
-	}
-	
-	
-	//obtain the list of all dishes
 	@WithMockUser(value = "spring")
 	@Test
 	void testCreateJoba() throws Exception {
 		mockMvc.perform(get("/contact/init")).andExpect(status().isOk()).andExpect(view().name("contact"));
 	}
-	
-	//create new dish
+
 	@ExceptionHandler
-	@WithMockUser(value = "spring", roles = "ADMIN") 
+	@WithMockUser(value = "spring", roles = "ADMIN")
 	@Test
-	void testSaveJoba() throws Exception{
-		//Primero debo mockear un user con la autoridad ADMIN, porque la anotacion de arriba no me funciona
+	void testSaveJoba() throws Exception {
 		
-		User mockUser = new User();
-		Set<Authority> ls = new HashSet<>();
-		ls.add(new Authority("ADMIN"));
-		mockUser.setAuthorities(ls);
-		mockUser.setUsername("mockito");
-		given(this.userService.getPrincipal()).willReturn(mockUser);
+        MockMultipartFile jsonFile = new MockMultipartFile("json", "", "application/json", "{\"json\": \"someValue\"}".getBytes());
 		
-		System.out.println("=========>"+this.userService.getPrincipal().getUsername());
-		System.out.println("=========>"+this.userService.getPrincipal().getAuthorities());
-		
-		mockMvc.perform(post("/contact/save")
-							.with(csrf())
-							.param("name", "Patatas fritas")
-							.param("description", "Muy ricas")
-							.param("picture", "https://static.wikia.nocookie.net/fishmans/images/f/f9/Uchunippon_front.png/revision/latest/scale-to-width-down/150?cb=20200116094151")
-							.param("price", "30.0")
-							.param("seccion", "ENTRANTES")
-							.param("allergens", "1")
-							.param("isVisible", "true")
-							.param("save", "Save Dish"))
-						.andExpect(status().is3xxRedirection())
-						.andExpect(view().name("redirect:/contact"));
+		MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+		mockMvc.perform(MockMvcRequestBuilders.multipart("/contact/save")
+				.file("cv", jsonFile.getBytes())
+				.param("fullName","Mokck dsf")
+				.param("email", "email@sdf.com"))
+				.andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/index"));
 	}
-	
-	
+
+	@ExceptionHandler
+	@WithMockUser(value = "spring", roles = "ADMIN")
+	@Test
+	void testBadSaveJoba() throws Exception { 
+		//no se le pasa el fichero CV y da error
+
+		mockMvc.perform(post("/contact/save").with(csrf()).param("fullName", "Adrian Perez")
+				.param("email", "adrian@us.es").param("cv",""))
+				.andExpect(status().isOk()).andExpect(view().name("error"));
+	}
+
 }

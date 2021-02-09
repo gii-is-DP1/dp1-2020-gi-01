@@ -44,24 +44,22 @@ public class TableService {
 			return this.tableRepo.save(table);
 		}
 		
+		public Long getCapacityAtRestaurant(Establishment est) {
+			return this.tableRepo.getEstablishmentCapacity(est.getId());
+		}
+		
 		//extra
 		public Long getOccupancyAtRestaurant(Establishment est) {
-			Long ocByEst = this.tableRepo.countOccupiedByEstablishment(est.getId());
-			Long dos = (long) (est.getCapacity()-est.getCurrentCapacity()); //la ocupación de un establishment es la capacidad total menos la actual
-			if(ocByEst == null) {
-				return dos;
-			}else {
-				return ocByEst;
-				}
+			return this.tableRepo.countOccupiedByEstablishment(est.getId());
 		}
 		
 		public Long countFreeTables(Establishment est) {
 			return this.tableRepo.countFreeTables(est.getId());
 		}
 		
-		//hard coded, ugly way
-		public String estimateFreeTable(Establishment est) {
-			String res="";
+		//estimate returned in milliseconds
+		public Long estimateFreeTable(Establishment est) {
+			Long res;
 			List<RestaurantTable> tables = this.findByEstablishment(est);
 			RestaurantTable oldest = null;
 			Duration oldestDuration = Duration.ofMinutes(0);
@@ -79,12 +77,11 @@ public class TableService {
 				}
 			}
 			if(oldest == null) {
-				res = "Table available right now";
+				res = null;
 			}else {
 				Instant estimate = oldest.getHourSeated().plus(1,ChronoUnit.HOURS);
 				Duration dur = Duration.between(Instant.now(), estimate);
-				//TODO: parse this shit string
-				res = "Estimated wait of: "+dur.toString();
+				res = dur.toMillis();
 			}
 			return res;
 		}

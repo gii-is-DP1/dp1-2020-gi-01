@@ -1,7 +1,5 @@
 package com.project.TabernasSevilla.controller;
 
-import java.time.Instant;
-import java.time.ZoneId;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -15,14 +13,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.project.TabernasSevilla.domain.Booking;
 import com.project.TabernasSevilla.domain.Establishment;
-import com.project.TabernasSevilla.security.UserService;
 import com.project.TabernasSevilla.service.ActorService;
 import com.project.TabernasSevilla.service.BookingService;
 import com.project.TabernasSevilla.service.EstablishmentService;
-import com.project.TabernasSevilla.service.TableService;
 
 @Controller
 @RequestMapping("/booking")
@@ -33,9 +30,6 @@ public class BookingController {
 	
 	@Autowired
 	private EstablishmentService establishmentService;
-	
-	@Autowired
-	private TableService tableService;
 	
 	@Autowired
 	private ActorService actorService;
@@ -59,16 +53,17 @@ public class BookingController {
 	}
 
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public String saveBooking(@ModelAttribute @Valid final Booking booking, final BindingResult binding,
+	public String saveBooking(@ModelAttribute @Valid final Booking booking, final BindingResult binding, RedirectAttributes reA,
 			Model model) {
 
 		if (binding.hasErrors()) {
 			model.addAttribute("booking", booking);
-			return this.createBookingEditModel(booking, model);
+			return this.createBookingEditModel(booking, model, null);
 		}
 		else {
 			try {
 				this.bookService.register(booking,  this.actorService.getPrincipal());
+				reA.addFlashAttribute("message", "Booking registered");
 				return "redirect:/index";
 			} catch (final Exception e) {
 				return this.createBookingEditModel(booking, model, e.getMessage());
@@ -84,9 +79,7 @@ public class BookingController {
 		return "booking/deleted";
 	}
 
-	private String createBookingEditModel(final Booking booking, Model model) {
-		return this.createBookingEditModel(booking, model, null);
-	}
+
 
 	private String createBookingEditModel(Booking booking, Model model, String message) {
 		model.addAttribute(booking);

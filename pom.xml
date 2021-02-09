@@ -26,6 +26,10 @@
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+		</dependency>
 
 		<!-- THYMELEAF -->
 		<dependency>
@@ -80,10 +84,10 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-             <groupId>org.junit.jupiter</groupId>
-             <artifactId>junit-jupiter-engine</artifactId>
-             <scope>test</scope>
-         </dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<scope>test</scope>
+		</dependency>
 		<!-- JSP PAGES -->
 		<dependency>
 			<groupId>org.apache.tomcat.embed</groupId>

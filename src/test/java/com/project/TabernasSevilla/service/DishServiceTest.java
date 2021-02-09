@@ -14,9 +14,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.stereotype.Service;
 
-import com.project.TabernasSevilla.domain.Actor;
 import com.project.TabernasSevilla.domain.Allergen;
-import com.project.TabernasSevilla.domain.Customer;
 import com.project.TabernasSevilla.domain.Dish;
 import com.project.TabernasSevilla.domain.Review;
 import com.project.TabernasSevilla.repository.AllergenRepository;

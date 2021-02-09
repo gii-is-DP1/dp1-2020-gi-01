@@ -3,17 +3,66 @@
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
 <title>Home page</title>
+<link rel="stylesheet" href="css/pepe.css">
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<th:block th:include="fragments/common :: head"></th:block>
+<th:block th:include="fragments/common :: head"></th:block>
 
 </head>
 <body>
 	<header th:include="fragments/common :: navbar"></header>
-		<div class="main">
-		
-		
+
+	<div class="info" id="info" th:unless=${message==null}>
+		<span th:text="${message}"></span>
+	</div>
+
+	<div class="container card">
+		<div class="col">
+			<div class="row p-5 ">
+				<h1 class="mx-auto text-dark">Welcome to tabernas Sevilla</h1>
+			</div>
+			<div class="row">
+				<h2 class="mx-auto text-dark"
+					style="font-family: 'Courier', cursive; font-size: 15pt;">A
+					place for lovers of good food. Start by choosing your favorite
+					restaurant</h2>
+			</div>
+
+			<div class="row p-2">
+				<div class="col mx-auto"
+					style="background-image: url('https://www.arengalia.es/images/logo-negro-svg.svg'); background-size: contain; background-position: center; background-repeat: no-repeat; width: auto; height: 15vw;">
+
+				</div>
+			</div>
+
+
+
+			<div class="row pb-5">
+				<div class="column">
+					<a href="location/view?id=1"><img
+						src="https://www.arengalia.es/images/porvenir/IMG_8301.jpg"
+						style="width: 100%"></a>
+					<div class="overlay" style="position: relative; width: 100%;">Porvenir</div>
+				</div>
+				<div class="column">
+					<a href="location/view?id=2"><img
+						src="https://elcorreoweb.es/documents/10157/0/image_content_17122123_20150704213539.jpg"
+						style="width: 100%"></a>
+
+					<div class="overlay" style="position: relative; width: 100%;">Arenal</div>
+				</div>
+				<div class="column">
+					<a href="location/view?id=3"><img
+						src="https://www.arengalia.es/images/nervion/IMG_6866.jpg"
+						style="width: 100%"></a>
+
+					<div class="overlay" style="position: relative; width: 100%;">Nervión</div>
+				</div>
+			</div>
 		</div>
+	</div>
+
+
 	<footer th:replace="fragments/common :: footer"></footer>
 </body>
 </html>

@@ -37,7 +37,7 @@ public class OrderCancellationController {
 	
 	@GetMapping("/view/{id}")
 	public String view(Model model, @PathVariable("id") int orderId) {
-		return "order/cancel/view";
+		return "order/view";
 	}
 	
 	@GetMapping("/{id}")

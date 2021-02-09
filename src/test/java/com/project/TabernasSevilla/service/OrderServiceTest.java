@@ -1,23 +1,27 @@
 package com.project.TabernasSevilla.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.given;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Service;
 
-import com.project.TabernasSevilla.domain.Actor;
 import com.project.TabernasSevilla.domain.Dish;
-import com.project.TabernasSevilla.domain.Establishment;
 import com.project.TabernasSevilla.domain.RestaurantOrder;
+import com.project.TabernasSevilla.security.Authority;
+import com.project.TabernasSevilla.security.User;
+import com.project.TabernasSevilla.security.UserService;
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
-
 class OrderServiceTest {
 	@Autowired
 	protected OrderService orderService;
@@ -30,6 +34,12 @@ class OrderServiceTest {
 	
 	@Autowired
 	protected EstablishmentService estService;
+	
+	@MockBean
+	protected UserService userService;
+	
+	@MockBean
+	protected ActorService actorService;
 
 	
 	@Test
@@ -53,6 +63,33 @@ class OrderServiceTest {
 		order =  this.orderService.addDish(order, d1);
 		assertThat(order.getDish().get(0)).isEqualTo(d1);
 	}
+	
+
+	@Test
+	public void contextualSaveTest() {
+		
+		User mockUser = new User();
+		Set<Authority> ls = new HashSet<>();
+		ls.add(new Authority("ADMIN"));
+		mockUser.setAuthorities(ls);
+		mockUser.setUsername("mockito");
+		given(this.userService.getPrincipal()).willReturn(mockUser);
+		given(this.actorService.getPrincipal()).willReturn(this.adminService.findAll().get(0));
+		
+		RestaurantOrder order = this.orderService.initialize(this.estService.findById(1));
+		order.setAddress("en fin");
+		this.orderService.contextualSave(order);
+		assertThat(order.getActor()).isEqualTo(this.adminService.findAll().get(0));
+		
+	}
+	
+	@Test
+	public void cancellOrder() {
+		RestaurantOrder order = this.orderService.initialize(this.estService.findById(1));
+		order = this.orderService.cancelOrder(order);
+		assertThat(order.getStatus()).isEqualTo(RestaurantOrder.CANCELLED);
+	}
+	
 	@Test
 	public void testRemoveDish(){
 		RestaurantOrder order = new RestaurantOrder();
@@ -130,7 +167,8 @@ class OrderServiceTest {
 		order.setStatus(RestaurantOrder.OPEN);
 		this.orderService.save(order);
 		//Pongo true para hacer efectivo que tenga autoridad
-		RestaurantOrder updated = this.orderService.updateStatus(order, RestaurantOrder.DELIVERED, true);
+		given(this.userService.principalIsEmployee()).willReturn(true);
+		RestaurantOrder updated = this.orderService.updateStatus(order, RestaurantOrder.DELIVERED, this.userService.principalIsEmployee());
 		assertThat(updated).isNotNull();
 	}	
 	

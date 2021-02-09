@@ -8,180 +8,528 @@
 </head>
 <body>
 	<th:block th:include="fragments/common :: navbar"></th:block>
-	
+
 	<div class="error" id="error" th:unless=${message==null}>
 		<span th:text="${message}"></span>
 	</div>
-			<div class="container card">
-				<div class="wrapper row ">
-					<div class="preview col-md-6" >
-						<div class="wrapper row">
-							<b>Dishes</b>
-						</div>
-						<div class="wrapper row">
-							<table class="table">
-								<thead>
-									<tr>
-										<th></th>
-										<th>Name</th>
-										<th>Score</th>
-										<th>Price</th>
-										<th></th>
-									</tr>
-								</thead>
-								<tbody>
-									<th:block th:each="dish : ${dishes}">
-										<tr>
-											<!-- IMAGE -->
-											<td>
-												<div th:style="'
-													width: 100px;
-													height:100px; 
-													background-image: url('+${dish.picture}+');
-													background-position: center;
-													background-size:contain;
-													background-repeat: no-repeat;'">
-													
-												</div>
-											</td>
-											<!-- NAME -->
-											<td th:inline="text"><b>[[${dish.name}]]</b></td>
-											<!-- SCORE -->
-											<td>
-												<div
-													th:replace="fragments/score :: stars(score=${dish.score})"></div>
-											</td>
-											<!-- PRICE -->
-											<td th:inline="text">[[${dish.price}]]€</td>
-											<!-- ADD TO ORDER -->
-											<td><a
-												th:href="@{'/order/'+${order.id}+'/add/'+${dish.id}}"
-												role="button" class="btn btn-secondary" aria-pressed="true">Add</a>
-											</td>
-										</tr>
-									</th:block>
-								</tbody>
-							</table>
-						</div>
-
-
-					</div>
-					<div class="details col-md-6" >
-
-						<div class="wrapper row">
-							<b>Your order</b>
-						</div>
-						<!-- ID  & OTHER STUFF-->
-						
-						<!-- 							<ul> -->
-						<!-- 								<li th:each="err : ${#fields.errors('id')}" th:text="${err}" /> -->
-						<!-- 							</ul> -->
-						<!-- 							<input type="hidden" name="actor" th:field="*{actor}"> -->
-						<!-- 							<ul> -->
-						<!-- 								<li th:each="err : ${#fields.errors('actor')}" th:text="${err}" /> -->
-						<!-- 							</ul> -->
-						<!-- 							<input type="hidden" name="status" th:field="*{status}"> -->
-						<!-- 							<ul> -->
-						<!-- 								<li th:each="err : ${#fields.errors('status')}" th:text="${err}" /> -->
-						<!-- 							</ul> -->
-						<!-- 							<input type="hidden" name="dish" th:field="*{dish}"> -->
-						<!-- 							<ul> -->
-						<!-- 								<li th:each="err : ${#fields.errors('dish')}" th:text="${err}" /> -->
-						<!-- 							</ul> -->
-						<!-- 							<input type="hidden" name="table" th:field="*{table}"> -->
-						<!-- 							<ul> -->
-						<!-- 								<li th:each="err : ${#fields.errors('table')}" th:text="${err}" /> -->
-						<!-- 							</ul> -->
-
-						<!-- ESTABLISHMENT -->
-						<div class="wrapper row" style="padding:5px;">
-							<span>Restaurant: </span>&nbsp;<a href="">[[${establishment.title}]]</a>
-						</div>
-						<form method="get" th:action="@{/order/checkout}" id="orderForm"
-							th:object="${order}">
-							
-							<input type="hidden" name="id" th:field="*{id}">
-							<!-- TYPE -->
-							<div class="wrapper row" style="padding:5px;">
-							<span>Order type: </span>&nbsp;
-								<select name="type" id="type" form="orderForm">
-									<option th:each="typeStr : ${order.onlineTypes}"
-										th:value="${typeStr}" th:utext="${typeStr}" />
-								</select>
-								<ul>
-									<li th:each="err : ${#fields.errors('type')}" th:text="${err}" />
-								</ul>
-							</div>
-
-							<!-- ADDRESS -->
-							<div class="wrapper row" style="padding:5px;">
-								<span>Address: </span>&nbsp;
-								<input type="text" name="address" th:value="*{address}" />
-								<ul>
-									<li th:each="err : ${#fields.errors('address')}"
-										th:text="${err}" />
-								</ul>
-							</div>
-
-							<!-- DISHES -->
-							<div class="wrapper row">
-								<table class="table">
-									<thead>
-										<tr>
-											<th></th>
-											<th>Name</th>
-											<th>Price</th>
-											<th></th>
-										</tr>
-									</thead>
-									<tbody>
-										<th:block th:each="dish : ${order.dish}">
-											<tr>
-												<!-- IMAGE -->
-												<td>
-													<div th:style="'
-													width: 100px;
-													height:100px; 
-													background-image: url('+${dish.picture}+');
-													background-position: center;
-													background-size:contain;
-													background-repeat: no-repeat;'">
-														
-													</div>
-												</td>
-												<!-- NAME -->
-												<td th:inline="text"><b>[[${dish.name}]]</b></td>
-
-												<!-- PRICE -->
-												<td th:inline="text">[[${dish.price}]]€</td>
-
-												<!-- REMOVE -->
-												<td><a
-													th:href="@{'/order/'+${order.id}+'/remove/'+${dish.id}}"><i
-														class="fa fa-times" aria-hidden="true"></i></a></td>
-											</tr>
-										</th:block>
-									</tbody>
-								</table>
-							</div>
-
-							
-							<!-- SUBMIT -->
-							<div class="wrapper row">
-								<input type="submit" value="Order"
-									class="btn btn-secondary btn-lg">
-							</div>
-
-						</form>
-					</div>
+	<div class="container card">
+		<div class="wrapper row ">
+			<div class="preview col-md-6">
+				<div class="wrapper row">
+					<b>Dishes</b>
 				</div>
-			</div>
+				<div class="wrapper row">
+					<h2>Entrantes</h2>
+					<table class="table">
+						<thead>
+							<tr>
+								<th></th>
+								<th>Name</th>
+								<th>Score</th>
+								<th>Price</th>
 
-	
+
+							</tr>
+						</thead>
+						<tbody>
+
+							<th:block th:each="dish : ${dishes}">
+								<tr
+									th:if="${dish.isVisible == true and dish.seccion.name() == 'ENTRANTES'}">
+									<!-- IMAGE -->
+									<td>
+										<div
+											th:style="'
+													width: 100px;
+													height:100px; 
+													background-image: url('+${dish.picture}+');
+													background-position: center;
+													background-size:contain;
+													background-repeat: no-repeat;'">
+
+										</div>
+									</td>
+									<!-- NAME -->
+									<td th:inline="text"><b>[[${dish.name}]]</b></td>
+									<!-- SCORE -->
+									<td>
+										<div
+											th:replace="fragments/score :: stars(score=${dish.score})"></div>
+									</td>
+									<!-- PRICE -->
+									<td th:inline="text">[[${dish.price}]]€</td>
+									<!-- ADD TO ORDER -->
+									<td><a
+										th:href="@{'/order/'+${order.id}+'/add/'+${dish.id}}"
+										role="button" class="btn btn-secondary" aria-pressed="true">Add</a>
+									</td>
+
+
+
+
+
+
+								</tr>
+							</th:block>
+						</tbody>
+					</table>
+
+
+
+
+
+					<h2>Bebidas</h2>
+					<table class="table">
+						<thead>
+							<tr>
+
+								<th>Name</th>
+								<th>Score</th>
+								<th>Price</th>
+
+
+							</tr>
+						</thead>
+						<tbody>
+
+							<th:block th:each="dish : ${dishes}">
+								<tr
+									th:if="${dish.isVisible == true and dish.seccion.name() == 'BEBIDAS'}">
+									<!-- IMAGE -->
+									<td>
+										<div
+											th:style="'
+													width: 100px;
+													height:100px; 
+													background-image: url('+${dish.picture}+');
+													background-position: center;
+													background-size:contain;
+													background-repeat: no-repeat;'">
+
+										</div>
+									</td>
+									<!-- NAME -->
+									<td th:inline="text"><b>[[${dish.name}]]</b></td>
+									<!-- SCORE -->
+									<td>
+										<div
+											th:replace="fragments/score :: stars(score=${dish.score})"></div>
+									</td>
+									<!-- PRICE -->
+									<td th:inline="text">[[${dish.price}]]€</td>
+									<!-- ADD TO ORDER -->
+									<td><a
+										th:href="@{'/order/'+${order.id}+'/add/'+${dish.id}}"
+										role="button" class="btn btn-secondary" aria-pressed="true">Add</a>
+									</td>
+
+
+
+
+
+
+								</tr>
+							</th:block>
+						</tbody>
+					</table>
+
+
+
+
+
+					<h2>Vinos</h2>
+					<table class="table">
+						<thead>
+							<tr>
+
+								<th>Name</th>
+								<th>Score</th>
+								<th>Price</th>
+
+
+							</tr>
+						</thead>
+						<tbody>
+
+							<th:block th:each="dish : ${dishes}">
+								<tr
+									th:if="${dish.isVisible == true and dish.seccion.name() == 'VINOS'}">
+									<!-- IMAGE -->
+									<td>
+										<div
+											th:style="'
+													width: 100px;
+													height:100px; 
+													background-image: url('+${dish.picture}+');
+													background-position: center;
+													background-size:contain;
+													background-repeat: no-repeat;'">
+
+										</div>
+									</td>
+									<!-- NAME -->
+									<td th:inline="text"><b>[[${dish.name}]]</b></td>
+									<!-- SCORE -->
+									<td>
+										<div
+											th:replace="fragments/score :: stars(score=${dish.score})"></div>
+									</td>
+									<!-- PRICE -->
+									<td th:inline="text">[[${dish.price}]]€</td>
+									<!-- ADD TO ORDER -->
+									<td><a
+										th:href="@{'/order/'+${order.id}+'/add/'+${dish.id}}"
+										role="button" class="btn btn-secondary" aria-pressed="true">Add</a>
+									</td>
+
+
+
+
+
+
+								</tr>
+							</th:block>
+						</tbody>
+					</table>
+
+
+
+
+
+
+
+
+					<h2>Ensaladas</h2>
+					<table class="table">
+						<thead>
+							<tr>
+
+								<th>Name</th>
+								<th>Score</th>
+								<th>Price</th>
+
+
+							</tr>
+						</thead>
+						<tbody>
+
+							<th:block th:each="dish : ${dishes}">
+								<tr
+									th:if="${dish.isVisible == true and dish.seccion.name() == 'ENSALADAS'}">
+									<!-- IMAGE -->
+									<td>
+										<div
+											th:style="'
+													width: 100px;
+													height:100px; 
+													background-image: url('+${dish.picture}+');
+													background-position: center;
+													background-size:contain;
+													background-repeat: no-repeat;'">
+
+										</div>
+									</td>
+									<!-- NAME -->
+									<td th:inline="text"><b>[[${dish.name}]]</b></td>
+									<!-- SCORE -->
+									<td>
+										<div
+											th:replace="fragments/score :: stars(score=${dish.score})"></div>
+									</td>
+									<!-- PRICE -->
+									<td th:inline="text">[[${dish.price}]]€</td>
+									<!-- ADD TO ORDER -->
+									<td><a
+										th:href="@{'/order/'+${order.id}+'/add/'+${dish.id}}"
+										role="button" class="btn btn-secondary" aria-pressed="true">Add</a>
+									</td>
+
+
+
+
+
+
+								</tr>
+							</th:block>
+						</tbody>
+					</table>
+
+
+
+
+
+					<h2>Pescados</h2>
+					<table class="table">
+						<thead>
+							<tr>
+
+								<th>Name</th>
+								<th>Score</th>
+								<th>Price</th>
+
+
+							</tr>
+						</thead>
+						<tbody>
+
+							<th:block th:each="dish : ${dishes}">
+								<tr
+									th:if="${dish.isVisible == true and dish.seccion.name() == 'PESCADOS'}">
+									<!-- IMAGE -->
+									<td>
+										<div
+											th:style="'
+													width: 100px;
+													height:100px; 
+													background-image: url('+${dish.picture}+');
+													background-position: center;
+													background-size:contain;
+													background-repeat: no-repeat;'">
+
+										</div>
+									</td>
+									<!-- NAME -->
+									<td th:inline="text"><b>[[${dish.name}]]</b></td>
+									<!-- SCORE -->
+									<td>
+										<div
+											th:replace="fragments/score :: stars(score=${dish.score})"></div>
+									</td>
+									<!-- PRICE -->
+									<td th:inline="text">[[${dish.price}]]€</td>
+									<!-- ADD TO ORDER -->
+									<td><a
+										th:href="@{'/order/'+${order.id}+'/add/'+${dish.id}}"
+										role="button" class="btn btn-secondary" aria-pressed="true">Add</a>
+									</td>
+
+
+
+
+
+
+								</tr>
+							</th:block>
+						</tbody>
+					</table>
+
+
+
+
+
+
+
+
+
+					<h2>Postres</h2>
+					<table class="table">
+						<thead>
+							<tr>
+
+								<th>Name</th>
+								<th>Score</th>
+								<th>Price</th>
+
+
+							</tr>
+						</thead>
+						<tbody>
+
+							<th:block th:each="dish : ${dishes}">
+								<tr
+									th:if="${dish.isVisible == true and dish.seccion.name() == 'POSTRES'}">
+									<!-- IMAGE -->
+									<td>
+										<div
+											th:style="'
+													width: 100px;
+													height:100px; 
+													background-image: url('+${dish.picture}+');
+													background-position: center;
+													background-size:contain;
+													background-repeat: no-repeat;'">
+
+										</div>
+									</td>
+									<!-- NAME -->
+									<td th:inline="text"><b>[[${dish.name}]]</b></td>
+									<!-- SCORE -->
+									<td>
+										<div
+											th:replace="fragments/score :: stars(score=${dish.score})"></div>
+									</td>
+									<!-- PRICE -->
+									<td th:inline="text">[[${dish.price}]]€</td>
+									<!-- ADD TO ORDER -->
+									<td><a
+										th:href="@{'/order/'+${order.id}+'/add/'+${dish.id}}"
+										role="button" class="btn btn-secondary" aria-pressed="true">Add</a>
+									</td>
+
+
+
+
+
+
+								</tr>
+							</th:block>
+						</tbody>
+					</table>
+
+
+
+				</div>
+
+
+
+
+			</div>
+			<div class="details col-md-6">
+
+				<div class="wrapper row">
+					<b>Your order</b>
+				</div>
+				<!-- ID  & OTHER STUFF-->
+
+				<!-- 							<ul> -->
+				<!-- 								<li th:each="err : ${#fields.errors('id')}" th:text="${err}" /> -->
+				<!-- 							</ul> -->
+				<!-- 							<input type="hidden" name="actor" th:field="*{actor}"> -->
+				<!-- 							<ul> -->
+				<!-- 								<li th:each="err : ${#fields.errors('actor')}" th:text="${err}" /> -->
+				<!-- 							</ul> -->
+				<!-- 							<input type="hidden" name="status" th:field="*{status}"> -->
+				<!-- 							<ul> -->
+				<!-- 								<li th:each="err : ${#fields.errors('status')}" th:text="${err}" /> -->
+				<!-- 							</ul> -->
+				<!-- 							<input type="hidden" name="dish" th:field="*{dish}"> -->
+				<!-- 							<ul> -->
+				<!-- 								<li th:each="err : ${#fields.errors('dish')}" th:text="${err}" /> -->
+				<!-- 							</ul> -->
+				<!-- 							<input type="hidden" name="table" th:field="*{table}"> -->
+				<!-- 							<ul> -->
+				<!-- 								<li th:each="err : ${#fields.errors('table')}" th:text="${err}" /> -->
+				<!-- 							</ul> -->
+
+				<!-- ESTABLISHMENT -->
+				<div class="wrapper row" style="padding: 5px;">
+					<span>Restaurant: </span>&nbsp;<a href="">[[${establishment.title}]]</a>
+				</div>
+				<form method="get" th:action="@{/order/checkout}" id="orderForm"
+					th:object="${order}">
+
+					<input type="hidden" name="id" th:field="*{id}">
+
+
+
+					<!-- TYPE -->
+					<div class="wrapper row" style="padding: 5px;">
+						<span>Order type: </span>&nbsp; <select name="type" id="type"
+							onChange="doReload();" form="orderForm">
+							<option th:each="typeStr : ${order.onlineTypes}"
+								th:value="${typeStr}" th:utext="${typeStr}" />
+						</select>
+						<ul>
+							<li th:each="err : ${#fields.errors('type')}" th:text="${err}" />
+						</ul>
+					</div>
+
+
+					<!-- ADDRESS -->
+					<div id="direccion" class="wrapper row" style="padding: 5px;">
+						<span>Address: </span>&nbsp; <input type="text" name="address"
+							th:value="*{address}" />
+						<ul>
+							<li th:each="err : ${#fields.errors('address')}" th:text="${err}" />
+						</ul>
+					</div>
+					<script>
+						var tipo = document.getElementById("type").value;
+						var add = document.getElementById("direccion");
+						console.log(tipo);
+						
+						if(tipo == 'PICKUP'){
+							console.log("SI es pickup");
+							add.style.visibility = "hidden";
+						}else{
+							console.log("es delivery");
+						}
+						function doReload(){
+							var direccionEl = document.getElementById("direccion");
+							var visibility = direccionEl.style.visibility == 'hidden' ? '' : 'hidden';
+							direccionEl.style.visibility = visibility;
+							
+						}
+						function cambiarType(){
+							document.getElementById("type").value = tipo;
+						}
+						
+					</script>
+
+
+					<!-- DISHES -->
+					<div class="wrapper row">
+						<table class="table">
+							<thead>
+								<tr>
+									<th></th>
+									<th>Name</th>
+									<th>Price</th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody>
+								<th:block th:each="dish : ${order.dish}">
+									<tr>
+										<!-- IMAGE -->
+										<td>
+											<div
+												th:style="'
+													width: 100px;
+													height:100px; 
+													background-image: url('+${dish.picture}+');
+													background-position: center;
+													background-size:contain;
+													background-repeat: no-repeat;'">
+
+											</div>
+										</td>
+										<!-- NAME -->
+										<td th:inline="text"><b>[[${dish.name}]]</b></td>
+
+										<!-- PRICE -->
+										<td th:inline="text">[[${dish.price}]]€</td>
+
+										<!-- REMOVE -->
+										<td><a
+											th:href="@{'/order/'+${order.id}+'/remove/'+${dish.id}}"><i
+												class="fa fa-times" aria-hidden="true"></i></a></td>
+									</tr>
+								</th:block>
+							</tbody>
+						</table>
+					</div>
+
+
+					<!-- SUBMIT -->
+					<div class="wrapper row" th:unless="${order.dish.empty}">
+						<input type="submit" value="Order"
+							class="btn btn-secondary btn-lg">
+					</div>
+
+				</form>
+			</div>
+		</div>
+	</div>
+
+
 	<footer th:replace="fragments/common :: footer"></footer>
-	<script th:src="@{/js/order.js}">		
+	<!-- 
+	<script th:src="@{/js/order.js}">
+		
 	</script>
-	
+	 -->
+	<footer th:replace="fragments/common :: footer"></footer>
 </body>
 
 </html>

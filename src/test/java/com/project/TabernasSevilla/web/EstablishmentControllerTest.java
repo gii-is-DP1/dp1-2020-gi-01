@@ -1,5 +1,13 @@
 package com.project.TabernasSevilla.web;
 
+import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,61 +20,40 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.ui.Model;
-import org.springframework.util.Assert;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.project.TabernasSevilla.configuration.SecurityConfiguration;
-import com.project.TabernasSevilla.controller.DishController;
 import com.project.TabernasSevilla.controller.EstablishmentController;
 import com.project.TabernasSevilla.domain.Dish;
 import com.project.TabernasSevilla.domain.Establishment;
 import com.project.TabernasSevilla.domain.Seccion;
-import com.project.TabernasSevilla.repository.*;
-import com.project.TabernasSevilla.security.Authority;
+import com.project.TabernasSevilla.repository.AdminRepository;
+import com.project.TabernasSevilla.repository.BookingRepository;
+import com.project.TabernasSevilla.repository.CookRepository;
+import com.project.TabernasSevilla.repository.CurriculumRepository;
+import com.project.TabernasSevilla.repository.CustomerRepository;
+import com.project.TabernasSevilla.repository.EstablishmentRepository;
+import com.project.TabernasSevilla.repository.ManagerRepository;
+import com.project.TabernasSevilla.repository.OrderCancellationRepository;
+import com.project.TabernasSevilla.repository.OrderLogRepository;
+import com.project.TabernasSevilla.repository.OrderRepository;
+import com.project.TabernasSevilla.repository.RegKeyRepository;
+import com.project.TabernasSevilla.repository.ReviewRepository;
+import com.project.TabernasSevilla.repository.TableRepository;
+import com.project.TabernasSevilla.repository.WaiterRepository;
 import com.project.TabernasSevilla.security.AuthorityRepository;
 import com.project.TabernasSevilla.security.AuthorityService;
-import com.project.TabernasSevilla.security.User;
 import com.project.TabernasSevilla.security.UserService;
 import com.project.TabernasSevilla.service.ActorService;
 import com.project.TabernasSevilla.service.DishService;
 import com.project.TabernasSevilla.service.EstablishmentService;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.doReturn;
 
-
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-
-//@RunWith(SpringRunner.class)
-//@WebAppConfiguration
 @WebMvcTest(controllers = EstablishmentController.class, 
 	excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class), 
 	excludeAutoConfiguration = SecurityConfiguration.class, 
 	includeFilters = {@ComponentScan.Filter(Service.class), @ComponentScan.Filter(Repository.class) })
-//@MockBean(JpaMetamodelMappingContext.class) //para que evite buscar la database
-public class EstablishmentControllerTest {
-	
-	private static final int TEST_DISH_ID = 1;
 
-	//@Autowired
-	//private DishController dishController;
+public class EstablishmentControllerTest {
 
 	@MockBean
 	private UserService userService;
@@ -135,7 +122,7 @@ public class EstablishmentControllerTest {
 	private MockMvc mockMvc;
 
 	@BeforeEach
-	void setup() { // inicializar establishment y dish
+	void setup() {
 		
 		Dish d = new Dish("Mi plato", "Mi descripción",
 				"https://international-experience.es/wp-content/uploads/2019/08/comidas-mundo.jpg", 20.0, 4.0, Seccion.CARNES, true,
@@ -149,27 +136,13 @@ public class EstablishmentControllerTest {
 		est.setId(1);
 		est.setTitle("prueba");
 		est.setAddress("calle ");
-		est.setCapacity(10);
-		est.setCurrentCapacity(10);
 		est.setOpeningHours("24/7");
 		est.setScore(2);
 		est.setDish(ls);;
 		
-		given(this.establishmentService.findById(1)).willReturn(est); //importantisimo
+		given(this.establishmentService.findById(1)).willReturn(est);
 		
 	}
-	
-//	@GetMapping("/view")
-//	public String viewLocation (@RequestParam(required=true) final Integer id, Model model) {
-//		Establishment est = this.establishmentService.findById(id);
-//		Assert.notNull(est,"Establishment could not be found");
-//		Long occupied = this.tableService.getOccupancyAtRestaurant(est);
-//		String estimate = this.tableService.estimateFreeTable(est);
-//		model.addAttribute("establishment",est);
-//		model.addAttribute("occupied",occupied);
-//		model.addAttribute("estimate",estimate);
-//		return "establishment/view";
-//	}
 	
 	@WithMockUser(value = "spring")
 	@Test

@@ -20,30 +20,31 @@
 					</div>
 					<!-- EMPLOYEE CANCELLATION -->
 					<div th:if="${cancel.reason == null}">
-						<form role="cancel" th:action="@{/order/cancel/save}" th:method="post"
-							th:object="${cancel}" id="cancelForm">
-							<input type="hidden" name="id" th:field="*{id}">
-							<input type="hidden" name="order" th:field="*{order}">
-							<input type="hidden" name="placementDate" th:field="*{placementDate}">
-							
-							<input type="text" name="reason" th:field="*{reason}" th:value="*{reason}">
-							
+						<form role="cancel" th:action="@{/order/cancel/save}"
+							th:method="post" th:object="${cancel}" id="cancelForm">
+							<input type="hidden" name="id" th:field="*{id}"> <input
+								type="hidden" name="order" th:field="*{order}"> <input
+								type="hidden" name="placementDate" th:field="*{placementDate}">
+
+							<input type="text" name="reason" required th:field="*{reason}"
+								th:value="*{reason}">
+
 							<div class="wrapper row">
 								<input type="submit" value="Cancel"
 									class="btn float-right login_btn">
 							</div>
-							
-							</form>
+
+						</form>
 					</div>
 					<!-- OWNER CANCELLATION -->
 					<div th:if="${cancel.reason != null}">
-						<form role="cancel" th:action="@{/order/cancel/save}" th:method="post"
-							th:object="${cancel}" id="cancelForm">
-							<input type="hidden" name="id" th:field="*{id}">
-							<input type="hidden" name="order" th:field="*{order}">
-							<input type="hidden" name="reason" th:field="*{reason}">
-							<input type="hidden" name="placementDate" th:field="*{placementDate}">
-							
+						<form role="cancel" th:action="@{/order/cancel/save}"
+							th:method="post" th:object="${cancel}" id="cancelForm">
+							<input type="hidden" name="id" th:field="*{id}"> <input
+								type="hidden" name="order" th:field="*{order}"> <input
+								type="hidden" name="reason" th:field="*{reason}"> <input
+								type="hidden" name="placementDate" th:field="*{placementDate}">
+
 							<div class="wrapper row">
 								<input type="submit" value="Cancel"
 									class="btn float-right login_btn">

@@ -2,11 +2,8 @@ package com.project.TabernasSevilla.service;
 
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.transaction.Transactional;
 
@@ -19,7 +16,6 @@ import com.project.TabernasSevilla.domain.Dish;
 import com.project.TabernasSevilla.domain.Establishment;
 import com.project.TabernasSevilla.domain.RestaurantOrder;
 import com.project.TabernasSevilla.repository.OrderRepository;
-import com.project.TabernasSevilla.security.User;
 import com.project.TabernasSevilla.security.UserService;
 
 @Service
@@ -59,26 +55,7 @@ public class OrderService {
 		return this.orderRepo.save(order);
 	}
 	
-	public RestaurantOrder create() {
-		RestaurantOrder res = new RestaurantOrder();
-		return res;
-	}
-	
-	public void delete(RestaurantOrder order) {
-		Assert.isTrue(order.getActor().equals(this.actorService.getPrincipal()),"Order could not be deleted");
-		this.orderRepo.delete(order);
-	}
-	
 	//OTHER METHODS
-	
-//	//Create order for booking and set type
-//	public Order createFromBooking(Booking booking) {
-//		Order order = this.create();
-//		order.setBooking(booking);
-//		order.setType(Order.EAT_IN);
-//		return order;
-//	}
-//	
 	
 	public RestaurantOrder findDraftByActor(Actor actor){
 		return this.orderRepo.findDraftByActor(actor.getId());
@@ -123,7 +100,7 @@ public class OrderService {
 	}
 	
 	public RestaurantOrder initialize(Establishment est) {
-		RestaurantOrder order = this.create();
+		RestaurantOrder order = new RestaurantOrder();
 		Actor actor = this.actorService.getPrincipal();
 		order.setActor(actor);
 		order.setDish(new ArrayList<Dish>());
@@ -147,18 +124,11 @@ public class OrderService {
 		
 		
 		//no puedes tener mas de 2 pedidos en activo
-		Integer n2 = 0;
-		for(RestaurantOrder o: orderRepo.findActiveByActor(order.getActor().getId()) ) {
-			n2++;
-		}
+		Integer n2 = orderRepo.findActiveByActor(order.getActor().getId()).size();
+
 		Assert.isTrue(!(n2>1), "You can't have more than 2 active orders. Please wait until your order's states are closed"); //hay que poner uno menos del que realmente queremos ok?
 		
 		switch(order.getType()) {
-		case RestaurantOrder.EAT_IN:
-			Assert.isTrue(this.userService.principalHasAnyAuthority(Arrays.asList("WAITER","COOK","MANAGER","ADMIN")),"Cannot save type of order: not an employee");
-			return this.openOrder(order);
-			
-			
 		case RestaurantOrder.DELIVERY:
 			
 			//no puedes dejar la direccion vacía si pides para delivery
@@ -191,17 +161,6 @@ public class OrderService {
 		return saved;
 	}
 	
-	//open orders can be modified
-	public RestaurantOrder openOrder(RestaurantOrder order) {
-		Assert.isTrue(order.getType().equals("EAT-IN"),"Cannot keep this order open");		
-		Assert.isTrue(this.userService.principalHasAnyAuthority(Arrays.asList("ADMIN","MANAGER","COOK","WAITER")),"Cannot place order for someone else");
-		order.setStatus(RestaurantOrder.OPEN);
-		//log open order
-		this.orderLogService.log(order, order.getStatus());
-		order.setPlacementDate(Instant.now());
-		RestaurantOrder saved = this.save(order);
-		return saved;
-	}
 	
 	public RestaurantOrder cancelOrder(RestaurantOrder order) {
 		order.setStatus(RestaurantOrder.CANCELLED);
@@ -211,7 +170,6 @@ public class OrderService {
 		return saved;
 	}
 	
-	//TODO: better way to handle this
 	public RestaurantOrder updateStatus(RestaurantOrder order, String status, Boolean isEmployee) {
 		Assert.isTrue(isEmployee,"Unsuficiant authority");
 		order.setStatus(status);

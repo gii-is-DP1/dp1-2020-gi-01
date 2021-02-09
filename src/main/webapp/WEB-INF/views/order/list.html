@@ -8,123 +8,122 @@
 </head>
 <body>
 	<th:block th:include="fragments/common :: navbar"></th:block>
-	<div class="container">
-		<div class="card">
-			<div class="container-fliud">
-				<div class="wrapper row">
-					<div class="preview col">
-						<div class="wrapper row">
-							<div class="preview col">
-								<div class="row">
-									<span th:text="${message}"></span>
-								</div>
-								<div class="wrapper row">
-									<table class="table">
-										<thead id="titles" th:if=${prev==null}>
-											<tr>
-												<th>Restaurant</th>
-												<th>Date placed</th>
-												<th>Status</th>
-												<th></th>
-												<th></th>
-												<th sec:authorize="hasAuthority('CUSTOMER')"></th>
-												
-												<th
-													sec:authorize="hasAnyAuthority('COOK','ADMIN','MANAGER','WAITER')"></th>
-											</tr>
-										</thead>
-										<tbody>
-											<th:block th:each="order : ${orders}">
-												<tr>
-													<!-- RESTAURANT -->
-													<td><span th:inline="text"><a
-															th:href="@{/location/view?id={id}(id=${order.establishment.id})}">[[${order.establishment.title}]]</a></span>
-													</td>
-													<!-- DATE PLACED -->
-													<td th:text="${order.placementDate}"></td>
-													<!-- STATUS -->
-													<td sec:authorize="hasAuthority('CUSTOMER')" th:text="${order.status}"></td>
-													<td
-														sec:authorize="hasAnyAuthority('COOK','ADMIN','MANAGER','WAITER')"
-														th:if="${order.status != 'CANCELLED' && order.status != 'CLOSED'}">
-														<select name="sts" th:form="form + ${order.id}"
-														th:if="${order.type=='DELIVERY'}">
-															<option th:value="${order.status}"
-																th:utext="${order.status}"></option>
-															<option th:each="sts : ${deliveryStatus}" th:value="${sts}"
-																th:utext="${sts}" />
-													</select> <select name="sts" th:form="form + ${order.id}"
-														th:if="${order.type=='PICKUP'}">
-															<option th:value="${order.status}"
-																th:utext="${order.status}"></option>
-															<option th:each="sts : ${pickupStatus}" th:value="${sts}"
-																th:utext="${sts}" />
-													</select> <select name="sts" th:form="form + ${order.id}"
-														th:if="${order.type=='EAT-IN'}">
-															<option th:value="${order.status}"
-																th:utext="${order.status}"></option>
-															<option th:each="sts : ${eatInStatus}" th:value="${sts}"
-																th:utext="${sts}" />
-													</select>
-													</td>
-													<!-- VIEW -->
-													<td><a th:href="@{/order/{id}/view(id=${order.id})}"
-														role="button" class="btn btn-secondary"
-														aria-pressed="true">View</a></td>
-													<!-- CANCEL th:unless para que cuando sea preb true, no muestre el botond de cancelar-->
-													<td><a th:href="@{/order/cancel/{id}(id=${order.id})}" th:unless="${prev} or ${order.status == 'PREPARING' or order.status == 'READY' or order.status == 'OUT OF DELIVERY' or order.status == 'DELIVERED'}"
-														role="button" class="btn btn-secondary"
-														aria-pressed="true" >Cancel</a></td>
-														
-													<!-- REPEAT ORDER -->
-													<td><a th:href="@{/order/repeat/{id}(id=${order.id})}" th:if="${prev}" role="button" 
-														class="btn btn-secondary" aria-pressed="true">Repeat order</a>
+	<div class="container card">
+		<div class="container-fliud">
+			<div class="wrapper row">
+				<div class="preview col">
+					<div class="wrapper row">
+						<div class="preview col">
+							<div class="row">
+								<span th:text="${message}"></span>
+							</div>
+							<div class="wrapper row">
+								<table class="table">
+									<thead id="titles" th:if=${prev==null}>
+										<tr>
+											<th>Restaurant</th>
+											<th>Date placed</th>
+											<th>Status</th>
+											<th></th>
+											<th></th>
+											<th sec:authorize="hasAuthority('CUSTOMER')"></th>
 
-													<!-- EMPLOYEE ACTIONS -->
-													<!-- TABLE -->
-													<td th:if="${order.type == 'EAT_IN'}"
-														sec:authorize="hasAnyAuthority('COOK','ADMIN','MANAGER','WAITER')">
-														<select name="table" th:form="form + ${order.id}">
-															<option th:if="${order.table != null}"
-																th:value="${order.table.id}"
-																th:utext="${order.table.number}"></option>
-															<option th:each="table : ${tables}"
-																th:value="${table.id}" th:utext="${table.number}" />
-													</select>
-													</td>
-													<td th:if="${order.type != 'EAT_IN'}"></td>
-													<!-- UPDATE STATUS -->
-													
-													<!-- SAVE -->
-													<td
-														sec:authorize="hasAnyAuthority('COOK','ADMIN','MANAGER','WAITER')"
-														th:if="${order.status != 'CANCELLED' && order.status != 'CLOSED'}">
-														<input type="hidden" name="est" th:value="${order.establishment.id}"
-														th:form="form + ${order.id}" />
-														<form th:id="form + ${order.id}" method="get"
-															th:action="@{/order/{id}/update(id=${order.id})}">
-															<input type="submit" value="save" />
-														</form>
-													</td>
-												</tr>
-											</th:block>
-										</tbody>
-									</table>
-								</div>
-								<!-- VIEW PREVIOUS ORDERS -->
-								<div th:if="${prev == null}">
-									<a th:href="@{/order/closed}" th:if="${est==null}">View
-										historic</a> <a
-										th:href="@{/order/est/{id}/list/prev(id=${est.id})}"
-										th:if="${est!=null}">View historic</a>
-								</div>
-								<!-- VIEW CURRENT ORDERS -->
-								<div th:if="${prev != null}">
-									<a th:href="@{/order/open}" th:if="${est==null}">View
-										active orders</a> <a
-										th:href="@{/order/est/{id}/list(id=${est.id})}"
-										th:if="${est!=null}">View active orders</a>
-								</div>
+											<th
+												sec:authorize="hasAnyAuthority('COOK','ADMIN','MANAGER','WAITER')"></th>
+										</tr>
+									</thead>
+									<tbody>
+										<th:block th:each="order : ${orders}">
+											<tr>
+												<!-- RESTAURANT -->
+												<td><span th:inline="text"><a
+														th:href="@{/location/view?id={id}(id=${order.establishment.id})}">[[${order.establishment.title}]]</a></span>
+												</td>
+												<!-- DATE PLACED -->
+												<td
+													th:text="${#temporals.format(order.placementDate,'dd-MM-yyyy HH:mm')}"></td>
+												<!-- STATUS -->
+												<td sec:authorize="hasAuthority('CUSTOMER')"
+													th:text="${order.status}"></td>
+												<td
+													sec:authorize="hasAnyAuthority('COOK','ADMIN','MANAGER','WAITER')"
+													th:if="${order.status != 'CANCELLED' && order.status != 'CLOSED'}">
+													<select name="sts" th:form="form + ${order.id}"
+													th:if="${order.type=='DELIVERY'}">
+														<option th:value="${order.status}"
+															th:utext="${order.status}"></option>
+														<option th:each="sts : ${deliveryStatus}"
+															th:value="${sts}" th:utext="${sts}" />
+												</select> <select name="sts" th:form="form + ${order.id}"
+													th:if="${order.type=='PICKUP'}">
+														<option th:value="${order.status}"
+															th:utext="${order.status}"></option>
+														<option th:each="sts : ${pickupStatus}" th:value="${sts}"
+															th:utext="${sts}" />
+												</select> <select name="sts" th:form="form + ${order.id}"
+													th:if="${order.type=='EAT-IN'}">
+														<option th:value="${order.status}"
+															th:utext="${order.status}"></option>
+														<option th:each="sts : ${eatInStatus}" th:value="${sts}"
+															th:utext="${sts}" />
+												</select>
+												</td>
+												<!-- VIEW -->
+												<td><a th:href="@{/order/{id}/view(id=${order.id})}"
+													role="button" class="btn btn-secondary" aria-pressed="true">View</a></td>
+
+												<!-- CANCEL th:unless para que cuando sea preb true, no muestre el botond de cancelar-->
+												<td><a th:href="@{/order/cancel/{id}(id=${order.id})}"
+													th:unless="${prev} or ${order.status == 'PREPARING' or order.status == 'READY' or order.status == 'OUT OF DELIVERY' or order.status == 'DELIVERED'}"
+													role="button" class="btn btn-secondary" aria-pressed="true">Cancel</a></td>
+
+												<!-- REPEAT ORDER -->
+												<td><a th:href="@{/order/repeat/{id}(id=${order.id})}"
+													th:if="${prev} and ${order.status != 'DRAFT'}"
+													role="button" class="btn btn-secondary" aria-pressed="true">Repeat
+														order</a> <!-- EMPLOYEE ACTIONS --> <!-- TABLE -->
+												<td th:if="${order.type == 'EAT_IN'}"
+													sec:authorize="hasAnyAuthority('COOK','ADMIN','MANAGER','WAITER')">
+													<select name="table" th:form="form + ${order.id}">
+														<option th:if="${order.table != null}"
+															th:value="${order.table.id}"
+															th:utext="${order.table.number}"></option>
+														<option th:each="table : ${tables}" th:value="${table.id}"
+															th:utext="${table.number}" />
+												</select>
+												</td>
+												<td th:if="${order.type != 'EAT_IN'}"></td>
+												<!-- UPDATE STATUS -->
+
+												<!-- SAVE -->
+												<td
+													sec:authorize="hasAnyAuthority('COOK','ADMIN','MANAGER','WAITER')"
+													th:if="${order.status != 'CANCELLED' && order.status != 'CLOSED'}">
+													<input type="hidden" name="est"
+													th:value="${order.establishment.id}"
+													th:form="form + ${order.id}" />
+													<form th:id="form + ${order.id}" method="get"
+														th:action="@{/order/{id}/update(id=${order.id})}">
+														<input type="submit" value="save" />
+													</form>
+												</td>
+											</tr>
+										</th:block>
+									</tbody>
+								</table>
+							</div>
+							<!-- VIEW PREVIOUS ORDERS -->
+							<div th:if="${prev == null}">
+								<a th:href="@{/order/closed}" th:if="${est==null}">View
+									historic</a> <a
+									th:href="@{/order/est/{id}/list/prev(id=${est.id})}"
+									th:if="${est!=null}">View historic</a>
+							</div>
+							<!-- VIEW CURRENT ORDERS -->
+							<div th:if="${prev != null}">
+								<a th:href="@{/order/open}" th:if="${est==null}">View active
+									orders</a> <a th:href="@{/order/est/{id}/list(id=${est.id})}"
+									th:if="${est!=null}">View active orders</a>
 							</div>
 						</div>
 					</div>
@@ -132,6 +131,6 @@
 			</div>
 		</div>
 	</div>
-
+	<footer th:replace="fragments/common :: footer"></footer>
 </body>
 </html>

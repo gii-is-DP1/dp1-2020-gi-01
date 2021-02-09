@@ -14,8 +14,6 @@ import org.springframework.stereotype.Service;
 import com.project.TabernasSevilla.domain.Customer;
 import com.project.TabernasSevilla.domain.Establishment;
 import com.project.TabernasSevilla.forms.RegisterForm;
-import com.project.TabernasSevilla.repository.CustomerRepository;
-import com.project.TabernasSevilla.security.UserService;
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
 public class CustomerServiceTest {
@@ -32,8 +30,6 @@ public class CustomerServiceTest {
 		Establishment est = new Establishment();
 		est.setTitle("prueba");
 		est.setAddress("calle ");
-		est.setCapacity(10);
-		est.setCurrentCapacity(10);
 		est.setOpeningHours("24/7");
 		est.setScore(2);
 		Establishment estSaved = this.establishmentService.save(est);

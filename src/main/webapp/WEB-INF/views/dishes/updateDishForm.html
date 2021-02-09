@@ -19,14 +19,16 @@
 					th:action="@{/dishes/{dishId}/edit(dishId=${dish.id})}" role="form"
 					th:object="${dish}" method="post">
 					<label for="name">Name:</label> <input id="name" name="name"
-						type="text" th:field="*{name}" placeholder="Name" required maxlength="30">
+						type="text" th:field="*{name}" placeholder="Name" required
+						maxlength="30">
 					<ul>
 						<li th:each="err : ${#fields.errors('name')}" th:text="${err}" />
 					</ul>
 
 					<label for="description">Description:</label> <input
 						id="description" name="description" type="text"
-						th:field="*{description}" placeholder="Description" required maxlength="200">
+						th:field="*{description}" placeholder="Description" required
+						maxlength="200">
 					<ul>
 						<li th:each="err : ${#fields.errors('description')}"
 							th:text="${err}" />
@@ -40,17 +42,17 @@
 					</ul>
 
 					<label for="price">Price:</label> <input id="price" name="price"
-						type="number" th:field="*{price}" placeholder="Price"  required min="0">
+						type="number" th:field="*{price}" placeholder="Price" required
+						min="0">
 					<ul>
 						<li th:each="err : ${#fields.errors('price')}" th:text="${err}" />
 					</ul>
 
 
-					<label for="allergens">Allergens:</label> 
-					
-					<select name="allergens" id="allergens" th:field="*{allergens}" multiple>
-  							<option value="1">Gluten</option>
-  							<option value="2">Lactosa</option>
+					<label for="allergens">Allergens:</label> <select name="allergens"
+						id="allergens" th:field="*{allergens}" multiple>
+						<option value="1">Gluten</option>
+						<option value="2">Lactosa</option>
 
 					</select>
 					<ul>

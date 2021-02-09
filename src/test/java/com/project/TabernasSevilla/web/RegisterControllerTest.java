@@ -1,5 +1,15 @@
 package com.project.TabernasSevilla.web;
 
+import static org.mockito.BDDMockito.given;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+
+import java.util.HashSet;
+import java.util.Set;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,24 +22,24 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.project.TabernasSevilla.configuration.SecurityConfiguration;
-import com.project.TabernasSevilla.controller.DishController;
 import com.project.TabernasSevilla.controller.RegisterController;
-import com.project.TabernasSevilla.domain.Dish;
-import com.project.TabernasSevilla.domain.Establishment;
-import com.project.TabernasSevilla.domain.Seccion;
-import com.project.TabernasSevilla.forms.RegisterForm;
-import com.project.TabernasSevilla.repository.*;
+import com.project.TabernasSevilla.repository.AdminRepository;
+import com.project.TabernasSevilla.repository.BookingRepository;
+import com.project.TabernasSevilla.repository.CookRepository;
+import com.project.TabernasSevilla.repository.CurriculumRepository;
+import com.project.TabernasSevilla.repository.CustomerRepository;
+import com.project.TabernasSevilla.repository.EstablishmentRepository;
+import com.project.TabernasSevilla.repository.ManagerRepository;
+import com.project.TabernasSevilla.repository.OrderCancellationRepository;
+import com.project.TabernasSevilla.repository.OrderLogRepository;
+import com.project.TabernasSevilla.repository.OrderRepository;
+import com.project.TabernasSevilla.repository.RegKeyRepository;
+import com.project.TabernasSevilla.repository.ReviewRepository;
+import com.project.TabernasSevilla.repository.TableRepository;
+import com.project.TabernasSevilla.repository.WaiterRepository;
 import com.project.TabernasSevilla.security.Authority;
 import com.project.TabernasSevilla.security.AuthorityRepository;
 import com.project.TabernasSevilla.security.AuthorityService;
@@ -39,42 +49,12 @@ import com.project.TabernasSevilla.service.ActorService;
 import com.project.TabernasSevilla.service.DishService;
 import com.project.TabernasSevilla.service.EstablishmentService;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.doReturn;
-
-
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-
-import javax.validation.Valid;
-
-//@RunWith(SpringRunner.class)
-//@WebAppConfiguration
 @WebMvcTest(controllers = RegisterController.class, 
 	excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class), 
 	excludeAutoConfiguration = SecurityConfiguration.class, 
 	includeFilters = {@ComponentScan.Filter(Service.class), @ComponentScan.Filter(Repository.class) })
-//@MockBean(JpaMetamodelMappingContext.class) //para que evite buscar la database
 public class RegisterControllerTest {
 	
-	private static final int TEST_DISH_ID = 1;
-
-	//@Autowired
-	//private DishController dishController;
-
 	@MockBean
 	private UserService userService;
 
@@ -135,37 +115,12 @@ public class RegisterControllerTest {
 	@MockBean
 	private OrderLogRepository logga;
 
-	// POR ALGUN MOTIVO HE TENIDO QUE CREAR TODOS ESTOS MOCKBEANS PARA QUE FUNCIONE
-	// EL TEST SIMPLE DE HTTPRESPONSE
-
 	@Autowired
 	private MockMvc mockMvc;
 
 	@BeforeEach
-	void setup() { // inicializar establishment y dish
+	void setup() { 
 		
-		Dish d = new Dish("Mi plato", "Mi descripción",
-				"https://international-experience.es/wp-content/uploads/2019/08/comidas-mundo.jpg", 20.0, 4.0, Seccion.CARNES, true,
-				null);
-
-		d.setId(1);
-		System.out.println("%%%%%%%%%%%% la id del plato "+d.getId());
-		List<Dish> ls = new ArrayList<Dish>();
-		ls.add(d);
-
-		Establishment est = new Establishment();
-		est.setId(1);
-		est.setTitle("prueba");
-		est.setAddress("calle ");
-		est.setCapacity(10);
-		est.setCurrentCapacity(10);
-		est.setOpeningHours("24/7");
-		est.setScore(2);
-		est.setDish(ls);
-		establishmentRepository.save(est);
-		System.out.println("############ todos los establecimientos: " + establishmentService.findAll());
-		
-		given(this.dishService.findById(TEST_DISH_ID)).willReturn(Optional.of(new Dish())); //importantisimo
 		
 	}
 	
@@ -183,7 +138,7 @@ public class RegisterControllerTest {
 
 
 	
-	//obtain the list of all dishes
+
 	@WithMockUser(value = "spring")
 	@Test
 	void testCheckKey() throws Exception {
@@ -192,12 +147,36 @@ public class RegisterControllerTest {
 	
 
 	
-	//create new dish
+
 	@ExceptionHandler
-	@WithMockUser(value = "spring", roles = "ADMIN") 
+	@WithMockUser(value = "spring") 
 	@Test
 	void testSaveUser() throws Exception{
-		//Primero debo mockear un user con la autoridad ADMIN, porque la anotacion de arriba no me funciona
+		User mockUser = new User();
+		Set<Authority> ls = new HashSet<>();
+		ls.add(new Authority("ADMIN"));
+		mockUser.setAuthorities(ls);
+		mockUser.setUsername("mockito");
+		given(this.userService.getPrincipal()).willReturn(mockUser);
+		
+		mockMvc.perform(post("/register/save")
+							.with(csrf())
+							.param("username", "Patatas fritas")
+							.param("password", "1234567") 
+							.param("form.name", "El Pepe")
+							.param("acceptTerms", "true")
+							.param("form.surname", "Cabrales")
+							.param("form.email", "elpepecabrales@gmail.com")
+							.param("form.phoneNumber", "765132956"))
+						.andExpect(status().is3xxRedirection())
+						.andExpect(view().name("redirect:/login"));
+	}
+	
+	@ExceptionHandler
+	@WithMockUser(value = "spring") 
+	@Test
+	void testBadSaveUser() throws Exception{
+		
 		
 		User mockUser = new User();
 		Set<Authority> ls = new HashSet<>();
@@ -206,21 +185,17 @@ public class RegisterControllerTest {
 		mockUser.setUsername("mockito");
 		given(this.userService.getPrincipal()).willReturn(mockUser);
 		
-		System.out.println("=========>"+this.userService.getPrincipal().getUsername());
-		System.out.println("=========>"+this.userService.getPrincipal().getAuthorities());
-		
-		mockMvc.perform(post("/dishes/save")
+		mockMvc.perform(post("/register/save")
 							.with(csrf())
-							.param("name", "Patatas fritas")
-							.param("description", "Muy ricas")
-							.param("picture", "https://static.wikia.nocookie.net/fishmans/images/f/f9/Uchunippon_front.png/revision/latest/scale-to-width-down/150?cb=20200116094151")
-							.param("price", "30.0")
-							.param("seccion", "ENTRANTES")
-							.param("allergens", "1")
-							.param("isVisible", "true")
-							.param("save", "Save Dish"))
-						.andExpect(status().is3xxRedirection())
-						.andExpect(view().name("redirect:/login"));
+							.param("username", "")
+							.param("password", "1234567") 
+							.param("form.name", "El Pepe")
+							.param("acceptTerms", "true")
+							.param("form.surname", "Cabrales")
+							.param("form.email", "elpepecabrales@gmail.com")
+							.param("form.phoneNumber", "765132956"))
+						.andExpect(status().isOk())
+						.andExpect(view().name("register"));
 	}
 	
 	

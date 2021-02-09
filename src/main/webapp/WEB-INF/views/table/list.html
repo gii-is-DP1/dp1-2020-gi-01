@@ -8,8 +8,13 @@
 </head>
 <body>
 	<th:block th:include="fragments/common :: navbar"></th:block>
+
+	<div class="error" id="error" th:unless=${message==null}>
+		<span th:text="${message}"></span>
+	</div>
+
 	<div class="container">
-		<div class="card" style="padding:20px;">
+		<div class="card" style="padding: 20px;">
 			<div class="container">
 				<div class="wrapper row">
 					<div class="col">
@@ -18,13 +23,13 @@
 						</div>
 						<div
 							th:replace="booking/list :: list-booking(bookings=${bookings})"></div>
-						<div class="row" style="border-bottom: 3px #e8e8e8 solid; margin:5px;">
-						</div>
+						<div class="row"
+							style="border-bottom: 3px #e8e8e8 solid; margin: 5px;"></div>
 						<div class="row">
 							<div class="preview col-md-6">
 								<div>
 									<span th:inline="text"> <b>Restaurant occupancy:</b>
-										[[${occupied}]]/[[${establishment.capacity}]]
+										[[${occupied}]]/[[${capacity}]]
 									</span>
 								</div>
 								<div>
@@ -32,8 +37,11 @@
 										[[${freeTables}]]/[[${totalTables}]]
 									</span>
 								</div>
-								<div>
-									<span th:inline="text"> <b>[[${estimate}]]</b></span>
+								<div th:if="${estimate!=null}">
+									<b>Estimated wait:</b>&nbsp;<span th:text="${estimate}"></span>
+								</div>
+								<div th:if="${estimate==null}">
+									<span>Table available right now</span>
 								</div>
 								<!-- CREATE TABLE -->
 								<div>
@@ -63,7 +71,8 @@
 											<td><input type="number" class="count" name="num"
 												th:value="${table.number}" th:form="form + ${table.id}">
 											</td>
-											<td th:text="${table.hourSeated}"></td>
+											<td
+												th:text="${#temporals.format(table.hourSeated,'dd-MM-yyyy HH:mm')}"></td>
 											<!-- CAPACITY -->
 											<td><input type="number" class="count" name="cap"
 												th:value="${table.seating}" th:form="form + ${table.id}">
@@ -73,16 +82,18 @@
 												th:value="${table.occupied}" th:form="form + ${table.id}">
 											</td>
 											<!-- RESERVATION -->
-											<td>
-												<select name="bookingId" th:form="form + ${table.id}">
-													<option th:if="${table.booking != null}" th:value="${table.booking.id}" th:utext="${table.booking.reservationDate}"></option>
+											<td><select name="bookingId"
+												th:form="form + ${table.id}">
+													<option th:if="${table.booking != null}"
+														th:value="${table.booking.id}"
+														th:utext="${#temporals.format(table.booking.reservationDate,'dd-MM-yyyy HH:mm')}"></option>
 													<option th:if="${table.booking != null}" value="">--</option>
 													<option th:if="${table.booking == null}" value="">--</option>
 													<option th:each="booking : ${bookings}"
-													th:value="${booking.id}"
-													th:utext="${booking.reservationDate}" />
-												</select>
-											</td>
+														th:value="${booking.id}"
+														th:if="${table.seating gt booking.seating}"
+														th:utext="${#temporals.format(booking.reservationDate,'dd-MM-yyyy HH:mm')}" />
+											</select></td>
 											<!-- SEAT -->
 											<td><a th:href="@{/table/{id}/unseat(id=${table.id})}"
 												th:if="${table.hourSeated != null}">Unseat</a> <a
@@ -106,5 +117,6 @@
 			</div>
 		</div>
 	</div>
+	<footer th:replace="fragments/common :: footer"></footer>
 </body>
 </html>
