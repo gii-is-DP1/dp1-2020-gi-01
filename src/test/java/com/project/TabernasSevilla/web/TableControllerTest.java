@@ -171,6 +171,14 @@ public class TableControllerTest {
 	
 	@WithMockUser(value = "spring")
 	@Test
+	void testModify() throws Exception {
+		mockMvc.perform(get("/table/{id}/modify", 1)
+				.param("cap", "10")
+				).andExpect(status().isOk()).andExpect(view().name("table/list"));
+	}
+	
+	@WithMockUser(value = "spring")
+	@Test
 	void testCreateTables() throws Exception {
 		mockMvc.perform(get("/table/establishment/{id}/add", 1)).andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/table/establishment/1"));
 	}

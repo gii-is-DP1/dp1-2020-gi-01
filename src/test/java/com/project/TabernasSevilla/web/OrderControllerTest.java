@@ -181,6 +181,27 @@ public class OrderControllerTest {
 	void testListActiveByEstablishment() throws Exception {
 		mockMvc.perform(get("/order/est/{id}/list", 1)).andExpect(status().isOk()).andExpect(view().name("order/list"));
 	}
+	
+	@WithMockUser(value = "spring")
+	@Test
+	void testCheckOut() throws Exception {
+		mockMvc.perform(get("/order/checkout?id={id}",1)
+		.param("type", "PICKUP")
+		.param("address", ""))
+		.andExpect(status().is3xxRedirection())
+		.andExpect(view().name("redirect:/order/0/view"));
+	}
+	
+	@WithMockUser(value = "spring")
+	@Test
+	void testBADCheckOut() throws Exception { //no puedes dejar address blank cuando es delivery
+		mockMvc.perform(get("/order/checkout?id={id}",1)
+		.param("type", "DELIVERY")
+		.param("address", ""))
+		.andExpect(status().isOk())
+		.andExpect(view().name("order/edit"));
+	}
+	
 
 	@WithMockUser(value = "spring")
 	@Test
