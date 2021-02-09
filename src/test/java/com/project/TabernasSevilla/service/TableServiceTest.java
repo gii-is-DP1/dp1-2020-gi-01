@@ -68,6 +68,7 @@ class TableServiceTest {
 	@Test
 	public void shouldGenerateNumber() {
 		Integer number = this.tableService.generateNumber(this.estService.findById(1));
+		//Es igual a 4 porque ya hay 3 mesas creadas en la base de datos.
 		assertThat(number).isEqualTo(4);
 	}
 

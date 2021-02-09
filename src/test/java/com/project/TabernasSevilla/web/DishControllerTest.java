@@ -195,5 +195,40 @@ public class DishControllerTest {
 				.andExpect(model().attributeDoesNotExist("name")).andExpect(status().isOk())
 				.andExpect(view().name("dishes/createDishForm"));
 	}
+	
+	@ExceptionHandler
+	@WithMockUser(value = "spring", roles = "ADMIN")
+	@Test
+	void testSaveComment() throws Exception {
+		User mockUser = new User();
+		Set<Authority> ls = new HashSet<>();
+		ls.add(new Authority("ADMIN"));
+		mockUser.setAuthorities(ls);
+		mockUser.setUsername("mockito");
+		given(this.userService.getPrincipal()).willReturn(mockUser);
 
+		mockMvc.perform(post("/dishes/savecomment/{dishId}", 1).with(csrf())
+				.param("reviewComment.comment", "Muy bueno")
+				.param("review.rating", "5")).andExpect(model().hasNoErrors()).andExpect(status().is3xxRedirection())
+				.andExpect(view().name("redirect:/dishes/1"));
+	}
+	@ExceptionHandler
+	@WithMockUser(value = "spring", roles = "ADMIN")
+	@Test
+	void testProcessUpdateDishForm() throws Exception {
+		User mockUser = new User();
+		Set<Authority> ls = new HashSet<>();
+		ls.add(new Authority("ADMIN"));
+		mockUser.setAuthorities(ls);
+		mockUser.setUsername("mockito");
+		given(this.userService.getPrincipal()).willReturn(mockUser);
+
+		mockMvc.perform(post("/dishes/{dishId}/edit", 1).with(csrf()).param("name", "Patatas fritas")
+				.param("description", "Muy ricas")
+				.param("picture",
+						"https://static.wikia.nocookie.net/fishmans/images/f/f9/Uchunippon_front.png/revision/latest/scale-to-width-down/150?cb=20200116094151")
+				.param("price", "30.0")).andExpect(model().hasNoErrors()).andExpect(status().is3xxRedirection())
+				.andExpect(view().name("redirect:/dishes"));
+	}
+	
 }

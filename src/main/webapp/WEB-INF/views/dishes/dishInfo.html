@@ -104,20 +104,6 @@
 										th:text="${err}" />
 								</ul>
 
-								<!--  No hace falta meterlo poruqe ya esta metido en el controller
-								<input type="hidden"
-										name="actor" th:field="${reviewComment.actor}" th:text="${#authentication.getPrincipal().authorities}">
-										
-										<ul>
-									<li th:each="err : ${#fields.errors('reviewComment.actor')}" th:text="${err}" />
-								</ul>
-										
-								<input type="hidden" name="dish" th:name="${reviewComment.dish}" th:id="${reviewComment.dish}" th:value="${dish}"/>
-								<ul>
-									<li th:each="err : ${#fields.errors('reviewComment.dish')}" th:text="${err}" />
-								</ul>
-										-->
-
 
 								<input type="submit" size="5" name="save" value="Post review" />
 
