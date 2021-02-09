@@ -34,18 +34,13 @@ public class ContactService {
 	public Curriculum findById(final int id) {
 		return cvRepo.findById(id);
 	}
-	
-	public Curriculum create() {
-		Curriculum joba = new Curriculum();
-		return joba;	
-	}
-	
+
 	public Curriculum save(Curriculum joba) {
 		return this.cvRepo.saveAndFlush(joba);
 	}
 	
 	public Curriculum register(final ContactForm form) {
-		Curriculum joba = create();
+		Curriculum joba = new Curriculum();
 		joba.setFullName(form.getFullName());
 		joba.setEmail(form.getEmail());
 		joba.setCv(form.getCv());
