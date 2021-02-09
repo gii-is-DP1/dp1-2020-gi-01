@@ -1,7 +1,12 @@
 package com.project.TabernasSevilla.web;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+
+import java.util.HashSet;
+import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +22,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.project.TabernasSevilla.configuration.SecurityConfiguration;
 import com.project.TabernasSevilla.controller.CustomerController;
+import com.project.TabernasSevilla.domain.Customer;
 import com.project.TabernasSevilla.repository.AdminRepository;
 import com.project.TabernasSevilla.repository.BookingRepository;
 import com.project.TabernasSevilla.repository.CookRepository;
@@ -31,10 +37,13 @@ import com.project.TabernasSevilla.repository.RegKeyRepository;
 import com.project.TabernasSevilla.repository.ReviewRepository;
 import com.project.TabernasSevilla.repository.TableRepository;
 import com.project.TabernasSevilla.repository.WaiterRepository;
+import com.project.TabernasSevilla.security.Authority;
 import com.project.TabernasSevilla.security.AuthorityRepository;
 import com.project.TabernasSevilla.security.AuthorityService;
+import com.project.TabernasSevilla.security.User;
 import com.project.TabernasSevilla.security.UserService;
 import com.project.TabernasSevilla.service.ActorService;
+import com.project.TabernasSevilla.service.CustomerService;
 import com.project.TabernasSevilla.service.DishService;
 import com.project.TabernasSevilla.service.EstablishmentService;
 
@@ -57,6 +66,9 @@ public class CustomerControllerTest {
 
 	@MockBean
 	private ActorService actorService;
+	
+	@MockBean
+	private CustomerService customerService;
 
 	@MockBean
 	private DishService dishService;
@@ -123,7 +135,16 @@ public class CustomerControllerTest {
 	@WithMockUser(value = "spring")
 	@Test
 	void testViewLocation() throws Exception {
-		mockMvc.perform(get("/customer/setPreferred")).andExpect(status().isOk());
+		User mockUser = new User();
+		Set<Authority> ls = new HashSet<>();
+		ls.add(new Authority("ADMIN"));
+		mockUser.setAuthorities(ls);
+		mockUser.setUsername("mockito");
+		given(this.userService.getPrincipal()).willReturn(mockUser);	
+		given(this.customerService.setPreferredEstablishment(1, this.userService.getPrincipal().getUsername())).willReturn(new Customer());
+		mockMvc.perform(get("/customer/setPreferred?id=1"))
+		.andExpect(status().is3xxRedirection())
+		.andExpect(view().name("redirect:/location/view?id=1"));
 	}
 	
 	

@@ -8,12 +8,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -28,9 +31,14 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.project.TabernasSevilla.configuration.SecurityConfiguration;
 import com.project.TabernasSevilla.controller.OrderCancellationController;
+import com.project.TabernasSevilla.domain.Actor;
 import com.project.TabernasSevilla.domain.Admin;
+import com.project.TabernasSevilla.domain.Cook;
 import com.project.TabernasSevilla.domain.Dish;
+import com.project.TabernasSevilla.domain.Establishment;
+import com.project.TabernasSevilla.domain.Manager;
 import com.project.TabernasSevilla.domain.RestaurantOrder;
+import com.project.TabernasSevilla.domain.Waiter;
 import com.project.TabernasSevilla.repository.AdminRepository;
 import com.project.TabernasSevilla.repository.BookingRepository;
 import com.project.TabernasSevilla.repository.CookRepository;
@@ -65,7 +73,12 @@ public class OrderCancellationControllerTest {
 
 	//@Autowired
 	//private DishController dishController;
-
+	@Mock
+	Actor actor;
+	
+	@Mock
+	RestaurantOrder order;
+	
 	@MockBean
 	private UserService userService;
 	
@@ -146,10 +159,44 @@ public class OrderCancellationControllerTest {
 		mockMvc.perform(get("/order/cancel/view/{id}", 1)).andExpect(status().isOk()).andExpect(view().name("order/view"));
 	}
 	
+
+	
 	@WithMockUser(value = "spring")
 	@Test
-	void testEdit() throws Exception {
-		mockMvc.perform(get("/order/cancel/{id}", 11)).andExpect(status().isOk());
+	void testCancelId() throws Exception {
+		User mockUser = new User();
+		Set<Authority> ls = new HashSet<>();
+		ls.add(new Authority("ADMIN"));
+		mockUser.setAuthorities(ls);
+		mockUser.setUsername("mockito");
+		given(this.userService.getPrincipal()).willReturn(mockUser);
+		given(this.actorService.getPrincipal()).willReturn(actor);		
+		
+		Establishment est = new Establishment();
+		est.setId(1);
+		est.setTitle("prueba");
+		est.setAddress("calle ");
+		est.setOpeningHours("24/7");
+		est.setScore(2);
+		given(this.establishmentService.findById(1)).willReturn(est); 
+
+		RestaurantOrder orderR = new RestaurantOrder();
+		orderR.setAddress("Calle Calamar");
+		orderR.setEstablishment(this.establishmentService.findById(1));
+		orderR.setDish(new ArrayList<Dish>());
+		User user = new User();
+		user.setUsername("mocki");
+		given(actor.getUser()).willReturn(user);
+		actor.setUser(user);
+		orderR.setActor(actor);
+		orderR.setType(RestaurantOrder.DELIVERY);
+		orderR.setStatus(RestaurantOrder.OPEN);
+		given(this.orderService.findById(1)).willReturn(Optional.of(orderR));
+		given(order.getActor()).willReturn(actor);
+		given(order.getActor().getUser()).willReturn(user);
+
+
+		mockMvc.perform(get("/order/cancel/{id}", 1)).andExpect(status().isOk()).andExpect(view().name("order/cancel/edit"));
 	}
 	
 
@@ -162,6 +209,16 @@ public class OrderCancellationControllerTest {
 							.param("placementDate", "2021-02-08T14:56:00Z"))
 						.andExpect(status().is3xxRedirection())
 						.andExpect(view().name("redirect:/index"));
+	}
+	
+	@ExceptionHandler
+	@WithMockUser(value = "spring", roles = "ADMIN") 
+	@Test
+	void testBADSaveOrderCancel() throws Exception{
+		mockMvc.perform(post("/order/cancel/save").with(csrf())
+							.param("placementDate", "2021-02-08T14:56:00Z"))
+						.andExpect(status().isOk())
+						.andExpect(view().name("order/cancel/edit"));
 	}
 	
 	
